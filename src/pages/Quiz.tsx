@@ -14,6 +14,8 @@ import Unit9Pisa from "@/components/exam/Unit9Pisa";
 import Unit10Pisa from "@/components/exam/Unit10Pisa";
 import LoadingScreen from "@/components/LoadingScreen";
 import StudentIdentityForm from "@/components/StudentIdentityForm";
+import QuizIntroSlide from "@/components/QuizIntroSlide";
+import QuizOutroSlide from "@/components/QuizOutroSlide";
 
 
 
@@ -22,8 +24,8 @@ const Quiz = () => {
   const isId = lang === "id";
   const navigate = useNavigate();
 
-  // "identity" = student form, "loading" = initial 30s loading, "select" = unit selection screen, "intro" = per-unit intro, "exam" = questions
-  const [screen, setScreen] = useState<"identity" | "loading" | "select" | "intro" | "exam">("identity");
+  // "welcome" = intro slide, "identity" = student form, "loading" = initial 30s loading, "select" = unit selection screen, "intro" = per-unit intro, "exam" = questions, "outro" = closing slide
+  const [screen, setScreen] = useState<"welcome" | "identity" | "loading" | "select" | "intro" | "exam" | "outro">("welcome");
   const [loading, setLoading] = useState(false);
   const [studentProfile, setStudentProfile] = useState<{ id: string; name: string } | null>(null);
   const [selectedUnit, setSelectedUnit] = useState<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>(1);
@@ -87,7 +89,7 @@ const Quiz = () => {
     completedUnits.add(selectedUnit); // include current
     const allDone = [1,2,3,4,5,6,7,8,9,10].every(u => completedUnits.has(u));
     if (allDone) {
-      navigate("/results", { state: { score: finalScore, total: questions.length, answers, unit: selectedUnit } });
+      setScreen("outro");
     } else {
       setScreen("select");
     }
@@ -99,6 +101,11 @@ const Quiz = () => {
     if (typeof val === "string") return val.trim().length > 0;
     return false;
   }).length;
+
+  // ── WELCOME INTRO SLIDE ──
+  if (screen === "welcome") {
+    return <QuizIntroSlide onStart={() => setScreen("identity")} />;
+  }
 
   // ── STUDENT IDENTITY FORM ──
   if (screen === "identity") {
@@ -115,6 +122,15 @@ const Quiz = () => {
   // ── INITIAL LOADING SCREEN ──
   if (screen === "loading") {
     return <LoadingScreen onDone={() => setScreen("select")} duration={30000} />;
+  }
+
+  // ── OUTRO SLIDE ──
+  if (screen === "outro") {
+    return (
+      <QuizOutroSlide
+        onFinish={() => navigate("/results", { state: { score: 0, total: 0, answers: {}, unit: selectedUnit } })}
+      />
+    );
   }
 
   // ── UNIT SELECTION SCREEN ──
@@ -313,7 +329,7 @@ const Quiz = () => {
           const completedUnits = new Set(allSessions.filter(s => s.completed).map(s => s.unit));
           completedUnits.add(8);
           const allDone = [1,2,3,4,5,6,7,8,9,10].every(u => completedUnits.has(u));
-          if (allDone) navigate("/results", { state: { score: 0, total: 5, answers: {}, unit: 8 } });
+          if (allDone) setScreen("outro");
           else setScreen("select");
         }} studentId={studentProfile?.id} />
       </div>
@@ -328,7 +344,7 @@ const Quiz = () => {
           const completedUnits = new Set(allSessions.filter(s => s.completed).map(s => s.unit));
           completedUnits.add(9);
           const allDone = [1,2,3,4,5,6,7,8,9,10].every(u => completedUnits.has(u));
-          if (allDone) navigate("/results", { state: { score: 0, total: 5, answers: {}, unit: 9 } });
+          if (allDone) setScreen("outro");
           else setScreen("select");
         }} studentId={studentProfile?.id} />
       </div>
@@ -343,7 +359,7 @@ const Quiz = () => {
           const completedUnits = new Set(allSessions.filter(s => s.completed).map(s => s.unit));
           completedUnits.add(10);
           const allDone = [1,2,3,4,5,6,7,8,9,10].every(u => completedUnits.has(u));
-          if (allDone) navigate("/results", { state: { score: 0, total: 5, answers: {}, unit: 10 } });
+          if (allDone) setScreen("outro");
           else setScreen("select");
         }} studentId={studentProfile?.id} />
       </div>
