@@ -544,22 +544,22 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
         {/* Modern Bento Control Card */}
         <div className="flex-1 bg-white/80 backdrop-blur-xl rounded-[40px] border border-slate-200 shadow-2xl p-8 space-y-8">
           <div className="flex items-center justify-between">
-             <h3 className="text-xl font-black text-slate-900 italic tracking-tighter">{isId ? "Laboratorium Termal" : "Thermal Laboratory"}</h3>
-             <div className="px-3 py-1 bg-amber-100 rounded-full text-[10px] font-black text-amber-600 uppercase">Unit 03</div>
+             <h3 className="text-xl font-bold text-slate-900 tracking-tight">{isId ? "Simulasi Konsep Kalor" : "Heat Concept Simulation"}</h3>
+             <div className="px-3 py-1 bg-amber-100 rounded-full text-[10px] font-bold text-amber-600 uppercase">Unit 03</div>
           </div>
           
           <div className="space-y-4">
-            <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">{isId ? "Konfigurasi Wadah" : "Vessel Configuration"}</p>
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em]">{isId ? "Konfigurasi Wadah" : "Vessel Configuration"}</p>
             <div className="grid grid-cols-2 gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200">
               <button 
                 onClick={() => setPotType("clay")}
-                className={`py-3 rounded-xl text-[11px] font-black uppercase transition-all ${potType === 'clay' ? "bg-white text-amber-700 shadow-md" : "text-slate-400 hover:text-slate-600"}`}
+                className={`py-3 rounded-xl text-[11px] font-bold uppercase transition-all ${potType === 'clay' ? "bg-white text-amber-700 shadow-md" : "text-slate-400 hover:text-slate-600"}`}
               >
                 {isId ? "Tanah Liat" : "Clay Pot"}
               </button>
               <button 
                 onClick={() => setPotType("metal")}
-                className={`py-3 rounded-xl text-[11px] font-black uppercase transition-all ${potType === 'metal' ? "bg-white text-slate-700 shadow-md" : "text-slate-400 hover:text-slate-600"}`}
+                className={`py-3 rounded-xl text-[11px] font-bold uppercase transition-all ${potType === 'metal' ? "bg-white text-slate-700 shadow-md" : "text-slate-400 hover:text-slate-600"}`}
               >
                 {isId ? "Logam" : "Metal Pot"}
               </button>
@@ -574,8 +574,8 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
             ].map(s => (
               <div key={s.l} className="space-y-3">
                 <div className="flex justify-between items-end">
-                  <span className="text-[11px] font-black text-slate-500 uppercase tracking-widest">{s.l}</span>
-                  <span className="text-[16px] font-black text-slate-900">{s.v}<small className="text-[10px] ml-1 opacity-40 uppercase font-black">{s.u}</small></span>
+                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">{s.l}</span>
+                  <span className="text-[16px] font-bold text-slate-900">{s.v}<small className="text-[10px] ml-1 opacity-40 uppercase font-bold">{s.u}</small></span>
                 </div>
                 <input 
                   type="range" min={s.min} max={s.max} value={s.v} 
@@ -587,10 +587,10 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
           </div>
 
           <div className="flex gap-3 pt-4 border-t border-slate-100">
-            <button onClick={handleRecord} className="flex-1 py-5 bg-slate-900 text-white font-black rounded-3xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all text-xs tracking-widest uppercase">
+            <button onClick={handleRecord} className="flex-1 py-5 bg-slate-900 text-white font-bold rounded-3xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all text-xs tracking-widest uppercase">
                {isId ? "CATAT DATA" : "RECORD DATA"}
             </button>
-            <button onClick={handleClear} className="px-6 py-5 bg-slate-100 text-slate-400 font-black rounded-3xl hover:bg-slate-200 transition-all text-xs tracking-widest uppercase">
+            <button onClick={handleClear} className="px-6 py-5 bg-slate-100 text-slate-400 font-bold rounded-3xl hover:bg-slate-200 transition-all text-xs tracking-widest uppercase">
                {isId ? "HAPUS" : "CLEAR"}
             </button>
           </div>
@@ -702,17 +702,17 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
       {/* Outcome Bento Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { l: isId ? "Retensi Panas" : "Heat Retention", v: Math.round(calc.retention), s: calc.retention > 60 ? "Excellent" : "Decent", c: "amber" },
-          { l: isId ? "Efisiensi Energi" : "Energy Efficiency", v: Math.round(calc.efficiency), s: calc.efficiency > 60 ? "Optimized" : "Average", c: "emerald" },
-          { l: isId ? "Kehilangan Panas" : "Heat Loss", v: Math.round(calc.heatLoss), s: calc.heatLoss < 30 ? "Minimal" : "Critical", c: "rose" },
-          { l: isId ? "Dataset Log" : "Dataset Log", v: runs.length, s: "Active Records", c: "indigo" },
+          { l: isId ? "Retensi Panas" : "Heat Retention", v: Math.round(calc.retention), s: calc.retention > 60 ? (isId ? "Tinggi" : "High") : (isId ? "Normal" : "Normal"), c: "amber" },
+          { l: isId ? "Efisiensi Energi" : "Energy Efficiency", v: Math.round(calc.efficiency), s: calc.efficiency > 60 ? (isId ? "Optimal" : "Optimal") : (isId ? "Rendah" : "Low"), c: "emerald" },
+          { l: isId ? "Kehilangan Panas" : "Heat Loss", v: Math.round(calc.heatLoss), s: calc.heatLoss < 30 ? (isId ? "Minimal" : "Low") : (isId ? "Kritis" : "Critical"), c: "rose" },
+          { l: isId ? "Dataset Log" : "Dataset Log", v: runs.length, s: isId ? "Data Aktif" : "Active Records", c: "indigo" },
         ].map(st => (
           <div key={st.l} className="group p-8 bg-white/80 backdrop-blur-xl rounded-[40px] border border-slate-200 shadow-xl flex flex-col justify-between hover:bg-slate-900 hover:text-white transition-all duration-500 overflow-hidden relative">
              <div className={`absolute -top-10 -right-10 w-32 h-32 bg-${st.c}-500/10 rounded-full blur-[40px] group-hover:bg-white/5`} />
-             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest relative z-10">{st.l}</span>
+             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest relative z-10">{st.l}</span>
              <div className="mt-4 flex items-baseline gap-2 relative z-10">
-                <span className={`text-4xl font-black italic tracking-tighter ${st.v > 70 ? 'text-emerald-500' : 'text-slate-900 group-hover:text-white'}`}>{st.v}</span>
-                <span className="text-[11px] font-black uppercase opacity-40">{st.s}</span>
+                <span className={`text-4xl font-bold ${st.v > 70 ? 'text-emerald-500' : 'text-slate-900 group-hover:text-white'}`}>{st.v}</span>
+                <span className="text-[11px] font-bold uppercase opacity-40">{st.s}</span>
              </div>
           </div>
         ))}

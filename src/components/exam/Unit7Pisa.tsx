@@ -127,9 +127,9 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
       <header className={`h-16 bg-gradient-to-r ${headerGradient} flex items-center justify-between px-8 shrink-0 z-30 border-b border-white/5 shadow-2xl backdrop-blur-xl bg-opacity-80`}>
         <div className="flex items-center gap-10">
            <div className="flex items-center gap-4 group cursor-pointer">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-black text-white shadow-lg group-hover:scale-110 transition-transform">7</div>
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-bold text-white shadow-lg group-hover:scale-110 transition-transform">7</div>
               <div className="flex flex-col">
-                 <span className="text-[14px] font-black tracking-widest text-white">{isId ? "NADRAN ECO-SIM" : "NADRAN ECO-SIM"}</span>
+                 <span className="text-[14px] font-bold tracking-widest text-white">{isId ? "NADRAN ECO-SIM" : "NADRAN ECO-SIM"}</span>
                  <span className="text-[9px] font-bold text-indigo-300 uppercase tracking-[0.2em]">{isId ? "Pusat Literasi Kelautan" : "Marine Literacy Hub"}</span>
               </div>
            </div>
@@ -140,7 +140,7 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
               {[1, 2, 3, 4, 5].map(s => (
                 <div key={s} className="group relative flex flex-col items-center">
                   <div className={`w-10 h-1.5 rounded-full transition-all duration-500 ${currentStep >= s ? "bg-gradient-to-r from-indigo-400 to-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]" : "bg-white/10"}`} />
-                  <span className={`text-[8px] mt-1 font-black uppercase tracking-widest transition-colors ${currentStep >= s ? "text-cyan-400" : "text-white/20"}`}>{s}</span>
+                  <span className={`text-[8px] mt-1 font-bold uppercase tracking-widest transition-colors ${currentStep >= s ? "text-cyan-400" : "text-white/20"}`}>{s}</span>
                 </div>
               ))}
            </nav>
@@ -170,8 +170,8 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
         <div className={`w-[40%] bg-gradient-to-b ${leftPanelGradient} flex flex-col overflow-hidden relative border-r border-slate-200/50 shadow-inner`}>
           {/* Banner */}
           <div className="h-16 flex items-center px-10 shrink-0 bg-white/80 backdrop-blur-xl border-b border-slate-200/50 justify-between">
-             <h2 className="text-[14px] font-black text-slate-800 uppercase tracking-tighter">{isId ? "Modul Interaktif" : "Interactive Module"}</h2>
-             <div className="px-3 py-1 bg-indigo-100 rounded-full text-[10px] font-black text-indigo-600 uppercase">Phase {currentStep}</div>
+             <h2 className="text-[14px] font-bold text-slate-800 uppercase tracking-tighter">{isId ? "Modul Interaktif" : "Interactive Module"}</h2>
+             <div className="px-3 py-1 bg-indigo-100 rounded-full text-[10px] font-bold text-indigo-600 uppercase">Phase {currentStep}</div>
           </div>
 
           <div className="p-10 overflow-y-auto h-full flex flex-col exam-scrollbar relative z-10">
@@ -179,7 +179,7 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
             {currentStep === 0 && (
               <div className="space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-700">
                 <div className="space-y-4">
-                  <h1 className="text-4xl font-black text-slate-900 leading-[1.1] tracking-tighter italic">
+                  <h1 className="text-4xl font-bold text-slate-900 leading-[1.1] tracking-tighter">
                     {isId ? "Misteri Laut Cirebon: Ritual Nadran" : "Cirebon Marine Mystery: The Nadran Ritual"}
                   </h1>
                   <p className="text-[15px] leading-relaxed text-slate-600 font-medium">
@@ -189,7 +189,7 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                   </p>
                 </div>
                 
-                <button onClick={() => setCurrentStep(1)} className="group relative w-full py-5 bg-slate-900 text-white font-black rounded-3xl shadow-2xl overflow-hidden active:scale-[0.98] transition-all">
+                <button onClick={() => setCurrentStep(1)} className="group relative w-full py-5 bg-slate-900 text-white font-bold rounded-3xl shadow-2xl overflow-hidden active:scale-[0.98] transition-all">
                   <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <span className="relative z-10 text-xs tracking-[0.4em] uppercase">{isId ? "MULAI EKSPEDISI" : "START EXPEDITION"}</span>
                 </button>
@@ -200,7 +200,7 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
               <div className="space-y-8 animate-in fade-in slide-in-from-right-10 duration-700">
                 <div className="p-6 bg-indigo-600 rounded-3xl shadow-xl shadow-indigo-200 text-white relative overflow-hidden">
                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-3xl" />
-                   <p className="text-[14px] font-bold leading-relaxed relative z-10 italic">
+                   <p className="text-[14px] font-bold leading-relaxed relative z-10">
                      {isId 
                         ? "Pasangkan setiap faktor strategis dengan dampaknya terhadap ekosistem laut kita."
                         : "Match each strategic factor with its impact on our marine ecosystem."}
@@ -210,7 +210,7 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                 <div className="space-y-4">
                   {FACTORS.map(f => (
                     <div key={f.id} className="group flex flex-col gap-2">
-                       <span className="text-[10px] font-black text-slate-400 px-1 uppercase tracking-widest">{isId ? f.idText : f.en}</span>
+                       <span className="text-[10px] font-bold text-slate-400 px-1 uppercase tracking-widest">{isId ? f.idText : f.en}</span>
                        <div 
                          onDragOver={e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }}
                          onDrop={e => handleDrop(f.id, e.dataTransfer.getData("text/plain"))}
@@ -218,7 +218,7 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                        >
                          {matches[f.id] ? (
                            <>
-                             <span className="text-[12px] font-black text-emerald-700">{matches[f.id]}</span>
+                             <span className="text-[12px] font-bold text-emerald-700">{matches[f.id]}</span>
                              <button onClick={() => handleDrop(f.id, "")} className="w-6 h-6 flex items-center justify-center rounded-full bg-emerald-200/50 text-emerald-600">×</button>
                            </>
                          ) : (
@@ -244,7 +244,7 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                         className={`p-4 rounded-2xl border-2 flex items-center gap-3 transition-all duration-300 cursor-grab active:cursor-grabbing hover:scale-105 ${isUsed ? "opacity-10 cursor-not-allowed bg-slate-100 border-slate-200" : "bg-white border-white shadow-xl hover:border-indigo-400 group"}`}
                       >
                         <span className="text-lg">{item.icon}</span>
-                        <span className="text-[11px] font-black text-slate-700 leading-tight">{text}</span>
+                        <span className="text-[11px] font-bold text-slate-700 leading-tight">{text}</span>
                       </div>
                     );
                   })}
@@ -257,8 +257,8 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                 <div className="bg-white p-8 rounded-[40px] shadow-2xl shadow-indigo-100 border border-slate-100 space-y-4">
                   <div className="flex gap-2">
                     <div className="w-1.5 h-6 bg-indigo-500 rounded-full" />
-                    <h3 className="text-xl font-black text-slate-900 tracking-tight italic">
-                      {currentStep === 2 ? (isId ? "Analisis Kritis Populasi" : "Critical Population Analysis") : (isId ? "Kesimpulan Berbasis Data" : "Data-Driven Conclusion")}
+                    <h3 className="text-xl font-bold text-slate-900 tracking-tight">
+                      {currentStep === 2 ? (isId ? "Analisis Populasi" : "Population Analysis") : (isId ? "Kesimpulan Berbasis Data" : "Data-Driven Conclusion")}
                     </h3>
                   </div>
                   <p className="text-[14px] leading-relaxed text-slate-600 font-medium">
@@ -293,8 +293,8 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                         className={`group w-full flex items-center justify-between p-6 rounded-3xl border-2 transition-all duration-300 transform ${selected ? "border-indigo-500 bg-indigo-500 text-white shadow-2xl scale-[1.02]" : "border-slate-100 bg-white hover:border-indigo-200 hover:shadow-xl text-slate-700"}`}
                       >
                         <div className="flex items-center gap-4">
-                           <span className={`w-8 h-8 rounded-full flex items-center justify-center font-black ${selected ? "bg-white text-indigo-600" : "bg-slate-100 text-slate-400"}`}>{opt.label}</span>
-                           <span className="text-[14px] font-black italic">{isId ? opt.idText : opt.en}</span>
+                           <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${selected ? "bg-white text-indigo-600" : "bg-slate-100 text-slate-400"}`}>{opt.label}</span>
+                           <span className="text-[14px] font-bold">{isId ? opt.idText : opt.en}</span>
                         </div>
                         <span className="text-xl group-hover:rotate-12 transition-transform">{opt.icon}</span>
                       </button>
@@ -317,8 +317,8 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
           <div className="h-16 px-10 flex items-center bg-white/5 backdrop-blur-xl shrink-0 border-b border-white/5">
              <div className="flex items-center gap-4">
                 <div className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#22d3ee]" />
-                <span className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.3em]">
-                   {(currentStep <= 2) ? (isId ? "Simulasi Kinetik" : "Kinetic Simulation") : (isId ? "Dashboard Riset" : "Research Dashboard")}
+                <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-[0.3em]">
+                   {(currentStep <= 2) ? (isId ? "Simulasi Ekosistem Laut" : "Marine Ecosystem Simulation") : (isId ? "Dashboard Riset" : "Research Dashboard")}
                 </span>
              </div>
           </div>
@@ -331,7 +331,7 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                 <div className="grid grid-cols-5 gap-6">
                   {/* Controls Card */}
                   <div className="col-span-2 p-8 bg-white/5 backdrop-blur-2xl rounded-[40px] border border-white/10 shadow-2xl flex flex-col gap-6 group">
-                    <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] mb-2">{isId ? "Kontrol Variabel" : "Variable Control"}</p>
+                    <p className="text-[10px] font-bold text-white/30 uppercase tracking-[0.4em] mb-2">{isId ? "Kontrol Variabel" : "Variable Control"}</p>
                     
                     {[
                       { label: "Intensity", set: setFishingIntensity, val: fishingIntensity, opts: ["Low", "Medium", "High"] },
@@ -340,10 +340,10 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                       { label: "Conservation", set: setConservation, val: conservation, opts: ["None", "Partial", "Full"] },
                     ].map(ctl => (
                       <div key={ctl.label} className="space-y-2">
-                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">{ctl.label}</label>
+                        <label className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">{ctl.label}</label>
                         <div className="grid grid-cols-3 gap-1 bg-black/40 p-1 rounded-2xl border border-white/5">
                            {ctl.opts.map(o => (
-                             <button key={o} onClick={() => ctl.set(o)} className={`py-2 text-[9px] font-black uppercase rounded-xl transition-all ${ctl.val === o ? "bg-indigo-500 text-white shadow-lg" : "text-white/30 hover:text-white/60"}`}>
+                             <button key={o} onClick={() => ctl.set(o)} className={`py-2 text-[9px] font-bold uppercase rounded-xl transition-all ${ctl.val === o ? "bg-indigo-500 text-white shadow-lg" : "text-white/30 hover:text-white/60"}`}>
                                 {o}
                              </button>
                            ))}
@@ -354,7 +354,7 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                     <button 
                       onClick={calculateResult} 
                       disabled={isRunning}
-                      className={`w-full mt-4 py-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-black rounded-3xl shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 ${isRunning ? "opacity-50" : ""}`}
+                      className={`w-full mt-4 py-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-3xl shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 ${isRunning ? "opacity-50" : ""}`}
                     >
                       {isRunning ? (
                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -375,17 +375,17 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                         <div key={out.l} className="group relative p-8 bg-white/5 backdrop-blur-3xl rounded-[40px] border border-white/5 shadow-2xl flex flex-col justify-between hover:bg-white/10 transition-all overflow-hidden">
                            <div className={`absolute -top-10 -right-10 w-32 h-32 bg-${out.c}-500 opacity-5 blur-3xl group-hover:opacity-10 transition-opacity`} />
                            <div className="flex justify-between items-start">
-                              <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">{out.l}</span>
+                              <span className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em]">{out.l}</span>
                               <span className="text-2xl">{out.i}</span>
                            </div>
                            <div className="mt-4">
-                              <span className={`text-2xl font-black italic tracking-tighter ${out.v === 'Low' || out.v === 'Poor' ? 'text-rose-400' : 'text-cyan-400'}`}>{out.v}</span>
+                              <span className={`text-2xl font-bold ${out.v === 'Low' || out.v === 'Poor' ? 'text-rose-400' : 'text-cyan-400'}`}>{out.v}</span>
                            </div>
                         </div>
                      ))}
                      
                      {/* Floating Record Button */}
-                     <button onClick={handleRecordData} className="col-span-2 py-5 bg-white/5 border border-white/10 rounded-3xl text-[11px] font-black text-white hover:bg-emerald-500/20 hover:border-emerald-500/50 transition-all uppercase tracking-widest active:scale-95 italic">
+                     <button onClick={handleRecordData} className="col-span-2 py-5 bg-white/5 border border-white/10 rounded-3xl text-[11px] font-bold text-white hover:bg-emerald-500/20 hover:border-emerald-500/50 transition-all uppercase tracking-widest active:scale-95">
                         + Save Metrics to History
                      </button>
                   </div>
@@ -407,7 +407,7 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                    
                    <div className="absolute top-6 left-8 flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-                      <span className="text-[9px] font-black text-cyan-400 uppercase tracking-[0.4em]">Live Scene Monitor</span>
+                      <span className="text-[9px] font-bold text-cyan-400 uppercase tracking-[0.4em]">Live Scene Monitor</span>
                    </div>
                 </div>
               </div>
@@ -418,8 +418,8 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
               <div className="flex flex-col gap-6 animate-in zoom-in-95 duration-700">
                 <div className="bg-white/5 backdrop-blur-3xl rounded-[40px] border border-white/10 p-10 space-y-6">
                   <div className="flex flex-col gap-1">
-                     <span className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.4em]">Synthesis Workspace</span>
-                     <h4 className="text-2xl font-black text-white">{isId ? "Tuliskan Analisis Anda" : "Compile Your Findings"}</h4>
+                     <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-[0.4em]">Synthesis Workspace</span>
+                     <h4 className="text-2xl font-bold text-white">{isId ? "Tuliskan Analisis Anda" : "Compile Your Findings"}</h4>
                   </div>
                   <textarea
                     value={currentStep === 3 ? q3Explanation : currentStep === 4 ? q4Explanation : q5Explanation}
@@ -429,43 +429,43 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                       if (currentStep === 5) setQ5Explanation(e.target.value);
                     }}
                     placeholder={isId ? "Jabarkan observasi Anda di sini..." : "Draft your synthesis here..."}
-                    className="w-full h-48 bg-black/40 border border-white/10 rounded-3xl p-8 text-[14px] text-white outline-none focus:ring-2 focus:ring-indigo-500 transition-all resize-none font-medium leading-relaxed italic placeholder:text-white/10"
+                    className="w-full h-48 bg-black/40 border border-white/10 rounded-3xl p-8 text-[14px] text-white outline-none focus:ring-2 focus:ring-indigo-500 transition-all resize-none font-medium leading-relaxed placeholder:text-white/10"
                   />
                   <div className="flex items-center justify-between">
-                    <button onClick={() => setShowWritingGuide(!showWritingGuide)} className="px-8 py-3 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black text-white hover:bg-white/10 transition-all uppercase tracking-widest">
+                    <button onClick={() => setShowWritingGuide(!showWritingGuide)} className="px-8 py-3 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-bold text-white hover:bg-white/10 transition-all uppercase tracking-widest">
                       {isId ? "Writing Guide" : "Writing Guide"}
                     </button>
-                    <span className="text-[10px] font-black text-white/20 uppercase">Word Index: {getWordCount(currentStep === 3 ? q3Explanation : currentStep === 4 ? q4Explanation : q5Explanation)}</span>
+                    <span className="text-[10px] font-bold text-white/20 uppercase">Word Index: {getWordCount(currentStep === 3 ? q3Explanation : currentStep === 4 ? q4Explanation : q5Explanation)}</span>
                   </div>
                 </div>
 
                 {/* History Data Table Dashboard Style */}
                 <div className="flex flex-col gap-2">
-                  <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] px-4">Dataset Timeline</span>
+                  <span className="text-[10px] font-bold text-white/30 uppercase tracking-[0.4em] px-4">Dataset Timeline</span>
                   <div className="bg-white/5 backdrop-blur-3xl rounded-[40px] border border-white/10 overflow-hidden shadow-2xl">
                     <table className="w-full text-[10px] text-white">
                       <thead>
                         <tr className="bg-white/5 text-white/40 border-b border-white/5">
-                          <th className="p-6 text-left font-black uppercase">Run ID</th>
-                          <th className="p-6 text-left font-black uppercase italic">Fishing</th>
-                          <th className="p-6 text-left font-black uppercase italic">Awareness</th>
-                          <th className="p-6 text-left font-black uppercase">Biology</th>
-                          <th className="p-6 text-left font-black uppercase">Sustainability</th>
+                          <th className="p-6 text-left font-bold uppercase">Run ID</th>
+                          <th className="p-6 text-left font-bold uppercase text-white/40">Fishing</th>
+                          <th className="p-6 text-left font-bold uppercase text-white/40">Awareness</th>
+                          <th className="p-6 text-left font-bold uppercase">Biology</th>
+                          <th className="p-6 text-left font-bold uppercase">Sustainability</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-white/5">
                         {history.slice(0, 4).map((row, i) => (
                           <tr key={i} className="hover:bg-white/5 transition-colors">
-                            <td className="p-6 font-black text-cyan-400">#00{row.id}</td>
-                            <td className="p-6 font-bold opacity-60 italic">{row.fishing}</td>
-                            <td className="p-6 font-bold opacity-60 italic">{row.awareness}</td>
+                            <td className="p-6 font-bold text-cyan-400">#00{row.id}</td>
+                            <td className="p-6 font-bold opacity-60">{row.fishing}</td>
+                            <td className="p-6 font-bold opacity-60">{row.awareness}</td>
                             <td className="p-6">
                                <div className="flex gap-1">
-                                  <span className={`px-2 py-1 rounded-md text-[8px] font-black bg-white/5 ${row.fish === 'Low' ? 'text-rose-400' : 'text-emerald-400'}`}>{row.fish}</span>
-                                  <span className={`px-2 py-1 rounded-md text-[8px] font-black bg-white/5 ${row.biodiversity === 'Low' ? 'text-rose-400' : 'text-emerald-400'}`}>{row.biodiversity}</span>
+                                  <span className={`px-2 py-1 rounded-md text-[8px] font-bold bg-white/5 ${row.fish === 'Low' ? 'text-rose-400' : 'text-emerald-400'}`}>{row.fish}</span>
+                                  <span className={`px-2 py-1 rounded-md text-[8px] font-bold bg-white/5 ${row.biodiversity === 'Low' ? 'text-rose-400' : 'text-emerald-400'}`}>{row.biodiversity}</span>
                                </div>
                             </td>
-                            <td className="p-6 font-black text-indigo-400 uppercase italic tracking-tighter text-[12px]">{row.sustain}</td>
+                            <td className="p-6 font-bold text-indigo-400 uppercase text-[12px]">{row.sustain}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -483,17 +483,17 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
 
       {/* ── LUXURY CONTROL FOOTER ── */}
       <footer className="h-24 bg-white border-t border-slate-200 flex items-center justify-between px-12 shrink-0 z-40 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
-        <div className="flex items-center gap-6">
+                <div className="flex items-center gap-6">
            <button 
              disabled={currentStep === 0}
              onClick={() => setCurrentStep(prev => prev - 1)}
-             className="w-14 h-14 rounded-2xl border-2 border-slate-100 flex items-center justify-center text-slate-400 hover:border-slate-300 hover:text-slate-600 disabled:opacity-0 transition-all font-black text-xl active:scale-95"
+             className="w-14 h-14 rounded-2xl border-2 border-slate-100 flex items-center justify-center text-slate-400 hover:border-slate-300 hover:text-slate-600 disabled:opacity-0 transition-all font-bold text-xl active:scale-95"
            >
              ←
            </button>
            <div className="flex flex-col">
-              <span className="text-[12px] font-black text-slate-900 italic tracking-tighter uppercase">{stepLabels[currentStep]}</span>
-              <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest leading-none">Module Sequence {currentStep}/5</span>
+              <span className="text-[12px] font-bold text-slate-900 uppercase">{stepLabels[currentStep]}</span>
+              <span className="text-[9px] font-bold text-slate-300 uppercase tracking-widest leading-none">Module Sequence {currentStep}/5</span>
            </div>
         </div>
 
