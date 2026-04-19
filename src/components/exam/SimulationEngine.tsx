@@ -511,194 +511,177 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
   const isId = lang === "id";
   const [potType, setPotType] = useState<"clay" | "metal">("clay");
   const [wallThickness, setWallThickness] = useState(5);
-  const [heatInput, setHeatInput] = useState(70);
-  const [waterVolume, setWaterVolume] = useState(5);
-  const [animTemp, setAnimTemp] = useState(0);
-  const animRef = useRef<HTMLDivElement>(null);
+  const [heatInput, setHeatInput] = useState(80);
+  const [waterVolume, setWaterVolume] = useState(4);
+  const [runs, setRuns] = useState<Record<string, unknown>[]>([]);
 
   const calc = useMemo(() => {
     const isClay = potType === "clay";
     const retention = Math.min(100, Math.max(0, (isClay ? 45 : 20) + wallThickness * 3.5 + heatInput * 0.3 - waterVolume * 2));
     const efficiency = Math.min(100, Math.max(0, (isClay ? 70 : 40) + wallThickness * 2 - heatInput * 0.4 - waterVolume * 3));
-    const cookingTime = Math.max(10, (isClay ? 85 : 55) + wallThickness * 3 + waterVolume * 4 - heatInput * 0.5);
-    const envImpact = Math.min(100, (isClay ? 15 : 55) + waterVolume * 3 + heatInput * 0.2);
-    const label = (v: number) => v >= 67 ? (isId ? "Baik" : "Good") : v >= 34 ? (isId ? "Sedang" : "Medium") : (isId ? "Rendah" : "Low");
-    return {
-      retention, efficiency, cookingTime, envImpact,
-      retLabel: label(retention), effLabel: label(efficiency),
-      envLabel: label(100 - envImpact), timeLabel: `${Math.round(cookingTime)} ${isId ? "menit" : "min"}`
+    const heatLoss = Math.max(0, 100 - retention);
+    return { retention, efficiency, heatLoss };
+  }, [potType, wallThickness, heatInput, waterVolume]);
+
+  const handleRecord = () => {
+    const data = {
+      pot: potType === "clay" ? (isId ? "Tanah Liat" : "Clay") : (isId ? "Logam" : "Metal"),
+      wall: wallThickness,
+      heat: heatInput,
+      water: waterVolume,
+      retention: Math.round(calc.retention),
+      efficiency: Math.round(calc.efficiency)
     };
-  }, [potType, wallThickness, heatInput, waterVolume, isId]);
-
-  // Animate temperature changes
-  useEffect(() => {
-    let frame: number;
-    const target = calc.efficiency;
-    const animate = () => {
-      setAnimTemp(prev => {
-        const diff = target - prev;
-        if (Math.abs(diff) < 0.5) return target;
-        return prev + diff * 0.08;
-      });
-      frame = requestAnimationFrame(animate);
-    };
-    frame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frame);
-  }, [calc.efficiency]);
-
-  useEffect(() => {
-    if (!animRef.current) return;
-    const flames = animRef.current.querySelectorAll(".flame");
-    flames.forEach((f, i) => {
-      (f as HTMLElement).style.animationDelay = `${i * 0.2}s`;
-    });
-  }, [heatInput]);
-
-  const handleRun = () => {
-    onRun({ pot: potType, wall: wallThickness, heat: heatInput, water: waterVolume, retention: calc.retention, efficiency: calc.efficiency, env: calc.envImpact });
+    onRun(data);
+    setRuns(prev => [...prev.slice(-4), data]);
   };
 
-  const fireIntensity = heatInput / 100;
+  const handleClear = () => {
+    setRuns([]);
+  };
+
+  const RadioBtn = ({ id, labelEn, labelId, current, onChange }: { id: string; labelEn: string; labelId: string; current: string; onChange: (v: any) => void }) => (
+    <label className="flex items-center gap-2.5 cursor-pointer group">
+      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${current === id ? "border-emerald-600 bg-white" : "border-slate-300 bg-white"}`}>
+        {current === id && <div className="w-2.5 h-2.5 rounded-full bg-emerald-700" />}
+      </div>
+      <input type="radio" className="hidden" checked={current === id} onChange={() => onChange(id)} />
+      <span className="text-[14px] font-medium text-slate-600 group-hover:text-primary transition-colors">{labelEn} ({labelId})</span>
+    </label>
+  );
+
+  const CustomSlider = ({ labelEn, labelId, value, min, max, unit, onChange }: { labelEn: string; labelId: string; value: number; min: number; max: number; unit: string; onChange: (v: number) => void }) => {
+    const pct = ((value - min) / (max - min)) * 100;
+    return (
+      <div className="space-y-2">
+        <div className="text-[14px] font-medium text-slate-600">
+          {labelEn} / {labelId} ({unit}): <span className="font-bold text-slate-800">{value}</span>
+        </div>
+        <div className="relative h-6 flex items-center">
+          <div className="absolute w-full h-2.5 bg-slate-100 rounded-full border border-slate-200" />
+          <div className="absolute h-2.5 bg-slate-800 rounded-full transition-all" style={{ width: `${pct}%` }} />
+          <input
+            type="range" min={min} max={max} value={value} onChange={e => onChange(Number(e.target.value))}
+            className="absolute w-full h-full opacity-0 cursor-pointer z-10"
+          />
+          <div className="absolute w-6 h-6 bg-slate-800 rounded-full border-2 border-white shadow-md transition-all pointer-events-none" style={{ left: `calc(${pct}% - 12px)` }} />
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="space-y-4">
-      {/* Animated Cooking Scene */}
-      <SimCard className="p-4">
-        <div className="flex items-center justify-between mb-3">
-          <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-            {isId ? "Visualisasi Memasak" : "Cooking Visualization"}
-          </p>
-          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full text-white ${potType === "clay" ? "bg-amber-600" : "bg-slate-600"}`}>
-            {potType === "clay" ? (isId ? "🏺 Gentong Tanah Liat" : "🏺 Clay Pot") : (isId ? "🍳 Panci Logam" : "🍳 Metal Pot")}
-          </span>
-        </div>
-
-        <div ref={animRef} className="relative h-52 bg-gradient-to-b from-orange-50 via-amber-50 to-stone-100 rounded-xl overflow-hidden border border-border/30">
-          {/* Fire / heat source */}
-          <div className="absolute bottom-0 left-0 right-0 flex justify-center">
-            {/* Wood fire */}
-            <div className="flex items-end gap-1">
-              {[...Array(7)].map((_, i) => (
-                <div key={i} className="flame w-3 bg-gradient-to-t from-red-700 via-orange-500 to-yellow-300 rounded-t-full animate-pulse"
-                  style={{ height: `${15 + fireIntensity * 25 + i * 2}px`, animationDuration: `${0.3 + i * 0.1}s` }} />
-              ))}
+    <div className="flex flex-col gap-5">
+      <div className="flex flex-col lg:flex-row gap-5 items-start">
+        {/* Simulation Controls */}
+        <div className="flex-1 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6 w-full">
+          <h3 className="text-[16px] font-bold text-slate-700">{isId ? "Kontrol Simulasi" : "Simulation Controls"}</h3>
+          
+          <div className="space-y-3">
+            <p className="text-[14px] font-semibold text-slate-600">{isId ? "Jenis Wadah" : "Pot Type"} (Jenis Wadah)</p>
+            <div className="flex items-center gap-6">
+              <RadioBtn id="clay" labelEn="Clay Pot" labelId="Tanah Liat" current={potType} onChange={setPotType} />
+              <RadioBtn id="metal" labelEn="Metal Pot" labelId="Logam" current={potType} onChange={setPotType} />
             </div>
           </div>
 
-          {/* Stove */}
-          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-32 h-5 bg-gradient-to-b from-stone-400 to-stone-600 rounded-t-xl shadow-md" />
-
-          {/* Clay/Metal Pot */}
-          <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
-            {potType === "clay" ? (
-              <div className="relative">
-                {/* Clay pot body */}
-                <div className="w-28 h-20 bg-gradient-to-b from-amber-200 via-amber-100 to-orange-100 rounded-b-3xl shadow-lg border border-amber-300 relative overflow-hidden">
-                  {/* Wall thickness visual */}
-                  <div className="absolute inset-1 border border-amber-400/30 rounded-b-3xl" style={{ margin: `${(10 - wallThickness) * 0.5}px` }} />
-                  {/* Heat glow from fire */}
-                  <div className="absolute bottom-0 left-0 right-0 h-3 bg-gradient-to-t from-orange-400/60 to-transparent transition-opacity" style={{ opacity: fireIntensity * 0.8 }} />
-                  {/* Steam */}
-                  {calc.efficiency > 50 && (
-                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex gap-1">
-                      {[1,2,3].map(i => (
-                        <div key={i} className="w-1.5 h-4 bg-gray-300/60 rounded-full animate-bounce" style={{ animationDelay: `${i * 0.4}s`, animationDuration: `${1 + i * 0.3}s` }} />
-                      ))}
-                    </div>
-                  )}
-                  {/* Food (empal) */}
-                  <div className="absolute top-2 left-1/2 -translate-x-1/2 flex gap-1">
-                    <div className="w-4 h-2 bg-gradient-to-r from-amber-300 to-amber-400 rounded-full shadow-sm" />
-                    <div className="w-3 h-2 bg-gradient-to-r from-amber-300 to-amber-400 rounded-full shadow-sm" />
-                  </div>
-                  {/* Broth */}
-                  <div className="absolute bottom-0 left-0 right-0 h-5 bg-gradient-to-t from-amber-800/80 to-amber-600/60 rounded-b-2xl" />
-                </div>
-                {/* Clay label */}
-                <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] font-bold text-amber-700 whitespace-nowrap">
-                  🏺 {isId ? "Gentong Tanah Liat" : "Clay Pot"} | {isId ? "Dinding: " : "Wall: "}{wallThickness}
-                </div>
-              </div>
-            ) : (
-              <div className="relative">
-                {/* Metal pot body */}
-                <div className="w-28 h-20 bg-gradient-to-b from-slate-200 via-slate-100 to-gray-200 rounded-b-2xl shadow-lg border border-slate-400 relative overflow-hidden">
-                  {/* Shine */}
-                  <div className="absolute top-1 left-2 w-4 h-12 bg-white/40 rounded-r-full" />
-                  {/* Heat escaping */}
-                  <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-red-400/40 to-transparent" />
-                  {calc.efficiency < 50 && (
-                    <div className="absolute -top-5 left-1/2 -translate-x-1/2 flex gap-1">
-                      {[1,2].map(i => (
-                        <div key={i} className="w-1 h-3 bg-red-300/50 rounded-full animate-ping" style={{ animationDelay: `${i * 0.3}s` }} />
-                      ))}
-                    </div>
-                  )}
-                  {/* Broth */}
-                  <div className="absolute bottom-0 left-0 right-0 h-5 bg-gradient-to-t from-amber-800/80 to-amber-600/60 rounded-b-xl" />
-                </div>
-                {/* Metal label */}
-                <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] font-bold text-slate-600 whitespace-nowrap">
-                  🍳 {isId ? "Panci Logam Tipis" : "Thin Metal Pot"} | {isId ? "Dinding: " : "Wall: "}{wallThickness}
-                </div>
-              </div>
-            )}
+          <div className="space-y-5">
+            <CustomSlider
+              labelEn="Thickness of Pot Wall" labelId="Ketebalan Dinding" 
+              value={wallThickness} min={1} max={10} unit="cm" onChange={setWallThickness}
+            />
+            <CustomSlider
+              labelEn="Heat Input" labelId="Besar Panas" 
+              value={heatInput} min={0} max={100} unit="%" onChange={setHeatInput}
+            />
+            <CustomSlider
+              labelEn="Water / Broth Volume" labelId="Volume Air-Kaldu" 
+              value={waterVolume} min={1} max={10} unit="L" onChange={setWaterVolume}
+            />
           </div>
 
-          {/* Thermometer on side */}
-          <div className="absolute right-3 bottom-12 flex flex-col items-center">
-            <div className="relative w-5 h-16 bg-gradient-to-b from-slate-100 to-slate-200 rounded-full border border-slate-300 overflow-hidden">
-              <div
-                className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-red-400 to-red-300 transition-all duration-700"
-                style={{ height: `${Math.min(100, animTemp)}%` }}
-              />
-              <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-4 h-4 bg-red-400 rounded-full border border-red-500" />
-            </div>
-            <span className="text-[9px] font-bold text-red-500 mt-0.5">{Math.round(animTemp)}%</span>
-            <span className="text-[8px] text-muted-foreground">{isId ? "Panas" : "Heat"}</span>
-          </div>
-
-          {/* Energy gauge */}
-          <div className="absolute top-3 left-3">
-            <GaugeChart value={Math.round(calc.efficiency)} label={isId ? "Efisiensi" : "Efficiency"} color="#10b981" size={60} />
-          </div>
-
-          {/* Heat input indicator */}
-          <div className="absolute top-3 right-3 flex flex-col items-center">
-            <div className="text-[9px] font-bold text-orange-500 mb-1">{isId ? "Panas Masuk" : "Heat In"}</div>
-            <div className="w-6 h-6 rounded-full border-2 border-orange-400 flex items-center justify-center">
-              <div className="w-4 h-4 rounded-full bg-orange-400 animate-pulse" style={{ opacity: fireIntensity }} />
-            </div>
+          <div className="flex items-center gap-8 pt-2">
+            <button onClick={handleRecord} className="px-6 py-2.5 bg-[#1a2333] hover:bg-slate-800 text-white font-bold text-[14px] rounded-lg transition-all shadow-sm">
+              {isId ? "Catat Data" : "Record Data"} ({isId ? "Catat Data" : "Record Data"})
+            </button>
+            <button onClick={handleClear} className="text-slate-500 hover:text-slate-800 font-bold text-[14px] transition-colors">
+              {isId ? "Hapus Data" : "Clear Data"} ({isId ? "Hapus Data" : "Clear Data"})
+            </button>
           </div>
         </div>
-      </SimCard>
 
-      {/* Controls */}
-      <SimCard className="p-4 space-y-3">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-2">{isId ? "Kontrol Simulasi" : "Simulation Controls"}</p>
-        <div className="flex gap-2">
-          <button onClick={() => setPotType("clay")}
-            className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all ${potType === "clay" ? "border-amber-500 bg-amber-50 text-amber-700" : "border-border/40 bg-white text-muted-foreground"}`}>
-            🏺 {isId ? "Tanah Liat" : "Clay"}
-          </button>
-          <button onClick={() => setPotType("metal")}
-            className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all ${potType === "metal" ? "border-slate-500 bg-slate-50 text-slate-700" : "border-border/40 bg-white text-muted-foreground"}`}>
-            🍳 {isId ? "Logam" : "Metal"}
-          </button>
+        {/* Visual Pot Scene */}
+        <div className="w-full lg:w-[320px] bg-white rounded-2xl border border-slate-200 shadow-sm p-4 h-[380px] flex flex-col items-center justify-center relative overflow-hidden">
+          <svg viewBox="0 0 200 240" className="w-full h-full drop-shadow-xl" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="potGradIn" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#451a03"/>
+                <stop offset="100%" stopColor="#78350f"/>
+              </linearGradient>
+              <linearGradient id="potGradOut" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={potType==='clay'?"#92400e":"#64748b"}/>
+                <stop offset="100%" stopColor={potType==='clay'?"#78350f":"#334155"}/>
+              </linearGradient>
+              <radialGradient id="fireGrad">
+                <stop offset="0%" stopColor="#fde047"/>
+                <stop offset="30%" stopColor="#f97316"/>
+                <stop offset="100%" stopColor="#ef4444" stopOpacity="0"/>
+              </radialGradient>
+            </defs>
+
+            {/* Labels and Lines */}
+            <g className="text-[7px] font-bold fill-slate-500" style={{ pointerEvents: 'none' }}>
+              <line x1="140" y1="50" x2="110" y2="70" stroke="#cbd5e1" strokeWidth="0.5" />
+              <text x="145" y="48">{isId?"Ruang masak":"Inner cooking space"}</text>
+              <text x="145" y="55">{isId?"dalam":"space"}</text>
+
+              <line x1="140" y1="120" x2="122" y2="120" stroke="#cbd5e1" strokeWidth="0.5" />
+              <text x="145" y="122">{potType==='clay'?(isId?"Dinding tanah liat":"Clay wall"):(isId?"Dinding logam":"Metal wall")}</text>
+
+              <line x1="150" y1="170" x2="120" y2="188" stroke="#cbd5e1" strokeWidth="0.5" />
+              <text x="155" y="172">{isId?"Dudukan":"Stand"}</text>
+
+              <line x1="50" y1="190" x2="65" y2="210" stroke="#cbd5e1" strokeWidth="0.5" />
+              <text x="25" y="185">{isId?"Sumber api /":"Fire / heat"}</text>
+              <text x="25" y="193">{isId?"panas":"source"}</text>
+            </g>
+            
+            {/* Stand */}
+            <path d="M60 185 L140 185 L150 215 M50 215 L60 185" stroke="#38bdf8" strokeWidth="5" fill="none" strokeLinecap="round" />
+
+            {/* Fire */}
+            <circle cx="100" cy="215" r={20 + heatInput/5} fill="url(#fireGrad)" className="animate-pulse" />
+            <circle cx="100" cy="215" r={10 + heatInput/10} fill="#f97316" />
+            <circle cx="100" cy="215" r={5 + heatInput/20} fill="#fef08a" />
+
+            {/* Pot Visualization (Cut-out) */}
+            <g transform="translate(100, 115)">
+              {/* External body */}
+              <path d="M-60,-40 A60,50 0 0,0 60,-40 L60,40 A60,50 0 0,1 -60,40 Z" fill="url(#potGradOut)" />
+              {/* Cut opening */}
+              <ellipse cx="0" cy="0" rx="50" ry="35" fill="url(#potGradIn)" stroke="#334155" strokeWidth="1" />
+              <path d="M-50,0 A50,35 0 0,0 50,0" fill="#2d1305" opacity="0.4" />
+              {/* Rim */}
+              <ellipse cx="0" cy="-45" rx="55" ry="12" fill="url(#potGradOut)" stroke="#334155" strokeWidth="0.5" />
+              <circle cx="0" cy="-60" r="8" fill="url(#potGradOut)" />
+            </g>
+
+            {/* Temperature numeric indicator */}
+            <rect x="170" y="210" width="25" height="20" rx="4" fill="#f8fafc" stroke="#e2e8f0" strokeWidth="0.5" />
+            <text x="182.5" y="223" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#64748b">100</text>
+          </svg>
         </div>
-        <SliderRow label={isId ? "Ketebalan Dinding" : "Wall Thickness"} value={wallThickness} min={1} max={10} color="#92400e" onChange={setWallThickness} />
-        <SliderRow label={isId ? "Besar Panas" : "Heat Input"} value={heatInput} min={20} max={100} unit="" color="#ef4444" onChange={setHeatInput} />
-        <SliderRow label={isId ? "Volume Air" : "Water Volume"} value={waterVolume} min={1} max={10} color="#3b82f6" onChange={setWaterVolume} />
-        <button onClick={handleRun} className="w-full mt-1 py-2.5 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="2" y="14" width="20" height="8" rx="2" fill="white"/><rect x="4" y="18" width="4" height="4" rx="1" fill="#6366f1"/><rect x="10" y="15" width="4" height="7" rx="1" fill="#6366f1"/><rect x="16" y="11" width="4" height="11" rx="1" fill="#6366f1"/><path d="M5 12l4-4 4 2 6-6" stroke="#4338ca" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Simpan Data" : "Record Data"}
-        </button>
-      </SimCard>
+      </div>
 
-      {/* Live Metrics */}
-      <div className="grid grid-cols-3 gap-2">
-        <StatCard label={isId ? "Retensi Panas" : "Heat Retention"} value={Math.round(calc.retention)} sub={calc.retLabel} bg="bg-white" />
-        <StatCard label={isId ? "Efisiensi Energi" : "Energy Efficiency"} value={Math.round(calc.efficiency)} sub={calc.effLabel} bg="bg-white" />
-        <StatCard label={isId ? "Waktu Masak" : "Cook Time"} value={calc.timeLabel} sub={calc.envLabel} bg="bg-white" />
+      {/* Stats/History Table (Optional placeholder to match image context) */}
+      <div className="grid grid-cols-4 gap-4">
+        <StatCard label={isId ? "Retensi Panas" : "Heat Retention"} value={Math.round(calc.retention)} sub={calc.retention > 60 ? "High" : "Medium"} bg="bg-white" />
+        <StatCard label={isId ? "Efisiensi Energi" : "Energy Efficiency"} value={Math.round(calc.efficiency)} sub={calc.efficiency > 60 ? "High" : "Medium"} bg="bg-white" />
+        <StatCard label={isId ? "Kehilangan Panas" : "Heat Loss"} value={Math.round(calc.heatLoss)} sub={calc.heatLoss < 30 ? "Low" : "High"} bg="bg-white" />
+        <div className="bg-white border border-slate-200 rounded-2xl p-4 flex flex-col items-center justify-center">
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{isId ? "Catatan Terakhir" : "Last Record"}</p>
+          <p className="text-[18px] font-black text-slate-700">{runs.length}</p>
+        </div>
       </div>
     </div>
   );
