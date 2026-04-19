@@ -7,22 +7,21 @@ interface Unit7PisaProps {
   onExit?: () => void;
 }
 
-const STEP_LABELS_EN = ["Introduction", "Question 1", "Question 2", "Question 3", "Question 4", "Question 5"];
-const STEP_LABELS_ID = ["Pendahuluan", "Soal 1", "Soal 2", "Soal 3", "Soal 4", "Soal 5"];
+const STEP_LABELS_EN = ["Overview", "Assignment 1", "Analysis 2", "Exploration 3", "Synthesis 4", "Valuation 5"];
+const STEP_LABELS_ID = ["Gambaran", "Tugas 1", "Analisis 2", "Eksplorasi 3", "Sintesis 4", "Evaluasi 5"];
 
-// Draggable item text for Matching
 const MATCH_DRAGGABLES = [
-  { id: "effect_fish", en: "Reduces fish population", idText: "Mengurangi populasi ikan" },
-  { id: "effect_overfish", en: "Reduces overfishing behavior", idText: "Mengurangi perilaku penangkapan berlebih" },
-  { id: "effect_water", en: "Improves water quality", idText: "Meningkatkan kualitas air" },
-  { id: "effect_biodiv", en: "Increases marine biodiversity", idText: "Meningkatkan keanekaragaman hati laut" },
+  { id: "effect_fish", en: "Reduces fish population", idText: "Mengurangi populasi ikan", icon: "🐟" },
+  { id: "effect_overfish", en: "Reduces overfishing behavior", idText: "Mengurangi pemancingan berlebih", icon: "🎣" },
+  { id: "effect_water", en: "Improves water quality", idText: "Meningkatkan kualitas air", icon: "💧" },
+  { id: "effect_biodiv", en: "Increases marine biodiversity", idText: "Meningkatkan biodiversitas laut", icon: "🐚" },
 ];
 
 const FACTORS = [
-  { id: "factor_fish", en: "High fishing intensity", idText: "Intensitas penangkapan ikan tinggi" },
-  { id: "factor_aware", en: "High community awareness", idText: "Kesadaran masyarakat tinggi" },
-  { id: "factor_waste", en: "Good waste management", idText: "Pengelolaan limbah yang baik" },
-  { id: "factor_cons", en: "Strong conservation", idText: "Upaya konservasi yang kuat" },
+  { id: "factor_fish", en: "High fishing intensity", idText: "Intensitas pancing tinggi", color: "from-rose-500 to-red-600" },
+  { id: "factor_aware", en: "High community awareness", idText: "Kesadaran masyarakat tinggi", color: "from-emerald-500 to-teal-600" },
+  { id: "factor_waste", en: "Good waste management", idText: "Pengelolaan limbah baik", color: "from-blue-500 to-indigo-600" },
+  { id: "factor_cons", en: "Strong conservation", idText: "Konservasi yang kuat", color: "from-violet-500 to-purple-600" },
 ];
 
 const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
@@ -31,13 +30,12 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
 
   const [currentStep, setCurrentStep] = useState(0);
 
-  // Simulation Controls — Qualitative
+  // Simulation Controls
   const [fishingIntensity, setFishingIntensity] = useState("Medium");
   const [awareness, setAwareness] = useState("Medium");
   const [waste, setWaste] = useState("Moderate");
   const [conservation, setConservation] = useState("Partial");
 
-  // Output State (Updated on "Run Simulation")
   const [outputs, setOutputs] = useState({
     fish: "Medium",
     biodiversity: "Medium",
@@ -45,11 +43,12 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
     sustainability: "Medium",
   });
 
+  const [isRunning, setIsRunning] = useState(false);
   const [history, setHistory] = useState<Record<string, any>[]>([]);
   const [showWritingGuide, setShowWritingGuide] = useState(false);
 
   // Responses
-  const [matches, setMatches] = useState<Record<string, string>>({}); // factorId -> itemText
+  const [matches, setMatches] = useState<Record<string, string>>({});
   const [q2Choice, setQ2Choice] = useState("");
   const [q3Choice, setQ3Choice] = useState("");
   const [q3Explanation, setQ3Explanation] = useState("");
@@ -58,46 +57,46 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
   const [q5Choice, setQ5Choice] = useState("");
   const [q5Explanation, setQ5Explanation] = useState("");
 
-  const [isDragging, setIsDragging] = useState(false);
-
-  // Logic: Calculate simulation outputs
   const calculateResult = () => {
-    let fish = "Medium";
-    let biodivers = "Medium";
-    let water = "Medium";
+    setIsRunning(true);
+    setTimeout(() => {
+      let fish = "Medium";
+      let biodivers = "Medium";
+      let water = "Medium";
 
-    if (fishingIntensity === "High") {
-      fish = "Low";
-      biodivers = "Low";
-    } else if (fishingIntensity === "Low") {
-      fish = "High";
-    }
+      if (fishingIntensity === "High") {
+        fish = "Low";
+        biodivers = "Low";
+      } else if (fishingIntensity === "Low") {
+        fish = "High";
+      }
 
-    if (conservation === "Full") {
-      biodivers = "High";
-      if (fishingIntensity !== "High") fish = "High";
-    } else if (conservation === "None") {
-      biodivers = "Low";
-    }
+      if (conservation === "Full") {
+        biodivers = "High";
+        if (fishingIntensity !== "High") fish = "High";
+      } else if (conservation === "None") {
+        biodivers = "Low";
+      }
 
-    if (waste === "Good") {
-      water = "High";
-    } else if (waste === "Poor") {
-      water = "Low";
-    }
+      if (waste === "Good") {
+        water = "High";
+      } else if (waste === "Poor") {
+        water = "Low";
+      }
 
-    const scoreMap: Record<string, number> = { "High": 3, "Medium": 2, "Moderate": 2, "Partial": 2, "Low": 1, "Poor": 1, "None": 1, "Full": 3, "Good": 3 };
-    const avg = (scoreMap[fish] + scoreMap[biodivers] + scoreMap[water]) / 3;
-    let sustain = "Medium";
-    if (avg >= 2.6) sustain = "High";
-    if (avg <= 1.4) sustain = "Low";
+      const scoreMap: Record<string, number> = { "High": 3, "Medium": 2, "Moderate": 2, "Partial": 2, "Low": 1, "Poor": 1, "None": 1, "Full": 3, "Good": 3 };
+      const avg = (scoreMap[fish] + scoreMap[biodivers] + scoreMap[water]) / 3;
+      let sustain = "Medium";
+      if (avg >= 2.6) sustain = "High";
+      if (avg <= 1.4) sustain = "Low";
 
-    setOutputs({ fish, biodiversity: biodivers, water, sustainability: sustain });
+      setOutputs({ fish, biodiversity: biodivers, water, sustainability: sustain });
+      setIsRunning(false);
+    }, 800);
   };
 
   const handleRecordData = () => {
     setHistory(prev => [
-      ...prev,
       {
         id: prev.length + 1,
         fishing: fishingIntensity,
@@ -109,60 +108,57 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
         biodiversity: outputs.biodiversity,
         sustain: outputs.sustainability,
       },
+      ...prev,
     ]);
-  };
-
-  const handleClearData = () => setHistory([]);
-
-  // Drag and Drop helpers
-  const onDragStart = (e: React.DragEvent, text: string) => {
-    e.dataTransfer.setData("text/plain", text);
-    e.dataTransfer.dropEffect = "move";
-    setIsDragging(true);
   };
 
   const handleDrop = (factorId: string, itemText: string) => {
     setMatches(prev => ({ ...prev, [factorId]: itemText }));
-    setIsDragging(false);
-  };
-
-  const resetMatches = () => setMatches({});
-
-  const getWordCount = (text: string) => {
-    if (!text) return 0;
-    return text.trim().split(/\s+/).filter(w => w.length > 0).length;
-  };
-
-  const statusColor = (status: string) => {
-    if (status === "High" || status === "Strong" || status === "Good" || status === "Full") return "bg-emerald-50 text-emerald-700 border-emerald-200";
-    if (status === "Medium" || status === "Moderate" || status === "Partial") return "bg-amber-50 text-amber-700 border-amber-200";
-    return "bg-rose-50 text-rose-700 border-rose-200";
   };
 
   const stepLabels = isId ? STEP_LABELS_ID : STEP_LABELS_EN;
 
+  const headerGradient = "from-slate-900 to-slate-800";
+  const leftPanelGradient = "from-indigo-50/50 via-white to-sky-50/50";
+
   return (
-    <div className="flex flex-col h-screen bg-[#f3f6f9] text-slate-900 font-sans overflow-hidden">
-      {/* ── MAIN NAVIGATION HEADER ── */}
-      <header className="h-10 bg-[#34495e] flex items-center justify-between px-4 shrink-0 z-20 text-white">
-        <div className="flex items-center gap-4">
-           <span className="text-[11px] font-bold uppercase tracking-widest">{isId ? "UNIT 7: NADRAN" : "UNIT 7: NADRAN"}</span>
-           <div className="flex items-center gap-1 ml-4">
-              {[1, 2, 3, 4, 5].map(s => (
-                <div key={s} className={`w-6 h-1 rounded-full ${currentStep >= s ? "bg-white" : "bg-white/20"}`} />
-              ))}
+    <div className="flex flex-col h-screen bg-[#0f172a] text-slate-200 font-sans overflow-hidden">
+      {/* ── PREMIUM NAVIGATION HEADER ── */}
+      <header className={`h-16 bg-gradient-to-r ${headerGradient} flex items-center justify-between px-8 shrink-0 z-30 border-b border-white/5 shadow-2xl backdrop-blur-xl bg-opacity-80`}>
+        <div className="flex items-center gap-10">
+           <div className="flex items-center gap-4 group cursor-pointer">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-black text-white shadow-lg group-hover:scale-110 transition-transform">7</div>
+              <div className="flex flex-col">
+                 <span className="text-[14px] font-black tracking-widest text-white">{isId ? "NADRAN ECO-SIM" : "NADRAN ECO-SIM"}</span>
+                 <span className="text-[9px] font-bold text-indigo-300 uppercase tracking-[0.2em]">{isId ? "Pusat Literasi Kelautan" : "Marine Literacy Hub"}</span>
+              </div>
            </div>
+           
+           <div className="h-8 w-px bg-white/10" />
+
+           <nav className="flex items-center gap-1.5">
+              {[1, 2, 3, 4, 5].map(s => (
+                <div key={s} className="group relative flex flex-col items-center">
+                  <div className={`w-10 h-1.5 rounded-full transition-all duration-500 ${currentStep >= s ? "bg-gradient-to-r from-indigo-400 to-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]" : "bg-white/10"}`} />
+                  <span className={`text-[8px] mt-1 font-black uppercase tracking-widest transition-colors ${currentStep >= s ? "text-cyan-400" : "text-white/20"}`}>{s}</span>
+                </div>
+              ))}
+           </nav>
         </div>
-        <div className="flex items-center gap-4">
-            <span className="text-[9px] font-bold uppercase tracking-widest opacity-70">{stepLabels[currentStep]}</span>
+
+        <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full border border-white/10">
+               <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+               <span className="text-[10px] font-bold uppercase tracking-widest text-slate-300">{stepLabels[currentStep]}</span>
+            </div>
             <button
                onClick={() => {
                  saveCompletedSession(7, { matches, q2Choice, q3Choice, q3Explanation, q4Choice, q4Explanation, q5Choice, q5Explanation, history }, 0, 5);
                  onExit?.();
                }}
-               className="text-[9px] font-bold uppercase hover:underline"
+               className="p-2 hover:bg-white/10 rounded-full transition-colors text-slate-400 hover:text-white"
             >
-              {isId ? "KELUAR" : "EXIT"}
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
         </div>
       </header>
@@ -170,171 +166,122 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
       {/* ── MAIN CONTENT AREA ── */}
       <main className="flex-1 flex overflow-hidden">
         
-        {/* ── LEFT COLUMN: Questions ── */}
-        <div className="w-[42%] bg-white border-r border-slate-200 flex flex-col overflow-hidden">
-          {/* Sub Header for Question Area */}
-          <div className="h-12 bg-[#7fa1c3] flex items-center px-6 shrink-0 text-white">
-             <div className="flex flex-col">
-                <span className="text-[13px] font-bold leading-tight">{isId ? "Nadran dan Perikanan Berkelanjutan" : "Nadran and Sustainable Fishing"}</span>
-                <span className="text-[9px] font-bold uppercase opacity-80">{isId ? `Pertanyaan ${currentStep} / 5` : `Question ${currentStep} / 5`}</span>
-             </div>
+        {/* ── LEFT COLUMN: Interactive Learning ── */}
+        <div className={`w-[40%] bg-gradient-to-b ${leftPanelGradient} flex flex-col overflow-hidden relative border-r border-slate-200/50 shadow-inner`}>
+          {/* Banner */}
+          <div className="h-16 flex items-center px-10 shrink-0 bg-white/80 backdrop-blur-xl border-b border-slate-200/50 justify-between">
+             <h2 className="text-[14px] font-black text-slate-800 uppercase tracking-tighter">{isId ? "Modul Interaktif" : "Interactive Module"}</h2>
+             <div className="px-3 py-1 bg-indigo-100 rounded-full text-[10px] font-black text-indigo-600 uppercase">Phase {currentStep}</div>
           </div>
 
-          <div className="p-6 overflow-y-auto h-full flex flex-col exam-scrollbar bg-slate-50/50">
+          <div className="p-10 overflow-y-auto h-full flex flex-col exam-scrollbar relative z-10">
             
             {currentStep === 0 && (
-              <div className="space-y-4">
-                <h1 className="text-xl font-bold text-slate-800">{isId ? "Ritual Nadran di Cirebon" : "Nadran Ritual in Cirebon"}</h1>
-                <div className="text-[13px] leading-relaxed text-slate-700 space-y-3">
-                  <p>
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-700">
+                <div className="space-y-4">
+                  <h1 className="text-4xl font-black text-slate-900 leading-[1.1] tracking-tighter italic">
+                    {isId ? "Misteri Laut Cirebon: Ritual Nadran" : "Cirebon Marine Mystery: The Nadran Ritual"}
+                  </h1>
+                  <p className="text-[15px] leading-relaxed text-slate-600 font-medium">
                     {isId 
-                      ? "Nadran adalah upacara tradisional masyarakat nelayan Cirebon sebagai wujud syukur atas hasil laut. Tradisi ini melibatkan partisipasi kolektif dan mencerminkan hubungan budaya yang erat antara nelayan dan laut."
-                      : "Nadran is a traditional ceremony of the Cirebon fishing community as a form of gratitude for sea products. It involves collective participation and reflects the close cultural relationship between fishermen and the sea."}
+                      ? "Jelajahi bagaimana tradisi kuno nelayan Cirebon tidak hanya menjadi wujud syukur, tapi juga kunci keberlanjutan masa depan kita."
+                      : "Explore how ancient Cirebon traditions are not just expressions of gratitude, but the key to our sustainable future."}
                   </p>
                 </div>
-                <div className="aspect-video rounded-xl bg-slate-900 overflow-hidden border border-slate-200 relative group">
-                   <div className="w-full h-full flex items-center justify-center text-white text-xs font-bold uppercase tracking-widest opacity-50 bg-gradient-to-br from-slate-800 to-slate-950">
-                     UNIT VIDEO
-                   </div>
-                </div>
-                <button onClick={() => setCurrentStep(1)} className="w-full py-3 bg-sky-600 text-white font-bold rounded-xl shadow-lg hover:bg-sky-700 transition-all uppercase tracking-widest text-xs mt-4">
-                  {isId ? "MULAI UNIT" : "START UNIT"}
+                
+                <button onClick={() => setCurrentStep(1)} className="group relative w-full py-5 bg-slate-900 text-white font-black rounded-3xl shadow-2xl overflow-hidden active:scale-[0.98] transition-all">
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <span className="relative z-10 text-xs tracking-[0.4em] uppercase">{isId ? "MULAI EKSPEDISI" : "START EXPEDITION"}</span>
                 </button>
               </div>
             )}
 
             {currentStep === 1 && (
-              <div className="space-y-6">
-                <p className="text-[13px] font-medium text-slate-700 leading-relaxed italic border-l-4 border-sky-300 pl-4">
-                  {isId 
-                    ? "Gunakan drag and drop untuk memasangkan setiap faktor dengan dampak utamanya."
-                    : "Use drag and drop to match each factor with its main effect."}
-                </p>
+              <div className="space-y-8 animate-in fade-in slide-in-from-right-10 duration-700">
+                <div className="p-6 bg-indigo-600 rounded-3xl shadow-xl shadow-indigo-200 text-white relative overflow-hidden">
+                   <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-3xl" />
+                   <p className="text-[14px] font-bold leading-relaxed relative z-10 italic">
+                     {isId 
+                        ? "Pasangkan setiap faktor strategis dengan dampaknya terhadap ekosistem laut kita."
+                        : "Match each strategic factor with its impact on our marine ecosystem."}
+                   </p>
+                </div>
                 
-                <div className="flex gap-4">
-                  {/* Drop Zones Column */}
-                  <div className="flex-1 space-y-3">
-                    {FACTORS.map(f => (
-                      <div key={f.id} className="flex flex-col gap-1.5">
-                        <div className="flex items-center gap-2">
-                           <div className="w-2 h-2 rounded-full bg-sky-400" />
-                           <span className="text-[11px] font-bold text-slate-600 uppercase tracking-tight">{isId ? f.idText : f.en}</span>
-                        </div>
-                        <div 
-                          onDragOver={e => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; }}
-                          onDrop={e => {
-                            e.preventDefault();
-                            const text = e.dataTransfer.getData("text/plain");
-                            handleDrop(f.id, text);
-                          }}
-                          className={`min-h-[48px] border-2 border-dashed rounded-xl flex items-center justify-center transition-all px-3 py-2 ${matches[f.id] ? "border-sky-500 bg-sky-50 shadow-inner" : "border-slate-300 bg-white hover:border-sky-300"}`}
-                        >
-                          {matches[f.id] ? (
-                            <div className="text-center text-[10px] font-bold text-sky-700 leading-tight">
-                              {matches[f.id]}
-                            </div>
-                          ) : (
-                            <span className="text-[9px] uppercase font-bold text-slate-400 opacity-60 italic">{isId ? "Lepas di sini" : "Drop here"}</span>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Draggable Items Column */}
-                  <div className="w-[180px] flex flex-col gap-3 pt-5">
-                    {MATCH_DRAGGABLES.map(item => {
-                      const text = isId ? item.idText : item.en;
-                      const isUsed = Object.values(matches).includes(text);
-                      return (
-                        <div 
-                          key={item.id}
-                          draggable={!isUsed}
-                          onDragStart={e => onDragStart(e, text)}
-                          onDragEnd={() => setIsDragging(false)}
-                          className={`p-3 rounded-xl border shadow-sm text-[10px] font-bold leading-tight cursor-grab active:cursor-grabbing transition-all ${isUsed ? "opacity-20 cursor-not-allowed bg-slate-100 border-slate-200 grayscale" : "bg-white border-slate-300 hover:border-sky-400 hover:shadow-md text-slate-700 active:scale-95"}`}
-                        >
-                          {text}
-                        </div>
-                      );
-                    })}
-                  </div>
+                <div className="space-y-4">
+                  {FACTORS.map(f => (
+                    <div key={f.id} className="group flex flex-col gap-2">
+                       <span className="text-[10px] font-black text-slate-400 px-1 uppercase tracking-widest">{isId ? f.idText : f.en}</span>
+                       <div 
+                         onDragOver={e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }}
+                         onDrop={e => handleDrop(f.id, e.dataTransfer.getData("text/plain"))}
+                         className={`min-h-[56px] border-2 border-dashed rounded-3xl flex items-center justify-between px-6 transition-all duration-300 ${matches[f.id] ? "border-emerald-500 bg-emerald-50/50 shadow-inner" : "border-slate-200 bg-white hover:border-indigo-300 hover:bg-indigo-50/30"}`}
+                       >
+                         {matches[f.id] ? (
+                           <>
+                             <span className="text-[12px] font-black text-emerald-700">{matches[f.id]}</span>
+                             <button onClick={() => handleDrop(f.id, "")} className="w-6 h-6 flex items-center justify-center rounded-full bg-emerald-200/50 text-emerald-600">×</button>
+                           </>
+                         ) : (
+                           <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">{isId ? "Drop Target" : "Drop Target"}</span>
+                         )}
+                       </div>
+                    </div>
+                  ))}
                 </div>
 
-                <div className="flex gap-2 pt-2 border-t border-slate-200">
-                   <button className="flex-1 py-2.5 bg-sky-700 text-white text-[11px] font-bold rounded-lg hover:bg-sky-800 shadow-md transition-all">{isId ? "Check Answer" : "Check Answer"}</button>
-                   <button onClick={resetMatches} className="px-5 py-2.5 border border-slate-300 text-slate-600 text-[11px] font-bold rounded-lg hover:bg-white transition-all">{isId ? "Reset Matches" : "Reset Matches"}</button>
+                <div className="grid grid-cols-2 gap-3 pt-4">
+                  {MATCH_DRAGGABLES.map(item => {
+                    const text = isId ? item.idText : item.en;
+                    const isUsed = Object.values(matches).includes(text);
+                    return (
+                      <div 
+                        key={item.id}
+                        draggable={!isUsed}
+                        onDragStart={e => {
+                          e.dataTransfer.setData("text/plain", text);
+                          e.dataTransfer.dropEffect = "move";
+                        }}
+                        className={`p-4 rounded-2xl border-2 flex items-center gap-3 transition-all duration-300 cursor-grab active:cursor-grabbing hover:scale-105 ${isUsed ? "opacity-10 cursor-not-allowed bg-slate-100 border-slate-200" : "bg-white border-white shadow-xl hover:border-indigo-400 group"}`}
+                      >
+                        <span className="text-lg">{item.icon}</span>
+                        <span className="text-[11px] font-black text-slate-700 leading-tight">{text}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
 
-            {(currentStep === 2 || currentStep === 3 || currentStep === 4 || currentStep === 5) && (
-              <div className="space-y-5">
-                <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                  <p className="text-[13px] font-medium text-slate-800 leading-relaxed">
-                    {currentStep === 2 && (isId ? "Sesuaikan variabel di panel simulasi. Jika intensitas penangkapan tinggi namun kesadaran rendah, apa yang paling langsung menyebabkan penurunan populasi ikan?" : "Adjust the variables in the simulation panel. If fishing intensity is high but awareness is low, what most directly causes the decrease in fish population?")}
-                    {currentStep === 3 && (isId ? "Dalam simulasi, peningkatan kesadaran masyarakat menyebabkan populasi ikan meningkat seiring waktu. Mengapa peningkatan kesadaran masyarakat dapat meningkatkan populasi ikan?" : "In the simulation, increasing community awareness leads to improved fish population over time. Why does increasing community awareness improve fish population?")}
-                    {currentStep === 4 && (isId ? "Gunakan perbandingan di bawah dan data simulasi Anda untuk menjawab. Kesimpulan manakah yang paling baik menjelaskan perbedaan tersebut?" : "Use the comparison below and your simulation data to answer. Which conclusion best explains the difference?")}
-                    {currentStep === 5 && (isId ? "Berdasarkan hasil simulasi dan tradisi Nadran, strategi manakah yang paling efektif untuk meningkatkan keberlanjutan laut?" : "Based on simulation results and Nadran tradition, which strategy would be most effective to improve marine sustainability?")}
+            {(currentStep >= 2) && (
+              <div className="space-y-8 animate-in fade-in duration-700">
+                <div className="bg-white p-8 rounded-[40px] shadow-2xl shadow-indigo-100 border border-slate-100 space-y-4">
+                  <div className="flex gap-2">
+                    <div className="w-1.5 h-6 bg-indigo-500 rounded-full" />
+                    <h3 className="text-xl font-black text-slate-900 tracking-tight italic">
+                      {currentStep === 2 ? (isId ? "Analisis Kritis Populasi" : "Critical Population Analysis") : (isId ? "Kesimpulan Berbasis Data" : "Data-Driven Conclusion")}
+                    </h3>
+                  </div>
+                  <p className="text-[14px] leading-relaxed text-slate-600 font-medium">
+                    {currentStep === 2 && (isId ? "Berdasarkan simulasi, identifikasi faktor yang memiliki dampak paling destruktif jika tidak dikelola dengan baik." : "Based on the simulation, identify the factor that has the most destructive impact if not managed properly.")}
+                    {currentStep === 3 && (isId ? "Jelaskan hubungan korelasi antara kesadaran masyarakat dengan regenerasi populasi ikan." : "Explain the correlation between community awareness and fish population regeneration.")}
+                    {currentStep === 4 && (isId ? "Bandingkan data dari Komunitas A dan Komunitas B. Variabel mana yang menjadi pembeda utama kualitas ekosistem mereka?" : "Compare data from Community A and B. Which variable is the primary differentiator for their ecosystem quality?")}
                   </p>
                 </div>
 
-                {currentStep === 4 && (
-                  <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-                    <table className="w-full text-[10px]">
-                      <thead>
-                        <tr className="bg-slate-50 border-b border-slate-200">
-                          <th className="p-2.5 text-left font-bold text-slate-500 uppercase">{isId ? "Komunitas" : "Community"}</th>
-                          <th className="p-2.5 font-bold text-slate-500 uppercase">{isId ? "Fishing" : "Fishing"}</th>
-                          <th className="p-2.5 font-bold text-slate-500 uppercase">{isId ? "Awareness" : "Awareness"}</th>
-                          <th className="p-2.5 font-bold text-slate-500 uppercase">{isId ? "Result" : "Result"}</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100 italic">
-                        <tr>
-                          <td className="p-2.5 font-bold text-slate-700">A</td>
-                          <td className="p-2.5 text-center text-slate-600 font-medium">{isId ? "Tinggi" : "High"}</td>
-                          <td className="p-2.5 text-center text-slate-600 font-medium">{isId ? "Rendah" : "Low"}</td>
-                          <td className="p-2.5 text-center font-bold text-rose-600">{isId ? "Populasi Turun" : "Fish decline"}</td>
-                        </tr>
-                        <tr>
-                          <td className="p-2.5 font-bold text-slate-700">B</td>
-                          <td className="p-2.5 text-center text-slate-600 font-medium">{isId ? "Sedang" : "Medium"}</td>
-                          <td className="p-2.5 text-center text-slate-600 font-medium">{isId ? "Tinggi" : "High"}</td>
-                          <td className="p-2.5 text-center font-bold text-emerald-600">{isId ? "Populasi Stabil" : "Fish stable"}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-
-                <div className="space-y-2">
+                <div className="grid grid-cols-1 gap-4 pt-4">
                   {[
                     currentStep === 2 ? [
-                      { label: "A", en: "Poor waste management", idText: "Pengelolaan limbah yang buruk" },
-                      { label: "B", en: "High fishing intensity", idText: "Intensitas penangkapan ikan yang tinggi" },
-                      { label: "C", en: "Natural traditions", idText: "Tradisi budaya" },
-                      { label: "D", en: "Sea salt levels", idText: "Kadar garam laut" },
-                    ] : 
-                    currentStep === 3 ? [
-                      { label: "A", en: "It increases reproduction naturally", idText: "Meningkatkan reproduksi secara alami" },
-                      { label: "B", en: "It reduces overfishing behavior", idText: "Mengurangi perilaku penangkapan berlebih" },
-                      { label: "C", en: "It raises water salinity", idText: "Meningkatkan salinitas air" },
-                      { label: "D", en: "It removes marine predators", idText: "Menghilangkan predator laut" },
-                    ] :
-                    currentStep === 4 ? [
-                      { label: "A", en: "Intensity has no effect", idText: "Intensitas tidak berpengaruh" },
-                      { label: "B", en: "Cultural awareness influences behavior", idText: "Kesadaran budaya memengaruhi perilaku" },
-                      { label: "C", en: "Only natural factors control reefs", idText: "Hanya faktor alam yang mengontrol terumbu" },
-                      { label: "D", en: "Traditions cannot affect environment", idText: "Tradisi tidak bisa memengaruhi lingkungan" },
+                      { label: "A", en: "Poor waste management", idText: "Pengelolaan limbah yang buruk", icon: "🗑️" },
+                      { label: "B", en: "High fishing intensity", idText: "Intensitas pancing yang tinggi", icon: "⚡" },
+                      { label: "C", en: "Natural traditions", idText: "Tradisi budaya setempat", icon: "🏺" },
                     ] : [
-                      { label: "A", en: "Increase intensity for short-term production", idText: "Tingkatkan intensitas untuk produksi pendek" },
-                      { label: "B", en: "Promote Nadran via education and conservation", idText: "Promosikan Nadran melalui edukasi & konservasi" },
-                      { label: "C", en: "Focus only on harvesting volume", idText: "Fokus hanya pada volume tangkapan" },
-                      { label: "D", en: "Remove conservation rules", idText: "Hapus aturan konservasi" },
+                      { label: "A", en: "Intensity has no effect", idText: "Intensitas tidak berpengaruh", icon: "❌" },
+                      { label: "B", en: "Cultural awareness influences behavior", idText: "Kesadaran budaya mengubah perilaku", icon: "🧠" },
+                      { label: "C", en: "Only natural factors control reefs", idText: "Hanya faktor alam yang mengontrol", icon: "🌊" },
                     ]
-                  ].flat().map(opt => {
-                    const selected = (currentStep === 2 ? q2Choice : currentStep === 3 ? q3Choice : currentStep === 4 ? q4Choice : q5Choice) === opt.label;
+                  ][0].map(opt => {
+                    const choice = currentStep === 2 ? q2Choice : currentStep === 3 ? q3Choice : q4Choice;
+                    const selected = choice === opt.label;
                     return (
                       <button 
                         key={opt.label}
@@ -342,170 +289,138 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                           if (currentStep === 2) setQ2Choice(opt.label);
                           if (currentStep === 3) setQ3Choice(opt.label);
                           if (currentStep === 4) setQ4Choice(opt.label);
-                          if (currentStep === 5) setQ5Choice(opt.label);
                         }}
-                        className={`w-full flex items-center gap-3 p-3.5 rounded-xl border transition-all text-left ${selected ? "border-sky-500 bg-sky-50 shadow-sm" : "border-slate-200 bg-white hover:border-slate-300"}`}
+                        className={`group w-full flex items-center justify-between p-6 rounded-3xl border-2 transition-all duration-300 transform ${selected ? "border-indigo-500 bg-indigo-500 text-white shadow-2xl scale-[1.02]" : "border-slate-100 bg-white hover:border-indigo-200 hover:shadow-xl text-slate-700"}`}
                       >
-                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${selected ? "border-sky-500 bg-sky-500" : "border-slate-300"}`}>
-                           {selected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                        <div className="flex items-center gap-4">
+                           <span className={`w-8 h-8 rounded-full flex items-center justify-center font-black ${selected ? "bg-white text-indigo-600" : "bg-slate-100 text-slate-400"}`}>{opt.label}</span>
+                           <span className="text-[14px] font-black italic">{isId ? opt.idText : opt.en}</span>
                         </div>
-                        <span className="text-[13px] text-slate-700 font-bold">{opt.label}.</span>
-                        <span className="text-[13px] text-slate-700 font-medium">{isId ? opt.idText : opt.en}</span>
+                        <span className="text-xl group-hover:rotate-12 transition-transform">{opt.icon}</span>
                       </button>
                     );
                   })}
                 </div>
-
-                <div className="flex gap-2 pt-4 border-t border-slate-200">
-                   <button disabled={!(currentStep === 2 ? q2Choice : currentStep === 3 ? q3Choice : currentStep === 4 ? q4Choice : q5Choice)} className="flex-1 py-3 bg-slate-800 text-white text-[11px] font-bold rounded-xl shadow-md disabled:opacity-30">
-                     {isId ? "Kirim Jawaban" : "Check Answer"}
-                   </button>
-                </div>
               </div>
             )}
           </div>
+          
+          {/* Visual fluff for premium look */}
+          <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
+             <div className="w-64 h-64 border-[40px] border-slate-900 rounded-full" />
+          </div>
         </div>
 
-        {/* ── RIGHT COLUMN: Simulation / Explanation Panel ── */}
-        <div className="flex-1 bg-[#f8fafd] flex flex-col overflow-hidden">
-          {/* Sub Header for Side Area */}
-          <div className="h-12 bg-[#5c88b0] flex items-center px-6 shrink-0 text-white">
-             <div className="flex flex-col">
-                <span className="text-[12px] font-bold uppercase tracking-widest">
-                   {(currentStep === 1 || currentStep === 2) ? (isId ? "Marine Sustainability Simulation" : "Marine Sustainability Simulation") : (currentStep === 3 ? (isId ? "Short Scientific Explanation" : "Short Scientific Explanation") : (isId ? "Evidence-Based Reasoning" : "Evidence-Based Reasoning"))}
+        {/* ── RIGHT COLUMN: High-End Dynamic Panel ── */}
+        <div className="flex-1 bg-slate-900 flex flex-col overflow-hidden relative">
+          {/* Header */}
+          <div className="h-16 px-10 flex items-center bg-white/5 backdrop-blur-xl shrink-0 border-b border-white/5">
+             <div className="flex items-center gap-4">
+                <div className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#22d3ee]" />
+                <span className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.3em]">
+                   {(currentStep <= 2) ? (isId ? "Simulasi Kinetik" : "Kinetic Simulation") : (isId ? "Dashboard Riset" : "Research Dashboard")}
                 </span>
              </div>
           </div>
 
-          <div className="p-6 h-full flex flex-col gap-6 overflow-y-auto exam-scrollbar">
+          <div className="p-10 h-full flex flex-col gap-8 overflow-y-auto exam-scrollbar">
             
-            <p className="text-[11px] text-slate-500 font-bold leading-tight uppercase tracking-wider bg-white/50 p-2 rounded border border-slate-200/50">
-                {(currentStep === 1 || currentStep === 2) 
-                  ? (isId ? "Adjust variables, run the simulation, and record your data." : "Adjust variables, run the simulation, and record your data.")
-                  : (isId ? "Explain how culture or awareness can affect marine ecosystems..." : "Explain how culture or awareness can affect marine ecosystems...")}
-            </p>
-
-            {/* Questions 1 & 2: Full Simulation Engine */}
-            {(currentStep === 0 || currentStep === 1 || currentStep === 2) && (
-              <div className="flex flex-col gap-5 animate-in fade-in duration-500">
-                <div className="flex flex-col lg:flex-row gap-6">
-                  {/* Controls */}
-                  <div className="flex-1 p-6 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-4">
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">{isId ? "Controls" : "Controls"}</p>
+            {/* Simulation UI */}
+            {(currentStep <= 2) && (
+              <div className="flex flex-col gap-8">
+                <div className="grid grid-cols-5 gap-6">
+                  {/* Controls Card */}
+                  <div className="col-span-2 p-8 bg-white/5 backdrop-blur-2xl rounded-[40px] border border-white/10 shadow-2xl flex flex-col gap-6 group">
+                    <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] mb-2">{isId ? "Kontrol Variabel" : "Variable Control"}</p>
                     
-                    <div className="space-y-4">
-                      <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold text-slate-800 uppercase tracking-tight">{isId ? "Fishing Intensity" : "Fishing Intensity"}</label>
-                        <select value={fishingIntensity} onChange={e => setFishingIntensity(e.target.value)} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold focus:ring-1 focus:ring-sky-500 outline-none text-slate-700">
-                          <option value="Low">{isId ? "Low" : "Low"}</option>
-                          <option value="Medium">{isId ? "Medium" : "Medium"}</option>
-                          <option value="High">{isId ? "High" : "High"}</option>
-                        </select>
+                    {[
+                      { label: "Intensity", set: setFishingIntensity, val: fishingIntensity, opts: ["Low", "Medium", "High"] },
+                      { label: "Awareness", set: setAwareness, val: awareness, opts: ["Low", "Medium", "High"] },
+                      { label: "Waste", set: setWaste, val: waste, opts: ["Poor", "Moderate", "Good"] },
+                      { label: "Conservation", set: setConservation, val: conservation, opts: ["None", "Partial", "Full"] },
+                    ].map(ctl => (
+                      <div key={ctl.label} className="space-y-2">
+                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">{ctl.label}</label>
+                        <div className="grid grid-cols-3 gap-1 bg-black/40 p-1 rounded-2xl border border-white/5">
+                           {ctl.opts.map(o => (
+                             <button key={o} onClick={() => ctl.set(o)} className={`py-2 text-[9px] font-black uppercase rounded-xl transition-all ${ctl.val === o ? "bg-indigo-500 text-white shadow-lg" : "text-white/30 hover:text-white/60"}`}>
+                                {o}
+                             </button>
+                           ))}
+                        </div>
                       </div>
-                      <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold text-slate-800 uppercase tracking-tight">{isId ? "Community Awareness (influenced by Nadran)" : "Community Awareness (influenced by Nadran)"}</label>
-                        <select value={awareness} onChange={e => setAwareness(e.target.value)} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold focus:ring-1 focus:ring-sky-500 outline-none text-slate-700">
-                          <option value="Low">{isId ? "Low" : "Low"}</option>
-                          <option value="Medium">{isId ? "Medium" : "Medium"}</option>
-                          <option value="High">{isId ? "High" : "High"}</option>
-                        </select>
-                      </div>
-                      <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold text-slate-800 uppercase tracking-tight">{isId ? "Waste Management" : "Waste Management"}</label>
-                        <select value={waste} onChange={e => setWaste(e.target.value)} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold focus:ring-1 focus:ring-sky-500 outline-none text-slate-700">
-                          <option value="Poor">{isId ? "Poor" : "Poor"}</option>
-                          <option value="Moderate">{isId ? "Moderate" : "Moderate"}</option>
-                          <option value="Good">{isId ? "Good" : "Good"}</option>
-                        </select>
-                      </div>
-                      <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold text-slate-800 uppercase tracking-tight">{isId ? "Conservation Effort" : "Conservation Effort"}</label>
-                        <select value={conservation} onChange={e => setConservation(e.target.value)} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold focus:ring-1 focus:ring-sky-500 outline-none text-slate-700">
-                          <option value="None">{isId ? "None" : "None"}</option>
-                          <option value="Partial">{isId ? "Partial" : "Partial"}</option>
-                          <option value="Full">{isId ? "Full" : "Full"}</option>
-                        </select>
-                      </div>
-                    </div>
+                    ))}
 
-                    <div className="flex gap-2 pt-2">
-                       <button onClick={calculateResult} className="flex-1 py-3 bg-sky-600 text-white text-[11px] font-bold rounded-xl shadow-lg hover:bg-sky-700 transition-all uppercase tracking-wider">{isId ? "Run Simulation" : "Run Simulation"}</button>
-                       <button onClick={handleRecordData} className="flex-1 py-3 bg-[#718c00] text-white text-[11px] font-bold rounded-xl shadow-lg hover:opacity-90 transition-all uppercase tracking-wider">{isId ? "Record Data" : "Record Data"}</button>
-                    </div>
-                    <button onClick={handleClearData} className="w-full py-2.5 bg-[#4e5d6c] text-white text-[10px] font-bold rounded-lg hover:bg-slate-700 shadow-sm uppercase tracking-widest">{isId ? "Clear Data" : "Clear Data"}</button>
+                    <button 
+                      onClick={calculateResult} 
+                      disabled={isRunning}
+                      className={`w-full mt-4 py-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-black rounded-3xl shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 ${isRunning ? "opacity-50" : ""}`}
+                    >
+                      {isRunning ? (
+                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      ) : (
+                         <><svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M4.5 3a.5.5 0 00-.5.5v13a.5.5 0 00.74.433l11-6.5a.5.5 0 000-.866l-11-6.5A.5.5 0 004.5 3z"/></svg> RUN SIMULATION</>
+                      )}
+                    </button>
                   </div>
 
-                  {/* Outputs */}
-                  <div className="flex-1 flex flex-col gap-4">
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">{isId ? "Outputs" : "Outputs"}</p>
-                    <div className="grid grid-cols-2 gap-4">
-                      {[
-                        { label: isId ? "Fish Population" : "Fish Population", val: outputs.fish },
-                        { label: isId ? "Marine Biodiversity" : "Marine Biodiversity", val: outputs.biodiversity },
-                        { label: isId ? "Water Quality" : "Water Quality", val: outputs.water },
-                        { label: isId ? "Sustainability Score" : "Sustainability Score", val: outputs.sustainability },
-                      ].map(out => (
-                        <div key={out.label} className={`p-4 rounded-2xl border flex flex-col items-center justify-center text-center gap-1 transition-all shadow-sm bg-white border-slate-200`}>
-                          <span className="text-[8px] font-bold uppercase text-slate-400 leading-tight">{out.label}</span>
-                          <span className={`text-lg font-black italic ${out.val === 'Low' || out.val === 'Poor' ? 'text-rose-600' : out.val === 'High' || out.val === 'Good' ? 'text-emerald-600' : 'text-amber-600'}`}>
-                             {out.val}
-                          </span>
+                  {/* Stat Bento Grid */}
+                  <div className="col-span-3 grid grid-cols-2 gap-4">
+                     {[
+                        { l: isId ? "Populasi Ikan" : "Fish Pop.", v: outputs.fish, c: "cyan", i: "🐟" },
+                        { l: isId ? "Keanekaragaman" : "Biodiversity", v: outputs.biodiversity, c: "fuchsia", i: "🐚" },
+                        { l: isId ? "Kualitas Air" : "Water Quality", v: outputs.water, c: "blue", i: "💧" },
+                        { l: isId ? "Keberlanjutan" : "Sustainability", v: outputs.sustainability, c: "emerald", i: "♻️" },
+                     ].map(out => (
+                        <div key={out.l} className="group relative p-8 bg-white/5 backdrop-blur-3xl rounded-[40px] border border-white/5 shadow-2xl flex flex-col justify-between hover:bg-white/10 transition-all overflow-hidden">
+                           <div className={`absolute -top-10 -right-10 w-32 h-32 bg-${out.c}-500 opacity-5 blur-3xl group-hover:opacity-10 transition-opacity`} />
+                           <div className="flex justify-between items-start">
+                              <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">{out.l}</span>
+                              <span className="text-2xl">{out.i}</span>
+                           </div>
+                           <div className="mt-4">
+                              <span className={`text-2xl font-black italic tracking-tighter ${out.v === 'Low' || out.v === 'Poor' ? 'text-rose-400' : 'text-cyan-400'}`}>{out.v}</span>
+                           </div>
                         </div>
-                      ))}
-                    </div>
-                    <div className="flex-1 bg-white rounded-2xl border border-slate-200 p-4 border-dashed flex items-center justify-center">
-                      <p className="text-[10px] text-slate-400 text-center italic leading-relaxed">{isId ? "Tip: compare runs by changing one variable at a time. Then press Record Data." : "Tip: compare runs by changing one variable at a time. Then press Record Data."}</p>
-                    </div>
+                     ))}
+                     
+                     {/* Floating Record Button */}
+                     <button onClick={handleRecordData} className="col-span-2 py-5 bg-white/5 border border-white/10 rounded-3xl text-[11px] font-black text-white hover:bg-emerald-500/20 hover:border-emerald-500/50 transition-all uppercase tracking-widest active:scale-95 italic">
+                        + Save Metrics to History
+                     </button>
                   </div>
                 </div>
 
-                {/* Recorded Data Table below simulation */}
-                <div className="flex flex-col gap-3 min-h-[140px]">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">{isId ? "Recorded Data" : "Recorded Data"}</p>
-                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden overflow-y-auto exam-scrollbar">
-                    <table className="w-full text-[10px] text-slate-900">
-                      <thead>
-                        <tr className="bg-slate-50 border-b border-slate-200 text-slate-500">
-                          <th className="p-2.5 text-left font-bold uppercase truncate">#</th>
-                          <th className="p-2.5 text-left font-bold uppercase truncate">{isId ? "Fishing" : "Fishing"}</th>
-                          <th className="p-2.5 text-left font-bold uppercase truncate">{isId ? "Awareness" : "Awareness"}</th>
-                          <th className="p-2.5 text-left font-bold uppercase truncate">{isId ? "Waste" : "Waste"}</th>
-                          <th className="p-2.5 text-left font-bold uppercase truncate">{isId ? "Conservation" : "Conserv."}</th>
-                          <th className="p-2.5 text-left font-bold uppercase truncate">{isId ? "Fish Pop." : "Fish Pop."}</th>
-                          <th className="p-2.5 text-left font-bold uppercase truncate">{isId ? "Biodiversity" : "Biodiv."}</th>
-                          <th className="p-2.5 text-left font-bold uppercase truncate">{isId ? "Water Quality" : "Water"}</th>
-                          <th className="p-2.5 text-left font-bold uppercase truncate">{isId ? "Sustainability" : "Sustain."}</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {history.length === 0 ? (
-                           <tr>
-                             <td colSpan={9} className="p-6 text-center text-slate-400 italic font-medium">{isId ? "No data recorded yet." : "No data recorded yet."}</td>
-                           </tr>
-                        ) : history.map((row, i) => (
-                          <tr key={row.id}>
-                            <td className="p-2.5 text-slate-400 font-bold">{row.id}</td>
-                            <td className="p-2.5 text-slate-600 font-semibold">{row.fishing}</td>
-                            <td className="p-2.5 text-slate-600 font-semibold">{row.awareness}</td>
-                            <td className="p-2.5 text-slate-600 font-semibold">{row.waste}</td>
-                            <td className="p-2.5 text-slate-600 font-semibold">{row.conservation}</td>
-                            <td className="p-2.5 font-bold text-slate-700">{row.fish}</td>
-                            <td className="p-2.5 font-bold text-slate-700">{row.biodiversity}</td>
-                            <td className="p-2.5 font-bold text-slate-700">{row.water}</td>
-                            <td className="p-2.5 font-bold text-slate-700 uppercase">{row.sustain}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                {/* Aesthetic Visualizer */}
+                <div className="relative w-full h-48 bg-black/40 rounded-[40px] border border-white/5 overflow-hidden group shadow-inner">
+                   <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+                   <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-indigo-500/10 to-transparent" />
+                   
+                   {/* Abstract waves */}
+                   <div className="absolute inset-0 flex items-center justify-center opacity-40">
+                      <div className={`flex gap-4 ${isRunning ? "animate-pulse" : ""}`}>
+                         {[...Array(20)].map((_, i) => (
+                           <div key={i} className="w-1.5 rounded-full bg-gradient-to-t from-indigo-500 to-cyan-400 transition-all duration-700" style={{ height: `${20 + Math.random() * 60}px`, opacity: isRunning ? 1 : 0.3 }} />
+                         ))}
+                      </div>
+                   </div>
+                   
+                   <div className="absolute top-6 left-8 flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+                      <span className="text-[9px] font-black text-cyan-400 uppercase tracking-[0.4em]">Live Scene Monitor</span>
+                   </div>
                 </div>
               </div>
             )}
 
-            {/* Questions 3, 4, 5: Explanation UI */}
-            {(currentStep === 3 || currentStep === 4 || currentStep === 5) && (
-              <div className="flex-1 flex flex-col gap-5 min-h-0 animate-in slide-in-from-right-4 duration-500">
-                <div className="flex-1 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col gap-4">
+            {/* Dashboard UI for synthesis */}
+            {(currentStep > 2) && (
+              <div className="flex flex-col gap-6 animate-in zoom-in-95 duration-700">
+                <div className="bg-white/5 backdrop-blur-3xl rounded-[40px] border border-white/10 p-10 space-y-6">
+                  <div className="flex flex-col gap-1">
+                     <span className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.4em]">Synthesis Workspace</span>
+                     <h4 className="text-2xl font-black text-white">{isId ? "Tuliskan Analisis Anda" : "Compile Your Findings"}</h4>
+                  </div>
                   <textarea
                     value={currentStep === 3 ? q3Explanation : currentStep === 4 ? q4Explanation : q5Explanation}
                     onChange={e => {
@@ -513,58 +428,44 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                       if (currentStep === 4) setQ4Explanation(e.target.value);
                       if (currentStep === 5) setQ5Explanation(e.target.value);
                     }}
-                    placeholder={isId ? "Write a short explanation of how culture or awareness can affect marine ecosystems..." : "Write a short explanation of how culture or awareness can affect marine ecosystems..."}
-                    className="flex-1 w-full bg-slate-50 border border-slate-200 rounded-xl p-5 text-[13px] outline-none focus:ring-1 focus:ring-sky-500 transition-all resize-none text-slate-800 shadow-inner leading-relaxed"
+                    placeholder={isId ? "Jabarkan observasi Anda di sini..." : "Draft your synthesis here..."}
+                    className="w-full h-48 bg-black/40 border border-white/10 rounded-3xl p-8 text-[14px] text-white outline-none focus:ring-2 focus:ring-indigo-500 transition-all resize-none font-medium leading-relaxed italic placeholder:text-white/10"
                   />
                   <div className="flex items-center justify-between">
-                    <button onClick={() => setShowWritingGuide(!showWritingGuide)} className="px-6 py-3 bg-sky-600 text-white font-bold text-[10px] rounded-lg shadow-md hover:bg-sky-700 transition-all uppercase tracking-widest active:scale-95">
-                      {isId ? "Show Writing Guide" : "Show Writing Guide"}
+                    <button onClick={() => setShowWritingGuide(!showWritingGuide)} className="px-8 py-3 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black text-white hover:bg-white/10 transition-all uppercase tracking-widest">
+                      {isId ? "Writing Guide" : "Writing Guide"}
                     </button>
+                    <span className="text-[10px] font-black text-white/20 uppercase">Word Index: {getWordCount(currentStep === 3 ? q3Explanation : currentStep === 4 ? q4Explanation : q5Explanation)}</span>
                   </div>
                 </div>
-                
-                {showWritingGuide && (
-                  <div className="bg-sky-50 border border-sky-200 p-5 rounded-2xl text-[12px] text-sky-800 italic animate-in slide-in-from-top-2 duration-300 shadow-sm">
-                    {isId 
-                      ? "Tip: Use data from the simulation to strengthen your reasoning. Focus on how the Nadran tradition can reduce overfishing."
-                      : "Tip: Use data from the simulation to strengthen your reasoning. Focus on how the Nadran tradition can reduce overfishing."}
-                  </div>
-                )}
 
-                {/* Recorded Data Table below explanation */}
-                <div className="flex flex-col gap-3 min-h-[160px]">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">{isId ? "Recorded Data" : "Recorded Data"}</p>
-                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden overflow-y-auto exam-scrollbar">
-                    <table className="w-full text-[10px] text-slate-900 border-collapse">
+                {/* History Data Table Dashboard Style */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] px-4">Dataset Timeline</span>
+                  <div className="bg-white/5 backdrop-blur-3xl rounded-[40px] border border-white/10 overflow-hidden shadow-2xl">
+                    <table className="w-full text-[10px] text-white">
                       <thead>
-                        <tr className="bg-slate-50 border-b border-slate-200 text-slate-500">
-                          <th className="p-2.5 text-left font-bold uppercase">#</th>
-                          <th className="p-2.5 text-left font-bold uppercase">{isId ? "Fishing" : "Fishing"}</th>
-                          <th className="p-2.5 text-left font-bold uppercase">{isId ? "Awareness" : "Awareness"}</th>
-                          <th className="p-2.5 text-left font-bold uppercase">{isId ? "Waste" : "Waste"}</th>
-                          <th className="p-2.5 text-left font-bold uppercase">{isId ? "Conserv." : "Conserv."}</th>
-                          <th className="p-2.5 text-left font-bold uppercase">{isId ? "Fish Pop." : "Fish Pop."}</th>
-                          <th className="p-2.5 text-left font-bold uppercase">{isId ? "Biodiv." : "Biodiv."}</th>
-                          <th className="p-2.5 text-left font-bold uppercase">{isId ? "Water" : "Water"}</th>
-                          <th className="p-2.5 text-left font-bold uppercase">{isId ? "Sustain." : "Sustain."}</th>
+                        <tr className="bg-white/5 text-white/40 border-b border-white/5">
+                          <th className="p-6 text-left font-black uppercase">Run ID</th>
+                          <th className="p-6 text-left font-black uppercase italic">Fishing</th>
+                          <th className="p-6 text-left font-black uppercase italic">Awareness</th>
+                          <th className="p-6 text-left font-black uppercase">Biology</th>
+                          <th className="p-6 text-left font-black uppercase">Sustainability</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {history.length === 0 ? (
-                           <tr>
-                              <td colSpan={9} className="p-6 text-center text-slate-400 italic">No data recorded.</td>
-                           </tr>
-                        ) : history.map((row, i) => (
-                          <tr key={row.id}>
-                            <td className="p-2.5 text-slate-400 font-bold">{row.id}</td>
-                            <td className="p-2.5 text-slate-600 font-semibold">{row.fishing}</td>
-                            <td className="p-2.5 text-slate-600 font-semibold">{row.awareness}</td>
-                            <td className="p-2.5 text-slate-600 font-semibold">{row.waste}</td>
-                            <td className="p-2.5 text-slate-600 font-semibold">{row.conservation}</td>
-                            <td className="p-2.5 font-bold text-slate-700">{row.fish}</td>
-                            <td className="p-2.5 font-bold text-slate-700">{row.biodiversity}</td>
-                            <td className="p-2.5 font-bold text-slate-700">{row.water}</td>
-                            <td className="p-2.5 font-bold text-slate-800 uppercase">{row.sustain}</td>
+                      <tbody className="divide-y divide-white/5">
+                        {history.slice(0, 4).map((row, i) => (
+                          <tr key={i} className="hover:bg-white/5 transition-colors">
+                            <td className="p-6 font-black text-cyan-400">#00{row.id}</td>
+                            <td className="p-6 font-bold opacity-60 italic">{row.fishing}</td>
+                            <td className="p-6 font-bold opacity-60 italic">{row.awareness}</td>
+                            <td className="p-6">
+                               <div className="flex gap-1">
+                                  <span className={`px-2 py-1 rounded-md text-[8px] font-black bg-white/5 ${row.fish === 'Low' ? 'text-rose-400' : 'text-emerald-400'}`}>{row.fish}</span>
+                                  <span className={`px-2 py-1 rounded-md text-[8px] font-black bg-white/5 ${row.biodiversity === 'Low' ? 'text-rose-400' : 'text-emerald-400'}`}>{row.biodiversity}</span>
+                               </div>
+                            </td>
+                            <td className="p-6 font-black text-indigo-400 uppercase italic tracking-tighter text-[12px]">{row.sustain}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -574,20 +475,26 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
               </div>
             )}
           </div>
+          
+          {/* Subtle noise pattern */}
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/60-lines.png')]" />
         </div>
       </main>
 
-      {/* ── BOTTOM NAVIGATION ── */}
-      <footer className="h-16 bg-[#f3f6f9] border-t border-slate-200 flex items-center justify-between px-8 shrink-0">
-        <div className="flex items-center gap-4">
-           {/* No Back button visible in user screenshot, but I'll keep it functional */}
+      {/* ── LUXURY CONTROL FOOTER ── */}
+      <footer className="h-24 bg-white border-t border-slate-200 flex items-center justify-between px-12 shrink-0 z-40 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
+        <div className="flex items-center gap-6">
            <button 
-             onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))}
-             className="px-6 py-2 bg-white border border-slate-300 rounded text-[11px] font-bold text-slate-600 hover:bg-slate-50 transition-all uppercase tracking-widest disabled:opacity-0"
              disabled={currentStep === 0}
+             onClick={() => setCurrentStep(prev => prev - 1)}
+             className="w-14 h-14 rounded-2xl border-2 border-slate-100 flex items-center justify-center text-slate-400 hover:border-slate-300 hover:text-slate-600 disabled:opacity-0 transition-all font-black text-xl active:scale-95"
            >
-             Back
+             ←
            </button>
+           <div className="flex flex-col">
+              <span className="text-[12px] font-black text-slate-900 italic tracking-tighter uppercase">{stepLabels[currentStep]}</span>
+              <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest leading-none">Module Sequence {currentStep}/5</span>
+           </div>
         </div>
 
         <button 
@@ -598,10 +505,11 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                onExit?.();
             }
           }}
-          className="flex items-center gap-2 px-8 py-2.5 rounded bg-sky-600 text-white font-bold hover:bg-sky-700 transition-all shadow-md active:scale-95 uppercase tracking-widest text-[11px]"
+          className="group relative flex items-center gap-4 px-10 py-5 rounded-3xl bg-slate-900 text-white font-black hover:shadow-2xl hover:shadow-indigo-200 transition-all active:scale-95 overflow-hidden"
         >
-          {currentStep === 0 ? "Mulai Unit" : currentStep < 5 ? (isId ? "Next Question" : "Next Question") : (isId ? "Selesai" : "Finish")}
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <span className="relative z-10 text-[11px] tracking-[0.4em] uppercase">{currentStep === 5 ? (isId ? "SELESAI" : "FINISH") : (isId ? "SOAL LANJUTAN" : "PROCEED")}</span>
+          <svg className="relative z-10 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
         </button>
       </footer>
     </div>
