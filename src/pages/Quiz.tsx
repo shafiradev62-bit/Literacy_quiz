@@ -86,7 +86,16 @@ const Quiz = () => {
     const finalScore = calculateScore();
     localStorage.removeItem("exam_active");
     completeSession(finalScore, questions.length);
-    navigate("/results", { state: { score: finalScore, total: questions.length, answers, unit: selectedUnit } });
+    // Check if all units are completed
+    const allSessions = getAllLocalSessions();
+    const completedUnits = new Set(allSessions.filter(s => s.completed).map(s => s.unit));
+    completedUnits.add(selectedUnit); // include current
+    const allDone = [1,2,3,4,5,6,7,8,9,10].every(u => completedUnits.has(u));
+    if (allDone) {
+      navigate("/results", { state: { score: finalScore, total: questions.length, answers, unit: selectedUnit } });
+    } else {
+      setScreen("select");
+    }
   }
 
   const answeredCount = Object.keys(answers).filter((k) => {
@@ -155,11 +164,16 @@ const Quiz = () => {
               {([1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const).map((u) => {
                 const meta = getUnitMeta(u);
                 const progress = getUnitProgress(u);
+                const isCompleted = progress?.completed === true;
                 return (
                   <button
                     key={u}
-                    onClick={() => { setSelectedUnit(u); setCurrent(0); setAnswers({}); setFlagged(new Set()); setLoading(true); }}
-                    className="w-full bg-white rounded-xl border border-border/50 p-4 shadow-sm hover:shadow-md hover:border-primary/30 transition-all text-left group flex items-start gap-4"
+                    onClick={() => {
+                      if (isCompleted) return;
+                      setSelectedUnit(u); setCurrent(0); setAnswers({}); setFlagged(new Set()); setLoading(true);
+                    }}
+                    disabled={isCompleted}
+                    className={`w-full bg-white rounded-xl border border-border/50 p-4 shadow-sm transition-all text-left group flex items-start gap-4 ${isCompleted ? "opacity-60 cursor-not-allowed" : "hover:shadow-md hover:border-primary/30"}`}
                   >
                     <div className={`w-12 h-12 rounded-lg font-bold text-lg flex items-center justify-center shrink-0 transition-all ${progress?.completed ? "bg-primary text-white" : "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white"}`}>
                       {progress?.completed ? (
@@ -203,9 +217,13 @@ const Quiz = () => {
                         </div>
                       )}
                     </div>
-                    <svg className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0 mt-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+                    {isCompleted ? (
+                      <span className="text-[10px] font-bold text-primary bg-primary/10 border border-primary/30 px-2 py-1 rounded-lg shrink-0 mt-2">{isId ? "Selesai" : "Done"}</span>
+                    ) : (
+                      <svg className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0 mt-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    )}
                   </button>
                 );
               })}
@@ -221,7 +239,7 @@ const Quiz = () => {
     return (
       <div className="h-screen flex flex-col overflow-hidden pt-16">
         <div className="bg-white border-b border-border/60 px-6 py-3 shrink-0 flex items-center justify-between">
-          <button onClick={() => setScreen("select")} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
+          <button onClick={() => { setScreen("select"); setLoading(false); }} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/></svg>
             {isId ? "Kembali" : "Back"}
           </button>
@@ -301,7 +319,14 @@ const Quiz = () => {
   if (selectedUnit === 8) {
     return (
       <div className="h-screen overflow-hidden">
-        <Unit8Pisa onExit={() => setScreen("select")} studentId={studentProfile?.id} />
+        <Unit8Pisa onExit={() => {
+          const allSessions = getAllLocalSessions();
+          const completedUnits = new Set(allSessions.filter(s => s.completed).map(s => s.unit));
+          completedUnits.add(8);
+          const allDone = [1,2,3,4,5,6,7,8,9,10].every(u => completedUnits.has(u));
+          if (allDone) navigate("/results", { state: { score: 0, total: 5, answers: {}, unit: 8 } });
+          else setScreen("select");
+        }} studentId={studentProfile?.id} />
       </div>
     );
   }
@@ -309,7 +334,14 @@ const Quiz = () => {
   if (selectedUnit === 9) {
     return (
       <div className="h-screen overflow-hidden">
-        <Unit9Pisa onExit={() => setScreen("select")} studentId={studentProfile?.id} />
+        <Unit9Pisa onExit={() => {
+          const allSessions = getAllLocalSessions();
+          const completedUnits = new Set(allSessions.filter(s => s.completed).map(s => s.unit));
+          completedUnits.add(9);
+          const allDone = [1,2,3,4,5,6,7,8,9,10].every(u => completedUnits.has(u));
+          if (allDone) navigate("/results", { state: { score: 0, total: 5, answers: {}, unit: 9 } });
+          else setScreen("select");
+        }} studentId={studentProfile?.id} />
       </div>
     );
   }
@@ -317,7 +349,14 @@ const Quiz = () => {
   if (selectedUnit === 10) {
     return (
       <div className="h-screen overflow-hidden">
-        <Unit10Pisa onExit={() => setScreen("select")} studentId={studentProfile?.id} />
+        <Unit10Pisa onExit={() => {
+          const allSessions = getAllLocalSessions();
+          const completedUnits = new Set(allSessions.filter(s => s.completed).map(s => s.unit));
+          completedUnits.add(10);
+          const allDone = [1,2,3,4,5,6,7,8,9,10].every(u => completedUnits.has(u));
+          if (allDone) navigate("/results", { state: { score: 0, total: 5, answers: {}, unit: 10 } });
+          else setScreen("select");
+        }} studentId={studentProfile?.id} />
       </div>
     );
   }

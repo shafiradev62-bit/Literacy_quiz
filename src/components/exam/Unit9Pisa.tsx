@@ -222,7 +222,6 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
           </button>
           <div className="w-px h-6 bg-border/60 mx-2" />
           <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground border border-border/60 px-2 py-1 rounded">{stepLabels[currentStep]}</span>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-amber-700 border border-amber-300 bg-amber-50 px-2 py-1 rounded">{timer}</span>
           <div className="w-px h-6 bg-border/60 mx-2" />
           <button onClick={() => {
             // Validate before submission
@@ -517,6 +516,33 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
               </div>
             )}
 
+          </div>
+          {/* ── BOTTOM NAVIGATION ── */}
+          <div className="px-6 py-4 border-t-2 border-primary/20 bg-white shadow-[0_-2px_8px_rgba(0,0,0,0.06)] shrink-0">
+            <div className="flex items-center gap-3">
+              <button onClick={() => setCurrentStep(p => Math.max(0, p-1))} disabled={currentStep === 0}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl border-2 border-border font-bold text-[13px] text-foreground bg-white hover:bg-muted transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7"/></svg>
+                {isId ? "Kembali" : "Back"}
+              </button>
+              <div className="flex-1 text-center text-[11px] font-bold text-muted-foreground">{stepLabels[currentStep]} · {currentStep}/5</div>
+              {currentStep < 5 ? (
+                <button onClick={() => setCurrentStep(p => Math.min(5, p+1))} disabled={!isStepValid()}
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-[13px] transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md">
+                  {isId ? "Soal Berikutnya" : "Next Question"}
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7"/></svg>
+                </button>
+              ) : (
+                <button onClick={() => {
+                  const score = [Object.keys(q1Answers).length >= 4, q2Answer.trim().length > 0, q3Choice.trim().length > 0, q4Answer.trim().length > 0, q5Answer.trim().length > 0].filter(Boolean).length;
+                  saveCompletedSession(9, { q1Answers, q2Answer, q3Choice, q4Answer, q5Answer, history }, score, 5);
+                  onExit?.();
+                }} className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13px] transition-all shadow-md">
+                  {isId ? "Kirim & Selesai" : "Submit & Finish"}
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
+                </button>
+              )}
+            </div>
           </div>
         </div>
 

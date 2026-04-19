@@ -160,7 +160,6 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
           </button>
           <div className="w-px h-6 bg-border/60 mx-2"/>
           <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground border border-border/60 px-2 py-1 rounded">{stepLabels[currentStep]}</span>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-amber-700 border border-amber-300 bg-amber-50 px-2 py-1 rounded">{timer}</span>
           <div className="w-px h-6 bg-border/60 mx-2"/>
           <button onClick={handleExit} className="px-3 py-1.5 bg-background text-foreground text-[10px] font-bold rounded border border-border hover:bg-muted transition-colors uppercase tracking-wider">{isId?"Kembali":"Back"}</button>
         </div>
@@ -419,6 +418,29 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
             )}
 
           </div>
+          {/* ── BOTTOM NAVIGATION ── */}
+          <div className="px-6 py-4 border-t-2 border-primary/20 bg-white shadow-[0_-2px_8px_rgba(0,0,0,0.06)] shrink-0">
+            <div className="flex items-center gap-3">
+              <button onClick={()=>setCurrentStep(p=>Math.max(0,p-1))} disabled={currentStep===0}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl border-2 border-border font-bold text-[13px] text-foreground bg-white hover:bg-muted transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7"/></svg>
+                {isId?"Kembali":"Back"}
+              </button>
+              <div className="flex-1 text-center text-[11px] font-bold text-muted-foreground">{stepLabels[currentStep]} · {currentStep}/5</div>
+              {currentStep < 5 ? (
+                <button onClick={()=>setCurrentStep(p=>Math.min(5,p+1))} disabled={!isStepValid()}
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-[13px] transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md">
+                  {isId?"Soal Berikutnya":"Next Question"}
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7"/></svg>
+                </button>
+              ) : (
+                <button onClick={handleExit} className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13px] transition-all shadow-md">
+                  {isId?"Kirim & Selesai":"Submit & Finish"}
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
+                </button>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* RIGHT: Simulation */}
@@ -429,6 +451,31 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
                 <span className="w-1.5 h-1.5 rounded-full bg-primary/40"/>
                 <h3 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{isId?"Simulasi Industri Kerajinan Rotan":"Rattan Craft Industry Simulation"}</h3>
               </div>
+            </div>
+
+            {/* ── DRAG-DROP PREVIEW: Rattan Production Chain ── */}
+            <div className="bg-white rounded-2xl border-2 border-primary/20 p-4 shadow-sm">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-primary mb-3">{isId ? "🔗 RANTAI PRODUKSI ROTAN" : "🔗 RATTAN PRODUCTION CHAIN"}</p>
+              <div className="flex items-center gap-2 overflow-x-auto pb-2">
+                {[
+                  {icon:"🌿", label: isId?"Hutan":"Forest", color:"bg-emerald-100 border-emerald-400 text-emerald-800"},
+                  {icon:"→", label:"", color:""},
+                  {icon:"🪚", label: isId?"Panen":"Harvest", color:"bg-amber-100 border-amber-400 text-amber-800"},
+                  {icon:"→", label:"", color:""},
+                  {icon:"🏭", label: isId?"Workshop":"Workshop", color:"bg-blue-100 border-blue-400 text-blue-800"},
+                  {icon:"→", label:"", color:""},
+                  {icon:"🛋️", label: isId?"Produk":"Product", color:"bg-purple-100 border-purple-400 text-purple-800"},
+                  {icon:"→", label:"", color:""},
+                  {icon:"♻️", label: isId?"Limbah":"Waste", color:"bg-rose-100 border-rose-400 text-rose-800"},
+                ].map((item, i) => item.icon === "→"
+                  ? <span key={i} className="text-muted-foreground font-bold text-xl shrink-0">→</span>
+                  : <div key={i} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl border-2 shrink-0 ${item.color}`}>
+                      <span className="text-2xl">{item.icon}</span>
+                      <span className="text-[10px] font-bold">{item.label}</span>
+                    </div>
+                )}
+              </div>
+              <p className="text-[10px] text-muted-foreground mt-2 italic">{isId ? "Atur slider di bawah untuk melihat dampak pada setiap tahap rantai produksi." : "Adjust sliders below to see the impact on each stage of the production chain."}</p>
             </div>
 
             {/* ── HIGH-FIDELITY SVG FOREST SIMULATION ── */}

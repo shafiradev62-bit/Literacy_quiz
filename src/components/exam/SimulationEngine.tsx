@@ -950,6 +950,19 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
 
   return (
     <div className="space-y-4">
+      {/* How-to banner */}
+      <div className="bg-amber-50 border-2 border-amber-300 rounded-xl px-4 py-3 flex items-start gap-3">
+        <span className="text-2xl shrink-0">🍚</span>
+        <div>
+          <p className="text-[11px] font-bold text-amber-800 mb-1">{isId ? "Cara Menggunakan Simulasi Tape Ketan" : "How to Use the Tape Ketan Simulation"}</p>
+          <ol className="text-[10px] text-amber-700 space-y-0.5 list-decimal pl-3">
+            <li>{isId ? "Atur waktu fermentasi, suhu, kemasan, dan kualitas ragi" : "Set fermentation time, temperature, packaging, and starter quality"}</li>
+            <li>{isId ? "Lihat perubahan pada grafik Manis / Asam / Daya Simpan" : "Watch the Sweetness / Acidity / Shelf Life metrics change"}</li>
+            <li>{isId ? "Klik 'Simpan Data' untuk mencatat hasil ke tabel" : "Click 'Record Data' to save results to the table"}</li>
+            <li>{isId ? "Gunakan data untuk menjawab soal" : "Use the data to answer the questions"}</li>
+          </ol>
+        </div>
+      </div>
       {/* Animated Tape Fermentation */}
       <SimCard className="p-4">
         <div className="flex items-center justify-between mb-3">
@@ -1107,12 +1120,30 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
         </button>
       </SimCard>
 
-      {/* Live Metrics */}
-      <div className="grid grid-cols-3 gap-2">
-        <StatCard label={isId ? "Rasa Manis" : "Sweetness"} value={Math.round(calc.sweetness)} sub={calc.sweetLabel} bg="bg-white" />
-        <StatCard label={isId ? "Keasaman" : "Acidity"} value={Math.round(calc.acidity)} sub={calc.acidLabel} bg="bg-white" />
-        <StatCard label={isId ? "Daya Simpan" : "Shelf Life"} value={Math.round(calc.shelfLife)} sub={calc.shelfLabel} bg="bg-white" />
-      </div>
+      {/* Live Metrics with progress bars */}
+      <SimCard className="p-4">
+        <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-3">{isId ? "Hasil Fermentasi Saat Ini" : "Current Fermentation Results"}</p>
+        <div className="space-y-3">
+          {[
+            { label: isId ? "🍬 Rasa Manis" : "🍬 Sweetness", value: Math.round(calc.sweetness), color: "bg-amber-400", textColor: "text-amber-700" },
+            { label: isId ? "🍋 Keasaman" : "🍋 Acidity", value: Math.round(calc.acidity), color: "bg-red-400", textColor: "text-red-700" },
+            { label: isId ? "📦 Daya Simpan" : "📦 Shelf Life", value: Math.round(calc.shelfLife), color: "bg-emerald-500", textColor: "text-emerald-700" },
+          ].map(({ label, value, color, textColor }) => (
+            <div key={label}>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[12px] font-semibold text-foreground">{label}</span>
+                <span className={`text-[13px] font-bold ${textColor}`}>{value}/100</span>
+              </div>
+              <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+                <div className={`h-full ${color} rounded-full transition-all duration-700`} style={{ width: `${value}%` }} />
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="text-[10px] text-muted-foreground mt-3 italic">
+          {isId ? "💡 Fermentasi optimal: 36–48 jam, suhu 25–32°C, ragi baik, kemasan daun pisang" : "💡 Optimal: 36–48h, 25–32°C, good starter, banana leaf packaging"}
+        </p>
+      </SimCard>
     </div>
   );
 };

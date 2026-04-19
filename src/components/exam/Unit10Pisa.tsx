@@ -535,7 +535,6 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
           </button>
           <div className="w-px h-6 bg-border/60 mx-2" />
           <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground border border-border/60 px-2 py-1 rounded">{stepLabels[currentStep]}</span>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-amber-700 border border-amber-300 bg-amber-50 px-2 py-1 rounded">{timer}</span>
           <div className="w-px h-6 bg-border/60 mx-2" />
           <button onClick={onExit} className="px-3 py-1.5 bg-background text-foreground text-[10px] font-bold rounded border border-border hover:bg-muted transition-colors uppercase tracking-wider">
             {isId ? "Kembali" : "Back"}
@@ -664,6 +663,15 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
                 <p className="text-[13px] font-medium text-foreground/90 leading-relaxed">{isId
                   ? "Seret setiap item berikut ke bagian sistem pangan yang sesuai. Pilih bagian yang paling tepat untuk setiap item."
                   : "Drag each item below to the correct part of the food system. Select the most appropriate part for each item."}</p>
+                {/* Drag preview banner */}
+                {draggedItem && (
+                  <div className="flex items-center gap-2 px-4 py-2.5 bg-primary/10 border-2 border-primary rounded-xl animate-pulse">
+                    <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+                    <span className="text-[12px] font-bold text-primary">
+                      {isId ? `Sedang diseret: ${draggedItem === "tofu" ? "Tahu" : draggedItem === "sauce" ? "Kuah" : "Pengolahan"} — Lepaskan ke kotak yang sesuai!` : `Dragging: ${draggedItem === "tofu" ? "Tofu" : draggedItem === "sauce" ? "Sauce" : "Treatment"} — Drop it on the correct box!`}
+                    </span>
+                  </div>
+                )}
                 <div className="space-y-3">
                   {draggedItem && (
                     <p className="text-[11px] font-semibold text-primary">
@@ -679,17 +687,21 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
                   )}
                   <div className="flex flex-wrap gap-2">
                     {[
-                      {key:"tofu",    en:"Tofu (plant protein)",          id:"Tahu (protein nabati)"},
-                      {key:"sauce",   en:"Palm sugar–vinegar sauce",       id:"Kuah gula merah dan cuka"},
-                      {key:"waste",   en:"Wastewater treatment",           id:"Pengolahan limbah"},
-                    ].map(item => (
-                      <div key={item.key} 
-                           draggable
-                           onDragStart={() => setDraggedItem(item.key)}
-                           className={`px-4 py-2.5 rounded-lg border cursor-grab active:cursor-grabbing transition-all ${draggedItem === item.key ? "opacity-50 border-primary bg-primary/5" : "border-border/60 bg-white hover:border-primary/40"}`}>
-                        <span className="text-[12px] font-medium text-foreground/80">{isId ? item.id : item.en}</span>
-                      </div>
-                    ))}
+                      {key:"tofu",    en:"Tofu (plant protein)",          id:"Tahu (protein nabati)",          color:"bg-emerald-100 border-emerald-400 text-emerald-800"},
+                      {key:"sauce",   en:"Palm sugar–vinegar sauce",       id:"Kuah gula merah dan cuka",       color:"bg-amber-100 border-amber-400 text-amber-800"},
+                      {key:"waste",   en:"Wastewater treatment",           id:"Pengolahan limbah",              color:"bg-blue-100 border-blue-400 text-blue-800"},
+                    ].map(item => {
+                      const isPlaced = Object.values(q1Answers).includes(item.key);
+                      return (
+                        <div key={item.key}
+                             draggable={!isPlaced}
+                             onDragStart={() => !isPlaced && setDraggedItem(item.key)}
+                             onDragEnd={() => setDraggedItem(null)}
+                             className={`px-4 py-2.5 rounded-lg border-2 font-semibold text-[12px] transition-all select-none ${isPlaced ? "opacity-30 cursor-not-allowed line-through" : `${item.color} cursor-grab active:cursor-grabbing hover:scale-105 shadow-sm`} ${draggedItem === item.key ? "opacity-50 scale-95" : ""}`}>
+                          {isId ? item.id : item.en}
+                        </div>
+                      );
+                    })}
                   </div>
                   <div className="flex flex-col gap-2 mt-3">
                     {Object.keys(q1Answers).length > 0 && (
@@ -823,6 +835,37 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
               </div>
             )}
 
+          </div>
+          {/* ── BOTTOM NAVIGATION ── */}
+          <div className="px-6 py-4 border-t-2 border-primary/20 bg-white shadow-[0_-2px_8px_rgba(0,0,0,0.06)] shrink-0">
+            <div className="flex items-center gap-3">
+              <button onClick={() => setCurrentStep(p => Math.max(0, p-1))} disabled={currentStep === 0}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl border-2 border-border font-bold text-[13px] text-foreground bg-white hover:bg-muted transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7"/></svg>
+                {isId ? "Kembali" : "Back"}
+              </button>
+              <div className="flex-1 text-center text-[11px] font-bold text-muted-foreground">{stepLabels[currentStep]} · {currentStep}/5</div>
+              {currentStep < 5 ? (
+                <button onClick={() => setCurrentStep(p => Math.min(5, p+1))} disabled={!isStepValid()}
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-[13px] transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md">
+                  {isId ? "Soal Berikutnya" : "Next Question"}
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7"/></svg>
+                </button>
+              ) : (
+                <button onClick={async () => {
+                  const score = [isQ1Correct(), !!q2Choice, !!q3Choice, getWordCount(q4Answer) >= 15, getWordCount(q5Answer) >= 15].filter(Boolean).length;
+                  try {
+                    if (sessionIdRef.current) {
+                      await supabase.from("exam_sessions").update({ answers: { q1Answers, q2Choice, q3Choice, q4Answer, q5Answer }, completed: true, score, total: 5 }).eq("id", sessionIdRef.current);
+                    }
+                  } catch {}
+                  onExit?.();
+                }} className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13px] transition-all shadow-md">
+                  {isId ? "Kirim & Selesai" : "Submit & Finish"}
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
+                </button>
+              )}
+            </div>
           </div>
         </div>
 

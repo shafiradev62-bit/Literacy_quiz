@@ -589,44 +589,52 @@ const QuestionPanel = ({
         </div>
       </div>
 
-      {/* Navigation Footer */}
-      <div className="px-5 py-3 border-t border-exam-divider bg-white/50 backdrop-blur-sm">
-        <div className="flex items-center justify-between">
+      {/* Navigation Footer — super clear Next / Back */}
+      <div className="px-5 py-4 border-t-2 border-primary/20 bg-white shadow-[0_-2px_8px_rgba(0,0,0,0.06)]">
+        <div className="flex items-center gap-3">
+          {/* BACK */}
           <button
             onClick={onPrev}
             disabled={isFirst}
-            className="p-1.5 hover:bg-muted rounded-md transition-colors border border-transparent hover:border-border disabled:opacity-30"
+            className="flex items-center gap-2 px-5 py-3 rounded-xl border-2 border-border font-bold text-[13px] text-foreground bg-white hover:bg-muted transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
             </svg>
+            {isId ? "Kembali" : "Back"}
           </button>
 
+          {/* word count for open */}
+          {question.type === "open" && (
+            <span className={`text-[11px] font-bold flex-1 text-center ${currentWordCount >= 15 ? "text-emerald-600" : "text-red-500"}`}>
+              {isId ? `${currentWordCount} kata (Min. 15)` : `${currentWordCount} words (Min. 15)`}
+            </span>
+          )}
+          {question.type !== "open" && <div className="flex-1" />}
+
+          {/* NEXT or SUBMIT */}
           {isLast ? (
             <button
               onClick={handleSubmit}
               disabled={!isAnswerValid}
-              className="px-4 py-1.5 bg-emerald-600 text-white text-[10px] font-bold rounded-lg hover:bg-emerald-700 transition-colors uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13px] transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md"
             >
-              {t("Submit Assessment", "Kirim Penilaian")}
+              {isId ? "Kirim Penilaian" : "Submit Assessment"}
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+              </svg>
             </button>
           ) : (
-            <div className="flex items-center gap-3">
-              {question.type === "open" && (
-                <span className={`text-[10px] font-bold ${currentWordCount >= 15 ? "text-emerald-600" : "text-red-600"}`}>
-                  {isId ? `${currentWordCount} kata (Minimal 15)` : `${currentWordCount} words (Min. 15)`}
-                </span>
-              )}
-              <button
-                onClick={handleNext}
-                disabled={!isAnswerValid}
-                className="p-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-lg transition-colors border border-indigo-200 disabled:opacity-30 disabled:cursor-not-allowed"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
+            <button
+              onClick={handleNext}
+              disabled={!isAnswerValid}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-[13px] transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md"
+            >
+              {isId ? "Soal Berikutnya" : "Next Question"}
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           )}
         </div>
       </div>
