@@ -597,104 +597,93 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
         </div>
 
         {/* Stunning Visual Pot Scene */}
-        <div className="w-full lg:w-[420px] bg-slate-900 rounded-[40px] shadow-2xl p-8 flex flex-col items-center justify-center relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-black opacity-60" />
-          {/* Subtle glow behind the pot */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px]" />
+        <div className="w-full lg:w-[420px] bg-[#0f172a] rounded-[40px] shadow-2xl p-8 flex flex-col items-center justify-center relative overflow-hidden group border border-white/5">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1e293b] to-black opacity-60" />
           
-          <svg viewBox="0 0 200 240" className="w-full h-full relative z-10 drop-shadow-2xl translate-y-4" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <filter id="premium-glow">
-                <feGaussianBlur stdDeviation="3" result="blur" />
-                <feComposite in="SourceGraphic" in2="blur" operator="over" />
-              </filter>
-              <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor={potType==='clay'?"#a16207":"#94a3b8"} />
-                <stop offset="60%" stopColor={potType==='clay'?"#713f12":"#475569"} />
-                <stop offset="100%" stopColor={potType==='clay'?"#451a03":"#1e293b"} />
-              </linearGradient>
-              <radialGradient id="rimGlow" cx="50%" cy="0%" r="50%">
-                <stop offset="0%" stopColor="white" stopOpacity="0.4" />
-                <stop offset="100%" stopColor="white" stopOpacity="0" />
-              </radialGradient>
-              <radialGradient id="liquidSurfaceGrad" cx="50%" cy="20%" r="80%">
-                <stop offset="0%" stopColor="#451a03" stopOpacity="0.4" />
-                <stop offset="100%" stopColor="#1c0d02" stopOpacity="0.8" />
-              </radialGradient>
-              <radialGradient id="fireOuter">
-                <stop offset="0%" stopColor="#fbbf24" />
-                <stop offset="40%" stopColor="#f59e0b" />
-                <stop offset="70%" stopColor="#b45309" />
-                <stop offset="100%" stopColor="#451a03" stopOpacity="0" />
-              </radialGradient>
-            </defs>
+          {/* Subtle thermal glow behind the pot */}
+          <div 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[80px] transition-all duration-1000" 
+            style={{ 
+              width: `${150 + heatInput}px`, 
+              height: `${150 + heatInput}px`, 
+              backgroundColor: `rgba(245, 158, 11, ${heatInput / 200})` 
+            }} 
+          />
+          
+          <div className="relative w-full aspect-[4/5] flex items-center justify-center">
+            
+            {/* STEAM EFFECT */}
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-32 h-48 pointer-events-none z-20">
+              {[...Array(6)].map((_, i) => (
+                <div 
+                  key={i}
+                  className="absolute bottom-0 left-1/2 w-8 h-8 bg-white/20 rounded-full blur-xl"
+                  style={{
+                    left: `${40 + Math.random() * 20}%`,
+                    animation: `steam-rise ${2 + Math.random() * 2}s infinite linear`,
+                    animationDelay: `${i * 0.5}s`,
+                    opacity: heatInput > 20 ? (heatInput / 100) * 0.4 : 0,
+                    transform: `scale(${0.5 + Math.random()})`
+                  }}
+                />
+              ))}
+            </div>
 
-            {/* Premium Fire Animation */}
-            <g transform={`translate(100, 215) scale(${0.8 + heatInput/200})`}>
-               <circle r="40" fill="url(#fireOuter)" className="animate-pulse" opacity="0.4" />
-               <path d="M-20,0 Q0,-60 20,0 Z" fill="#ea580c" className="animate-bounce" style={{ animationDuration: '1.2s' }} />
-               <path d="M-12,0 Q0,-45 12,0 Z" fill="#fbbf24" className="animate-bounce" style={{ animationDuration: '0.8s' }} />
-               <path d="M-6,0 Q0,-25 6,0 Z" fill="#fef08a" className="animate-bounce" style={{ animationDuration: '0.5s' }} />
-            </g>
-
-            {/* Modern Anatomy Labels */}
-            <g className="text-[7px] font-black fill-white/30 uppercase tracking-widest" style={{ pointerEvents: 'none' }}>
-               <path d="M140 40 L110 65" stroke="white" strokeWidth="0.5" strokeOpacity="0.2" fill="none" />
-               <text x="145" y="42">{isId ? "RUANG MASAK" : "COOKING SPACE"}</text>
+            {/* POT IMAGE */}
+            <div className="relative z-10 w-64 h-64 group-hover:scale-105 transition-transform duration-700">
+               <img 
+                 src={potType === 'clay' ? "/images/empal_pot_brown-removebg-preview.png" : "/images/empal_pot_gray-removebg-preview.png"} 
+                 alt="Pot"
+                 className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+               />
                
-               <path d="M140 120 L120 120" stroke="white" strokeWidth="0.5" strokeOpacity="0.2" fill="none" />
-               <text x="145" y="122">{potType==='clay' ? (isId ? "TANAH LIAT" : "CLAY WALL") : (isId ? "LOGAM" : "METAL WALL")}</text>
+               {/* THERMAL COLOR SHIFT OVERLAY */}
+               <div 
+                 className="absolute inset-0 mix-blend-overlay transition-opacity duration-500 rounded-full"
+                 style={{ 
+                   backgroundColor: '#f59e0b', 
+                   opacity: (heatInput / 100) * 0.4,
+                   filter: 'blur(20px)'
+                 }}
+               />
+            </div>
 
-               <path d="M50 190 L65 210" stroke="white" strokeWidth="0.5" strokeOpacity="0.2" fill="none" />
-               <text x="15" y="185" textAnchor="start">{isId ? "SUMBER PANAS" : "HEAT SOURCE"}</text>
-            </g>
-
-            {/* Stand */}
-            <path d="M60 185 L140 185 M140 185 L155 220 M60 185 L45 220" stroke="#334155" strokeWidth="5" fill="none" strokeLinecap="round" />
-
-            {/* Premium Pot Visualization (2.5D Game Asset Style) */}
-            <g transform="translate(100, 115)">
-               {/* External Body Drop Shadow */}
-               <path d="M-62,-40 A62,52 0 0,0 62,-40 L62,45 A62,52 0 0,1 -62,45 Z" fill="black" opacity="0.4" transform="translate(6, 6)" filter="blur(4px)" />
+             {/* STAND & FIRE */}
+             <svg viewBox="0 0 200 100" className="absolute bottom-0 w-full h-32 z-0">
+               <defs>
+                 <radialGradient id="fireCore">
+                    <stop offset="0%" stopColor="#fff" />
+                    <stop offset="30%" stopColor="#fbbf24" />
+                    <stop offset="100%" stopColor="#f59e0b" />
+                 </radialGradient>
+               </defs>
                
-               {/* Main Pot Body */}
-               <path d="M-60,-40 A60,50 0 0,0 60,-40 L60,40 A60,50 0 0,1 -60,40 Z" fill="url(#bodyGrad)" stroke="#1e293b" strokeWidth="0.5" />
+               {/* Stand legs */}
+               <path d="M60 20 L40 80 M140 20 L160 80" stroke="#334155" strokeWidth="6" strokeLinecap="round" />
                
-               {/* 2.5D Recessed Opening Logic */}
-               <g>
-                  {/* The thickness/depth of the wall cut */}
-                  <ellipse cx="0" cy="0" rx="50" ry="33" fill="#1c0d02" /> 
-                  <ellipse cx="0" cy="2" rx="48" ry="31" fill="#3b1901" /> {/* Deep shadow rim */}
-                  
-                  {/* The actual liquid/inner floor */}
-                  <ellipse cx="0" cy="4" rx="45" ry="28" fill="#2d1305" />
-                  
-                  {/* Surface highlights / Liquid glow */}
-                  <ellipse cx="0" cy="4" rx="45" ry="28" fill="url(#liquidSurfaceGrad)" />
-                  
-                  {/* Top Rim Highlight (2.5D effect) */}
-                  <path d="M-50,0 A50,33 0 0,1 50,0" fill="none" stroke="white" strokeWidth="1.5" strokeOpacity="0.2" />
+               {/* Fire animation */}
+               <g transform="translate(100, 70)">
+                 {[...Array(3)].map((_, i) => (
+                    <path 
+                      key={i}
+                      d="M-20,0 Q0,-40 20,0 Z" 
+                      fill="url(#fireCore)" 
+                      opacity={0.6}
+                      className="animate-pulse"
+                      style={{ 
+                        transform: `scale(${0.5 + (heatInput / 100) * (1 + i * 0.2)})`,
+                        animationDelay: `${i * 0.2}s`,
+                        display: heatInput > 5 ? 'block' : 'none'
+                      }}
+                    />
+                 ))}
                </g>
-
-               {/* Top Rim Highlight */}
-               <ellipse cx="0" cy="-45" rx="58" ry="14" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.3" />
-               <ellipse cx="0" cy="-45" rx="55" ry="12" fill="url(#bodyGrad)" stroke="black" strokeWidth="0.5" strokeOpacity="0.2" />
-               
-               {/* Lid Handle */}
-               <circle cx="0" cy="-62" r="10" fill="url(#bodyGrad)" stroke="black" strokeWidth="0.5" strokeOpacity="0.3" />
-               <circle cx="0" cy="-65" r="4" fill="white" opacity="0.1" />
-            </g>
-
-            {/* Temperature Indicator */}
-            <g transform="translate(170, 210)">
-               <rect width="25" height="20" rx="8" fill="white" opacity="0.1" />
-               <text x="12.5" y="14" textAnchor="middle" fontSize="10" fontWeight="900" fill="white" opacity="0.8">100°</text>
-            </g>
-          </svg>
+             </svg>
+          </div>
           
           <div className="absolute top-6 left-8 flex items-center gap-3">
              <div className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_10px_#fbbf24] animate-ping" />
-             <span className="text-[10px] font-black text-amber-500/50 uppercase tracking-[0.4em]">Live Thermal Feed</span>
+             <span className="text-[10px] font-bold text-amber-500/50 uppercase tracking-[0.4em]">Live Thermal Feed</span>
           </div>
         </div>
       </div>
