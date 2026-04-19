@@ -1506,9 +1506,7 @@ const MangroveSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void })
       {/* Controls */}
       <SimCard className="p-4 space-y-3">
         <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-2">{isId ? "Kontrol Simulasi" : "Simulation Controls"}</p>
-        <SliderRow label={isId ? "Tutupan Mangrove" : "Mangrove Cover"} value={mangroveCover} min={0} max={100} color="#10b981" onChange={setMangroveCover} note="%">
-          {(m)}
-        </SliderRow>
+        <SliderRow label={isId ? "Tutupan Mangrove" : "Mangrove Cover"} value={mangroveCover} min={0} max={100} color="#10b981" onChange={setMangroveCover} note="%" />
         <SliderRow label={isId ? "Kekuatan Gelombang" : "Wave Strength"} value={waveStrength} min={10} max={100} color="#3b82f6" onChange={setWaveStrength} note="%" />
         <div className="space-y-1.5">
           <div className="text-[11px] font-medium text-foreground">{isId ? "Penggunaan Lahan Pesisir" : "Coastal Land Use"}</div>
