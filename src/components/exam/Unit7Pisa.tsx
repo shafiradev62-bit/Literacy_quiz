@@ -119,7 +119,8 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
   const stepLabels = isId ? STEP_LABELS_ID : STEP_LABELS_EN;
 
   const headerGradient = "from-slate-900 to-slate-800";
-  const leftPanelGradient = "from-indigo-50/50 via-white to-sky-50/50";
+  const leftPanelBg = "bg-[#fdfcfb]"; // Soft Paper White
+  const rightPanelBg = "bg-[#0f172a]"; // Deep Midnight Slate
 
   return (
     <div className="flex flex-col h-screen bg-[#0f172a] text-slate-200 font-sans overflow-hidden">
@@ -167,11 +168,11 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
       <main className="flex-1 flex overflow-hidden">
         
         {/* ── LEFT COLUMN: Interactive Learning ── */}
-        <div className={`w-[40%] bg-gradient-to-b ${leftPanelGradient} flex flex-col overflow-hidden relative border-r border-slate-200/50 shadow-inner`}>
+        <div className={`w-[40%] ${leftPanelBg} flex flex-col overflow-hidden relative border-r border-slate-200 shadow-sm`}>
           {/* Banner */}
-          <div className="h-16 flex items-center px-10 shrink-0 bg-white/80 backdrop-blur-xl border-b border-slate-200/50 justify-between">
+          <div className="h-16 flex items-center px-10 shrink-0 bg-white border-b border-slate-200 justify-between">
              <h2 className="text-[14px] font-bold text-slate-800 uppercase tracking-tighter">{isId ? "Modul Interaktif" : "Interactive Module"}</h2>
-             <div className="px-3 py-1 bg-indigo-100 rounded-full text-[10px] font-bold text-indigo-600 uppercase">Phase {currentStep}</div>
+             <div className="px-3 py-1 bg-slate-100 rounded-full text-[10px] font-bold text-slate-500 uppercase">Phase {currentStep}</div>
           </div>
 
           <div className="p-10 overflow-y-auto h-full flex flex-col exam-scrollbar relative z-10">
@@ -254,7 +255,7 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
 
             {(currentStep >= 2) && (
               <div className="space-y-8 animate-in fade-in duration-700">
-                <div className="bg-white p-8 rounded-[40px] shadow-2xl shadow-indigo-100 border border-slate-100 space-y-4">
+                <div className="bg-white p-8 rounded-3xl border border-slate-200 space-y-4 shadow-sm">
                   <div className="flex gap-2">
                     <div className="w-1.5 h-6 bg-indigo-500 rounded-full" />
                     <h3 className="text-xl font-bold text-slate-900 tracking-tight">
@@ -271,17 +272,24 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                 <div className="grid grid-cols-1 gap-4 pt-4">
                   {[
                     currentStep === 2 ? [
-                      { label: "A", en: "Poor waste management", idText: "Pengelolaan limbah yang buruk", icon: "🗑️" },
-                      { label: "B", en: "High fishing intensity", idText: "Intensitas pancing yang tinggi", icon: "⚡" },
-                      { label: "C", en: "Natural traditions", idText: "Tradisi budaya setempat", icon: "🏺" },
+                      { label: "A", en: "Poor waste management", idText: "Pengelolaan limbah yang buruk", icon: "🗑️", color: "blue" },
+                      { label: "B", en: "High fishing intensity", idText: "Intensitas pancing yang tinggi", icon: "⚡", color: "emerald" },
+                      { label: "C", en: "Natural traditions", idText: "Tradisi budaya setempat", icon: "🏺", color: "amber" },
                     ] : [
-                      { label: "A", en: "Intensity has no effect", idText: "Intensitas tidak berpengaruh", icon: "❌" },
-                      { label: "B", en: "Cultural awareness influences behavior", idText: "Kesadaran budaya mengubah perilaku", icon: "🧠" },
-                      { label: "C", en: "Only natural factors control reefs", idText: "Hanya faktor alam yang mengontrol", icon: "🌊" },
+                      { label: "A", en: "Intensity has no effect", idText: "Intensitas tidak berpengaruh", icon: "❌", color: "blue" },
+                      { label: "B", en: "Cultural awareness influences behavior", idText: "Kesadaran budaya mengubah perilaku", icon: "🧠", color: "emerald" },
+                      { label: "C", en: "Only natural factors control reefs", idText: "Hanya faktor alam yang mengontrol", icon: "🏺", color: "amber" },
                     ]
                   ][0].map(opt => {
                     const choice = currentStep === 2 ? q2Choice : currentStep === 3 ? q3Choice : q4Choice;
                     const selected = choice === opt.label;
+                    
+                    const colorClasses: Record<string, string> = {
+                      blue: selected ? "bg-blue-600 border-blue-600 text-white" : "bg-blue-50/50 border-blue-100 text-slate-700 hover:border-blue-200",
+                      emerald: selected ? "bg-emerald-600 border-emerald-600 text-white" : "bg-emerald-50/50 border-emerald-100 text-slate-700 hover:border-emerald-200",
+                      amber: selected ? "bg-amber-500 border-amber-500 text-white" : "bg-amber-50/50 border-amber-100 text-slate-700 hover:border-amber-200",
+                    };
+
                     return (
                       <button 
                         key={opt.label}
@@ -290,13 +298,13 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                           if (currentStep === 3) setQ3Choice(opt.label);
                           if (currentStep === 4) setQ4Choice(opt.label);
                         }}
-                        className={`group w-full flex items-center justify-between p-6 rounded-3xl border-2 transition-all duration-300 transform ${selected ? "border-indigo-500 bg-indigo-500 text-white shadow-2xl scale-[1.02]" : "border-slate-100 bg-white hover:border-indigo-200 hover:shadow-xl text-slate-700"}`}
+                        className={`group w-full flex items-center justify-between p-6 rounded-2xl border-2 transition-all duration-200 ${colorClasses[opt.color]}`}
                       >
                         <div className="flex items-center gap-4">
-                           <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${selected ? "bg-white text-indigo-600" : "bg-slate-100 text-slate-400"}`}>{opt.label}</span>
+                           <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${selected ? "bg-white text-slate-900" : "bg-white border shadow-sm text-slate-400"}`}>{opt.label}</span>
                            <span className="text-[14px] font-bold">{isId ? opt.idText : opt.en}</span>
                         </div>
-                        <span className="text-xl group-hover:rotate-12 transition-transform">{opt.icon}</span>
+                        <span className="text-xl">{opt.icon}</span>
                       </button>
                     );
                   })}
@@ -312,7 +320,7 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
         </div>
 
         {/* ── RIGHT COLUMN: High-End Dynamic Panel ── */}
-        <div className="flex-1 bg-slate-900 flex flex-col overflow-hidden relative">
+        <div className={`flex-1 ${rightPanelBg} flex flex-col overflow-hidden relative`}>
           {/* Header */}
           <div className="h-16 px-10 flex items-center bg-white/5 backdrop-blur-xl shrink-0 border-b border-white/5">
              <div className="flex items-center gap-4">
