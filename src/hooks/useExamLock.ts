@@ -60,7 +60,7 @@ export function useExamLock(active: boolean) {
         e.stopPropagation();
         
         // Show warning
-        alert("⚠️ You cannot close the tab during an exam!\n\nPlease complete your exam first or wait for the time to run out.");
+        alert("⚠️ You cannot close the tab during an exam!\n\nPlease complete your exam first.");
         return false;
       }
     };

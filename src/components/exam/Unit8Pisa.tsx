@@ -11,7 +11,6 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
   const { lang } = useLanguage();
   const isId = lang === "id";
   const [currentStep, setCurrentStep] = useState(0);
-  const [timer, setTimer] = useState("20:00");
   const [showWritingGuide, setShowWritingGuide] = useState(false);
   const [harvestRate, setHarvestRate] = useState(50);
   const [replanting, setReplanting] = useState(50);
@@ -26,25 +25,6 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
   const [q5Answer, setQ5Answer] = useState("");
   const [sessionSaved, setSessionSaved] = useState(false);
   const [videoWatched, setVideoWatched] = useState(false);
-
-  React.useEffect(() => {
-    let minutes = 20;
-    let seconds = 0;
-    const interval = setInterval(() => {
-      if (seconds === 0) {
-        if (minutes === 0) {
-          clearInterval(interval);
-          return;
-        }
-        minutes -= 1;
-        seconds = 59;
-      } else {
-        seconds -= 1;
-      }
-      setTimer(`${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   const getWordCount = (text: string) => {
     if (!text) return 0;
@@ -167,7 +147,7 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
 
       <main className="flex-1 flex overflow-hidden">
         {/* LEFT: Questions */}
-        <div className="w-[45%] bg-white border-r border-border/60 flex flex-col overflow-hidden">
+        <div className="w-[45%] bg-emerald-50/60 border-r border-emerald-200 flex flex-col overflow-hidden">
           <div className="p-6 overflow-y-auto h-full space-y-4 exam-scrollbar">
 
             {currentStep===0&&(
@@ -197,7 +177,9 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
                     </div>
                   )}
                   <div className="bg-muted/40 border border-border p-4 rounded-lg flex items-start gap-4">
-                    <div className="p-2 bg-primary/5 rounded text-primary shrink-0"></div>
+                    <div className="p-2 bg-primary/5 rounded text-primary shrink-0 flex items-center justify-center">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    </div>
                     <div>
                       <p className="text-[12px] text-foreground/70 mb-4">{isId
                         ? "Baca pendahuluan dengan saksama. Gunakan simulasi di sebelah kanan untuk membantu menjawab pertanyaan. Klik tombol di bawah atau tanda panah di atas untuk memulai."
@@ -444,7 +426,7 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
         </div>
 
         {/* RIGHT: Simulation */}
-        <div className="flex-1 bg-muted/20 flex flex-col overflow-hidden">
+        <div className="flex-1 bg-lime-50/50 flex flex-col overflow-hidden">
           <div className="p-6 h-full flex flex-col gap-5 overflow-y-auto exam-scrollbar">
             <div className="flex items-center justify-between border-b border-border/60 pb-3">
               <div className="flex items-center gap-2">
@@ -455,22 +437,29 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
 
             {/* ── DRAG-DROP PREVIEW: Rattan Production Chain ── */}
             <div className="bg-white rounded-2xl border-2 border-primary/20 p-4 shadow-sm">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-primary mb-3">{isId ? "🔗 RANTAI PRODUKSI ROTAN" : "🔗 RATTAN PRODUCTION CHAIN"}</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-primary mb-3 flex items-center gap-2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                {isId ? "RANTAI PRODUKSI ROTAN" : "RATTAN PRODUCTION CHAIN"}
+              </p>
               <div className="flex items-center gap-2 overflow-x-auto pb-2">
-                {[
-                  {icon:"🌿", label: isId?"Hutan":"Forest", color:"bg-emerald-100 border-emerald-400 text-emerald-800"},
-                  {icon:"→", label:"", color:""},
-                  {icon:"🪚", label: isId?"Panen":"Harvest", color:"bg-amber-100 border-amber-400 text-amber-800"},
-                  {icon:"→", label:"", color:""},
-                  {icon:"🏭", label: isId?"Workshop":"Workshop", color:"bg-blue-100 border-blue-400 text-blue-800"},
-                  {icon:"→", label:"", color:""},
-                  {icon:"🛋️", label: isId?"Produk":"Product", color:"bg-purple-100 border-purple-400 text-purple-800"},
-                  {icon:"→", label:"", color:""},
-                  {icon:"♻️", label: isId?"Limbah":"Waste", color:"bg-rose-100 border-rose-400 text-rose-800"},
-                ].map((item, i) => item.icon === "→"
+                {([
+                  {type:"leaf" as const, label: isId?"Hutan":"Forest", color:"bg-emerald-100 border-emerald-400 text-emerald-800"},
+                  {type:"arrow" as const, label:"", color:""},
+                  {type:"saw" as const, label: isId?"Panen":"Harvest", color:"bg-amber-100 border-amber-400 text-amber-800"},
+                  {type:"arrow" as const, label:"", color:""},
+                  {type:"factory" as const, label: isId?"Workshop":"Workshop", color:"bg-blue-100 border-blue-400 text-blue-800"},
+                  {type:"arrow" as const, label:"", color:""},
+                  {type:"sofa" as const, label: isId?"Produk":"Product", color:"bg-purple-100 border-purple-400 text-purple-800"},
+                  {type:"arrow" as const, label:"", color:""},
+                  {type:"recycle" as const, label: isId?"Limbah":"Waste", color:"bg-rose-100 border-rose-400 text-rose-800"},
+                ] as const).map((item, i) => item.type === "arrow"
                   ? <span key={i} className="text-muted-foreground font-bold text-xl shrink-0">→</span>
                   : <div key={i} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl border-2 shrink-0 ${item.color}`}>
-                      <span className="text-2xl">{item.icon}</span>
+                      {item.type === "leaf" && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>}
+                      {item.type === "saw" && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M6.34 6.34L3 3M12 2v3M2 12h3M6.34 17.66L3 21M21 3l-3.34 3.34M17.66 17.66L21 21M12 22v-3"/></svg>}
+                      {item.type === "factory" && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>}
+                      {item.type === "sofa" && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0Z"/><path d="M4 18v2M20 18v2"/></svg>}
+                      {item.type === "recycle" && <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg>}
                       <span className="text-[10px] font-bold">{item.label}</span>
                     </div>
                 )}
@@ -518,12 +507,13 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
                 <circle cx="120" cy="30" r="40" fill="url(#sunEffect)" />
                 <path d="M0,130 Q40,110 80,125 T160,115 L160,130 L0,130 Z" fill="#064e3b" opacity="0.3" />
 
-                {/* Forest Trees (Density based on harvest) */}
+                {/* Forest Trees (Density based on harvest) - organic shapes */}
                 {Array.from({ length: Math.round(Math.max(2, 8 - (harvestRate / 15))) }).map((_, i) => (
                   <g key={i} transform={`translate(${15 + i * 18}, 110)`} filter="url(#premium-shadow)">
-                    <rect x="-1.5" y="-15" width="3" height="15" fill="#451a03" />
-                    <path d="M-10,-15 L0,-35 L10,-15 Z" fill="url(#treeGrad)" />
-                    <path d="M-8,-25 L0,-42 L8,-25 Z" fill="#34d399" opacity="0.9" />
+                    <path d="M-1.5,0 Q-2,-7.5 0,-15 Q2,-7.5 1.5,0 Z" fill="#451a03" />
+                    <ellipse cx="0" cy="-22" rx="10" ry="12" fill="url(#treeGrad)" />
+                    <ellipse cx="-3" cy="-28" rx="6" ry="7" fill="#34d399" opacity="0.9" />
+                    <ellipse cx="3" cy="-26" rx="5" ry="6" fill="#22c55e" opacity="0.8" />
                   </g>
                 ))}
 
@@ -533,12 +523,13 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
                     stroke="#a3e635" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeDasharray="80" strokeDashoffset="0" className="opacity-80" />
                 ))}
 
-                {/* Replanting Shoots */}
+                {/* Replanting Shoots - organic ground */}
                 <g transform="translate(0, 130)">
-                  <rect width="160" height="30" rx="4" fill="#14532d" />
+                  <path d="M0,0 Q40,-2 80,0 Q120,-2 160,0 L160,30 Q120,32 80,30 Q40,32 0,30 Z" fill="#14532d" />
                   {Array.from({ length: Math.floor(replanting / 12) }).map((_, i) => (
                     <g key={i} transform={`translate(${10 + i * 14}, 18)`}>
                       <path d="M0,0 Q-3,-6 0,-10 Q3,-6 0,0" fill="#bef264" />
+                      <path d="M0,0 Q-2,-5 0,-8 Q2,-5 0,0" fill="#a3e635" opacity="0.6"/>
                       <line y2="-6" stroke="#4ade80" strokeWidth="1" />
                     </g>
                   ))}
@@ -548,17 +539,17 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
                 {/* Workshop Connector */}
                 <path d="M165,80 L185,80" stroke="#94a3b8" strokeWidth="2" strokeDasharray="4,3" markerEnd="url(#arrowhead)" />
 
-                {/* Workshop Building */}
+                {/* Workshop Building - organic shape */}
                 <g transform="translate(195, 20)" filter="url(#premium-shadow)">
-                  <rect width="135" height="110" rx="16" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
-                  <path d="M0,30 L135,30" stroke="#f1f5f9" strokeWidth="1" />
+                  <path d="M0,16 Q0,0 16,0 L119,0 Q135,0 135,16 L135,94 Q135,110 119,110 L16,110 Q0,110 0,94 Z" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1.5" />
+                  <path d="M16,30 Q67.5,28 119,30" stroke="#f1f5f9" strokeWidth="1" fill="none"/>
                   <text x="67.5" y="20" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#64748b" style={{letterSpacing: '0.5px'}}>{isId ? "BALAI PRODUKSI" : "PRODUCTION SITE"}</text>
                   
-                  {/* Rattan Inventory */}
+                  {/* Rattan Inventory - organic bundles */}
                   <g transform="translate(25, 45)">
-                     <rect width="50" height="5" rx="2.5" fill="#d97706" />
-                     <rect y="10" width="45" height="5" rx="2.5" fill="#b45309" opacity="0.8" />
-                     <rect x="5" y="20" width="55" height="5" rx="2.5" fill="#92400e" opacity="0.7" />
+                     <ellipse cx="25" cy="2.5" rx="25" ry="2.5" fill="#d97706" />
+                     <ellipse cx="22.5" cy="12.5" rx="22.5" ry="2.5" fill="#b45309" opacity="0.8" />
+                     <ellipse cx="27.5" cy="22.5" rx="27.5" ry="2.5" fill="#92400e" opacity="0.7" />
                      <text x="25" y="38" textAnchor="middle" fontSize="6" fontWeight="bold" fill="#94a3b8">{isId ? "Stok Rotan" : "Rattan Stock"}</text>
                   </g>
                   
@@ -614,14 +605,18 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
             {/* Outputs */}
             <div className="grid grid-cols-2 gap-3">
               {[
-                { label: isId?"Keanekaragaman Hayati":"Biodiversity", val: outputs.biodiversity, icon: "🌿" },
-                { label: isId?"Pendapatan Lokal":"Local Income", val: outputs.localIncome, icon: "💰" },
-                { label: isId?"Dampak Lingkungan":"Env Impact", val: outputs.envImpact, icon: "🌍" },
-                { label: isId?"Skor Keberlanjutan":"Sustain. Score", val: outputs.sustainability, icon: "📈" },
+                { label: isId?"Keanekaragaman Hayati":"Biodiversity", val: outputs.biodiversity, iconType: "leaf" as const },
+                { label: isId?"Pendapatan Lokal":"Local Income", val: outputs.localIncome, iconType: "money" as const },
+                { label: isId?"Dampak Lingkungan":"Env Impact", val: outputs.envImpact, iconType: "globe" as const },
+                { label: isId?"Skor Keberlanjutan":"Sustain. Score", val: outputs.sustainability, iconType: "chart" as const },
               ].map(item => (
                 <div key={item.label} className="bg-white rounded-2xl border border-border/50 p-4 text-center shadow-sm hover:shadow-md transition-all border-b-4 border-b-border">
-                  <div className="text-[9px] text-muted-foreground mb-2 font-black tracking-widest uppercase flex items-center justify-center gap-1">
-                    <span>{item.icon}</span> {item.label}
+                  <div className="text-[9px] text-muted-foreground mb-2 font-black tracking-widest uppercase flex items-center justify-center gap-1.5">
+                    {item.iconType === "leaf" && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>}
+                    {item.iconType === "money" && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>}
+                    {item.iconType === "globe" && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>}
+                    {item.iconType === "chart" && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>}
+                    {item.label}
                   </div>
                   <div className="text-[1.5rem] font-black text-foreground leading-none mb-2">
                     {typeof item.val === 'number' ? item.val : (isId ? {Low:"Rendah",Medium:"Sedang",High:"Tinggi"}[item.val] : item.val)}

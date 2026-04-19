@@ -1,7 +1,6 @@
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useExamTimer } from "@/hooks/useExamTimer";
 import { useExamSession } from "@/hooks/useExamSession";
 import { useExamLock } from "@/hooks/useExamLock";
 import { getQuestionsForUnit } from "@/data/examQuestions";
@@ -35,10 +34,6 @@ const Quiz = () => {
   const questions = getQuestionsForUnit(selectedUnit);
   const meta = getUnitMeta(selectedUnit);
 
-  const handleTimeUp = useCallback(() => {
-    if (selectedUnit <= 7) handleSubmit();
-  }, [selectedUnit]);
-  const { formatted, isWarning } = useExamTimer({ initialMinutes: 20, onTimeUp: handleTimeUp });
 
   const { completeSession, trackQuestionAttempt } = useExamSession({
     unit: selectedUnit,
@@ -293,12 +288,6 @@ const Quiz = () => {
                     </div>
                     <span className="font-medium">{selectedUnit >= 8 ? 5 : questions.length} {isId ? "soal" : "questions"}</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                    <span className="font-medium">20 {isId ? "menit" : "minutes"}</span>
-                  </div>
                 </div>
               </div>
               <button
@@ -361,6 +350,18 @@ const Quiz = () => {
     );
   }
 
+  // Per-unit color themes: [leftBg, rightBg, accent]
+  const unitColors: Record<number, { left: string; right: string; border: string }> = {
+    1:  { left: "bg-amber-50",   right: "bg-white",        border: "border-amber-200" },
+    2:  { left: "bg-orange-50",  right: "bg-orange-50/30", border: "border-orange-200" },
+    3:  { left: "bg-stone-50",   right: "bg-amber-50/40",  border: "border-stone-200" },
+    4:  { left: "bg-yellow-50",  right: "bg-yellow-50/30", border: "border-yellow-200" },
+    5:  { left: "bg-green-50",   right: "bg-emerald-50/40",border: "border-green-200" },
+    6:  { left: "bg-teal-50",    right: "bg-cyan-50/40",   border: "border-teal-200" },
+    7:  { left: "bg-blue-50",    right: "bg-indigo-50/40", border: "border-blue-200" },
+  };
+  const colors = unitColors[selectedUnit] ?? { left: "bg-white", right: "bg-muted/10", border: "border-border" };
+
   return (
     <div className="h-screen flex flex-col overflow-hidden pt-16">
       <div className="bg-white border-b border-border/60 px-4 py-2 shrink-0 flex items-center gap-3">
@@ -378,14 +379,14 @@ const Quiz = () => {
       />
 
       <div className="flex-1 flex overflow-hidden">
-        <div className="hidden md:block md:w-1/2 border-r border-exam-divider overflow-hidden">
+        <div className={`hidden md:block md:w-1/2 border-r ${colors.border} overflow-hidden ${colors.left}`}>
           <StimulusPanel 
             unit={selectedUnit as 1 | 2 | 3 | 4 | 5 | 6 | 7} 
             imageUrl={(meta as any).imageUrl}
             videoUrl={(meta as any).videoUrl}
           />
         </div>
-        <div className="w-full md:w-1/2 overflow-hidden">
+        <div className={`w-full md:w-1/2 overflow-hidden ${colors.right}`}>
           <QuestionPanel
             question={questions[current]}
             answer={answers[questions[current].id]}

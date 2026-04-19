@@ -584,6 +584,12 @@ export const examQuestionsUnit7: ExamQuestion[] = [
     ],
     correct: "Cultural awareness can influence fishing behavior and marine sustainability.",
   },
+  {
+    id: 5,
+    type: "open",
+    question: "The local government in Cirebon wants to improve marine sustainability. Write a short policy recommendation based on evidence from the simulation.\n\nYour recommendation should consider:\n• fishing intensity\n• community awareness\n• waste management\n• conservation efforts",
+    questionIdn: "Pemerintah daerah di Cirebon ingin meningkatkan keberlanjutan laut. Tuliskan rekomendasi kebijakan singkat berdasarkan bukti dari simulasi.\n\nRekomendasi Anda harus mempertimbangkan:\n• intensitas penangkapan ikan\n• kesadaran masyarakat\n• pengelolaan limbah\n• upaya konservasi",
+  },
 ];
 
 export const examQuestionsUnit8: ExamQuestion[] = [];

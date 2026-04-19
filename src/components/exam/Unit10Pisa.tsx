@@ -33,7 +33,6 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
   const { lang } = useLanguage();
   const isId = lang === "id";
   const [currentStep, setCurrentStep] = useState(0);
-  const [timer, setTimer] = useState("20:00");
   const [showWritingGuide, setShowWritingGuide] = useState(false);
   const [showWritingGuide5, setShowWritingGuide5] = useState(false);
   const [videoWatched, setVideoWatched] = useState(false);
@@ -104,24 +103,7 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
     create();
   }, []);
 
-  useEffect(() => {
-    let minutes = 20;
-    let seconds = 0;
-    const interval = setInterval(() => {
-      if (seconds === 0) {
-        if (minutes === 0) {
-          clearInterval(interval);
-          return;
-        }
-        minutes -= 1;
-        seconds = 59;
-      } else {
-        seconds -= 1;
-      }
-      setTimer(`${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+
 
   // Auto-save answers every time they change
   useEffect(() => {
@@ -235,9 +217,9 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
           <rect y="80" width="340" height="40" fill="#f8fafc" opacity="0.5"/>
           <line x1="0" y1="80" x2="340" y2="80" stroke="#e2e8f0" strokeWidth="1"/>
 
-          {/* Input Stage (Logistics) */}
+          {/* Input Stage (Logistics) - organic shape */}
           <g transform="translate(10, 20)" filter="url(#shadow-u10)">
-            <rect width="75" height="70" rx="14" fill="#fff" stroke="#e2e8f0" strokeWidth="1.5" />
+            <path d="M14,0 Q75,0 75,14 Q75,70 61,70 Q37.5,72 14,70 Q0,70 0,14 Q0,0 14,0" fill="#fff" stroke="#e2e8f0" strokeWidth="1.5" />
             {distance === "Local" ? (
               <g transform="translate(22, 12) scale(0.6)">
                 <path d="M10,40 L45,40 L45,20 L30,20 L10,30 Z" fill="#64748b" />
@@ -255,9 +237,9 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
             <text x="37.5" y="68" textAnchor="middle" fontSize="5.5" fill="#94a3b8" fontWeight="bold">{distance}</text>
           </g>
 
-          {/* Prep Stage (Ingredients) */}
+          {/* Prep Stage (Ingredients) - organic shape */}
           <g transform="translate(110, 20)" filter="url(#shadow-u10)">
-            <rect width="85" height="70" rx="14" fill={protein === "Plant-based" ? "#f0fdf4" : "#fff1f2"} stroke={protein === "Plant-based" ? "#86efac" : "#fca5a5"} strokeWidth="1.5" />
+            <path d="M14,0 Q42.5,0 71,0 Q85,0 85,14 Q85,70 71,70 Q42.5,72 14,70 Q0,70 0,14 Q0,0 14,0" fill={protein === "Plant-based" ? "#f0fdf4" : "#fff1f2"} stroke={protein === "Plant-based" ? "#86efac" : "#fca5a5"} strokeWidth="1.5" />
             {protein === "Plant-based" ? (
               <g transform="translate(27, 12) scale(0.7)">
                 <rect x="5" y="5" width="30" height="30" rx="4" fill="#86efac" />
@@ -273,22 +255,23 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
             <text x="42.5" y="68" textAnchor="middle" fontSize="5.5" fill="#94a3b8" fontWeight="bold">{portion} Portion</text>
           </g>
 
-          {/* Treatment Stage */}
+          {/* Treatment Stage - organic shape */}
           <g transform="translate(225, 20)" filter="url(#shadow-u10)">
-            <rect width="105" height="70" rx="14" fill={treatment === "Full" ? "#f0fdf4" : treatment === "Partial" ? "#fffbeb" : "#f8fafc"} stroke={treatment === "Full" ? "#22c55e" : treatment === "Partial" ? "#fbbf24" : "#e2e8f0"} strokeWidth="1.5" strokeDasharray={treatment === "None" ? "4" : "0"} />
+            <path d="M14,0 Q52.5,0 91,0 Q105,0 105,14 Q105,70 91,70 Q52.5,72 14,70 Q0,70 0,14 Q0,0 14,0" fill={treatment === "Full" ? "#f0fdf4" : treatment === "Partial" ? "#fffbeb" : "#f8fafc"} stroke={treatment === "Full" ? "#22c55e" : treatment === "Partial" ? "#fbbf24" : "#e2e8f0"} strokeWidth="1.5" strokeDasharray={treatment === "None" ? "4" : "0"} />
             
             {/* Treatment Icons (Detailed) */}
             <g transform="translate(20, 28)">
-               <circle r="11" fill={treatment === "None" ? "#e2e8f0" : "#22c55e"} opacity={treatment === "None" ? 0.3 : 0.15} />
-               <path d="M-5,-5 L5,5 M5,-5 L-5,5" stroke={treatment === "None" ? "#94a3b8" : "#166534"} strokeWidth="1.5" opacity="0.6" transform="scale(0.7)" />
+               <circle r="11" fill={treatment === "None" ? "#fecaca" : "#bbf7d0"} opacity="0.8" />
+               <line x1="-7" y1="-7" x2="7" y2="7" stroke={treatment === "None" ? "#dc2626" : "#16a34a"} strokeWidth="2" strokeLinecap="round"/>
+               <line x1="7" y1="-7" x2="-7" y2="7" stroke={treatment === "None" ? "#dc2626" : "#16a34a"} strokeWidth="2" strokeLinecap="round"/>
             </g>
             <g transform="translate(52.5, 28)">
-               <circle r="11" fill={treatment === "Full" ? "#22c55e" : "#e2e8f0"} opacity={treatment === "Full" ? 0.15 : 0.3} />
-               <path d="M-4,4 L4,4 L0,-6 Z" fill={treatment === "Full" ? "#166534" : "#94a3b8"} opacity="0.6" transform="scale(0.8)"/>
+               <circle r="11" fill={treatment === "Partial" ? "#fef9c3" : treatment === "Full" ? "#bbf7d0" : "#f1f5f9"} opacity="0.8" />
+               <polygon points="0,-8 8,6 -8,6" fill={treatment === "Partial" ? "#ca8a04" : treatment === "Full" ? "#16a34a" : "#94a3b8"} opacity="0.7"/>
             </g>
             <g transform="translate(85, 28)">
-               <circle r="11" fill={treatment === "Full" ? "#22c55e" : "#e2e8f0"} opacity={treatment === "Full" ? 0.15 : 0.3} />
-               <path d="M0,6 Q-6,6 -6,0 Q-6,-6 0,-6 Q6,-6 6,0 Q6,6 0,6" fill={treatment === "Full" ? "#166534" : "#94a3b8"} opacity="0.6" transform="scale(0.6)"/>
+               <circle r="11" fill={treatment === "Full" ? "#bbf7d0" : "#f1f5f9"} opacity="0.8" />
+               <path d="M-6,0 Q-6,-6 0,-6 Q6,-6 6,0 Q6,6 0,6 Q-6,6 -6,0" fill={treatment === "Full" ? "#16a34a" : "#94a3b8"} opacity="0.6"/>
             </g>
 
             <text x="52.5" y="60" textAnchor="middle" fontSize="6.5" fontWeight="black" fill="#64748b" style={{letterSpacing: '0.5px'}}>{isId ? "PENGOLAHAN" : "TREATMENT"}</text>
@@ -306,10 +289,16 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
           </defs>
         </svg>
         <div className="mt-2 text-center">
-            <p className="text-[10px] text-muted-foreground italic">
-              {treatment === "None" 
-                ? (isId ? "⚠️ Risiko pencemaran air sangat tinggi tanpa pengolahan" : "⚠️ High water pollution risk without treatment")
-                : (isId ? "✅ Pengolahan aktif melindungi ekosistem" : "✅ Active treatment protects the ecosystem")}
+            <p className="text-[10px] text-muted-foreground italic flex items-center justify-center gap-1.5">
+              {treatment === "None"
+                ? <>
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    {isId ? "Risiko pencemaran air sangat tinggi tanpa pengolahan" : "High water pollution risk without treatment"}
+                  </>
+                : <>
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    {isId ? "Pengolahan aktif melindungi ekosistem" : "Active treatment protects the ecosystem"}
+                  </>}
             </p>
         </div>
       </div>
@@ -405,9 +394,9 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
             </filter>
           </defs>
 
-          {/* 1. Input Source (Truck/Farm) */}
+          {/* 1. Input Source (Truck/Farm) - organic shape */}
           <g transform="translate(10, 35)" filter="url(#sim-glow)">
-             <rect width="55" height="40" rx="8" fill="url(#tankGrad)" stroke="#cbd5e1" strokeWidth="1" />
+             <path d="M8,0 Q27.5,0 47,0 Q55,0 55,8 Q55,40 47,40 Q27.5,42 8,40 Q0,40 0,8 Q0,0 8,0" fill="url(#tankGrad)" stroke="#cbd5e1" strokeWidth="1" />
              <path d="M10,25 L25,10 L40,25 L40,35 L10,35 Z" fill="#94a3b8" opacity="0.6" />
              <text x="27.5" y="34" textAnchor="middle" fontSize="6" fontWeight="bold" fill="#64748b">{distance === "Local" ? (isId ? "Lokal" : "Local") : (isId ? "Impor" : "Non-local")}</text>
              <text x="27.5" y="48" textAnchor="middle" fontSize="5" fontWeight="bold" fill="#94a3b8" opacity="0.8 uppercase tracking-widest">{isId ? "SUMBER" : "SOURCE"}</text>
@@ -416,11 +405,21 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
           {/* Connect 1-2 */}
           <line x1="65" y1="55" x2="85" y2="55" stroke="#cbd5e1" strokeWidth="2.5" strokeDasharray="4,2" />
 
-          {/* 2. Preparation (Kitchen/Factory) */}
+          {/* 2. Preparation (Kitchen/Factory) - organic shape */}
           <g transform="translate(90, 30)" filter="url(#sim-glow)">
-             <rect width="65" height="50" rx="10" fill="url(#tankGrad)" stroke="#cbd5e1" strokeWidth="1" />
+             <path d="M10,0 Q32.5,0 55,0 Q65,0 65,10 Q65,50 55,50 Q32.5,52 10,50 Q0,50 0,10 Q0,0 10,0" fill="url(#tankGrad)" stroke="#cbd5e1" strokeWidth="1" />
              <circle cx="32.5" cy="20" r="12" fill={protein === "Plant-based" ? "#dcfce7" : "#fee2e2"} />
-             <text x="32.5" y="23" textAnchor="middle" fontSize="10">{protein === "Plant-based" ? "🌿" : "🥩"}</text>
+             {protein === "Plant-based"
+               ? <g transform="translate(20.5, 8)">
+                   <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" fill="#22c55e" stroke="none"/>
+                   <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" stroke="#16a34a" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+                 </g>
+               : <g transform="translate(20.5, 8)">
+                   <path d="M6.5 22c0-5.5 4-8 6.5-8s6.5 2.5 6.5 8" fill="#f87171" stroke="#dc2626" strokeWidth="1"/>
+                   <path d="M6.5 14c0-3 4-5 6.5-5s6.5 2 6.5 5" fill="#fca5a5" stroke="#dc2626" strokeWidth="1"/>
+                   <circle cx="9.5" cy="18" r="2" fill="#fecaca"/>
+                   <circle cx="16" cy="18" r="2" fill="#fecaca"/>
+                 </g>}
              <text x="32.5" y="43" textAnchor="middle" fontSize="6" fontWeight="bold" fill="#475569">{isId ? "PROSES" : "PROCESS"}</text>
           </g>
 
@@ -437,9 +436,9 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
           {/* Connect 3-4 (Waste) */}
           <path d="M230,55 Q245,55 245,70" fill="none" strokeWidth="2.5" strokeDasharray={treatment === "None" ? "4,2" : "0"} stroke={treatment === "None" ? "#ef4444" : "#22c55e"} />
 
-          {/* 4. Treatment Tank */}
+          {/* 4. Treatment Tank - organic shape */}
           <g transform="translate(250, 45)" filter="url(#sim-glow)">
-             <rect width="60" height="45" rx="6" fill="#f8fafc" stroke={treatment === "Full" ? "#22c55e" : treatment === "Partial" ? "#fbbf24" : "#cbd5e1"} strokeWidth="1.5" />
+             <path d="M6,0 Q30,0 54,0 Q60,0 60,6 Q60,45 54,45 Q30,47 6,45 Q0,45 0,6 Q0,0 6,0" fill="#f8fafc" stroke={treatment === "Full" ? "#22c55e" : treatment === "Partial" ? "#fbbf24" : "#cbd5e1"} strokeWidth="1.5" />
              <rect x="3" y={treatment === "Full" ? 25 : treatment === "Partial" ? 15 : 5} width="54" height={treatment === "Full" ? 17 : treatment === "Partial" ? 27 : 37} rx="2" fill="url(#waterGrad)" />
              <text x="30" y="55" textAnchor="middle" fontSize="6" fontWeight="black" fill="#64748b" opacity="0.6 uppercase tracking-widest">{isId ? "LIMBAH" : "WASTE"}</text>
           </g>
@@ -546,7 +545,7 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
       <main className="flex-1 flex overflow-hidden" style={{ height: 'calc(100vh - 64px)' }}>
 
         {/* LEFT: Questions */}
-        <div className="w-[45%] bg-white border-r border-border/60 flex flex-col overflow-hidden">
+        <div className="w-[45%] bg-orange-50/60 border-r border-orange-200 flex flex-col overflow-hidden">
           <div className="p-6 overflow-y-auto flex-1 space-y-4 exam-scrollbar" style={{ maxHeight: '100%' }}>
 
             {/* STEP 0: Introduction */}
@@ -870,7 +869,7 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
         </div>
 
         {/* RIGHT: Simulation */}
-        <div className="flex-1 bg-muted/10 border-l border-border/60 overflow-hidden">
+        <div className="flex-1 bg-amber-50/50 border-l border-amber-200 overflow-hidden">
           <SimPanel />
         </div>
 

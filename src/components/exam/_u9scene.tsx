@@ -41,9 +41,12 @@
                   <filter id="u9haze"><feGaussianBlur stdDeviation="1"/></filter>
                 </defs>
 
-                {/* SKY */}
+                {/* SKY - gradient with organic horizon */}
                 <rect width="400" height="108" fill="url(#u9sky)"/>
                 <rect width="400" height="108" fill="white" opacity="0.03"/>
+                {/* Subtle cloud wisps */}
+                <path d="M20,30 Q40,25 60,30 Q80,35 100,30" stroke="white" strokeWidth="8" opacity="0.05" fill="none"/>
+                <path d="M280,45 Q300,40 320,45 Q340,50 360,45" stroke="white" strokeWidth="6" opacity="0.04" fill="none"/>
                 {/* Sun */}
                 {outputs.waterQuality==="Good" && <g transform="translate(358,24)">
                   <circle r="24" fill="url(#u9sun)" opacity="0.7"/>
@@ -69,9 +72,9 @@
                   <ellipse cx="158" cy="18" rx="21" ry="8" fill="#94a3b8"/>
                   <ellipse cx="176" cy="12" rx="15" ry="7" fill="#94a3b8"/>
                 </g>}
-                {/* Ground */}
-                <rect x="0" y="100" width="400" height="14" fill="url(#u9ground)" opacity="0.88"/>
-                <rect x="0" y="100" width="400" height="2" fill="#0f172a" opacity="0.07"/>
+                {/* Ground - organic uneven surface */}
+                <path d="M0,100 Q50,98 100,100 Q150,102 200,100 Q250,98 300,100 Q350,102 400,100 L400,114 Q350,116 300,114 Q250,112 200,114 Q150,116 100,114 Q50,112 0,114 Z" fill="url(#u9ground)" opacity="0.88"/>
+                <path d="M0,100 Q50,98 100,100 Q150,102 200,100 Q250,98 300,100 Q350,102 400,100" fill="none" stroke="#0f172a" strokeWidth="0.5" opacity="0.07"/>
                 {/* Grass tufts */}
                 {outputs.ecosystemRisk!=="High" && [252,270,282,297,314,330,347,362,380].map((x,i)=>(
                   <g key={x} transform={`translate(${x},100)`}>
@@ -81,15 +84,18 @@
                   </g>
                 ))}
 
-                {/* BG trees (hazy) */}
+                {/* BG trees (hazy) - organic shapes */}
                 <g opacity="0.3" filter="url(#u9haze)">
                   {[312,332,352,372,392].map((x,i)=>{
                     const h=[18,22,16,20,15][i];
                     const lf=outputs.ecosystemRisk==="High"?"#78350f":"#166534";
-                    return <g key={x}><rect x={x+2} y={100-h} width="4" height={h} fill="#4b5563"/><ellipse cx={x+4} cy={100-h-8} rx={[9,11,8,10,8][i]} ry={[11,13,9,12,10][i]} fill={lf}/></g>;
+                    return <g key={x}>
+                      <path d={`M${x+2},${100-h} Q${x},${100-h/2} ${x+4},${100} Q${x+8},${100-h/2} ${x+6},${100-h} Z`} fill="#4b5563"/>
+                      <ellipse cx={x+4} cy={100-h-8} rx={[9,11,8,10,8][i]} ry={[11,13,9,12,10][i]} fill={lf}/>
+                    </g>;
                   })}
                 </g>
-                {/* Foreground trees */}
+                {/* Foreground trees - organic shapes */}
                 {([
                   {x:266,h:40,r1:16,r2:11},
                   {x:290,h:32,r1:13,r2:9},
@@ -100,14 +106,17 @@
                   const c1=ok?["#15803d","#16a34a","#22c55e","#4ade80"][i]:["#b45309","#d97706","#b45309","#d97706"][i];
                   const c2=ok?["#166534","#15803d","#16a34a","#22c55e"][i]:["#92400e","#b45309","#92400e","#b45309"][i];
                   return <g key={i} filter="url(#u9shadow)">
-                    <rect x={t.x+2} y={100-t.h} width="5" height={t.h} rx="2.5" fill={ok?"#92400e":"#78350f"}/>
-                    <rect x={t.x+5} y={100-t.h} width="2" height={t.h} rx="1" fill="#0f172a" opacity="0.12"/>
+                    {/* Trunk - organic tapered shape */}
+                    <path d={`M${t.x+2},${100-t.h} Q${t.x},${100-t.h/2} ${t.x+4},${100} Q${t.x+8},${100-t.h/2} ${t.x+6},${100-t.h} Z`} fill={ok?"#92400e":"#78350f"}/>
+                    <path d={`M${t.x+4},${100-t.h} Q${t.x+5},${100-t.h/2} ${t.x+5},${100}`} fill="#0f172a" opacity="0.12"/>
+                    {/* Foliage - organic layered circles */}
                     <ellipse cx={t.x+4} cy={100-t.h-6} rx={t.r1} ry={t.r1*0.9} fill={c1} opacity={ok?0.92:0.55}/>
                     <ellipse cx={t.x+5} cy={100-t.h-15} rx={t.r2} ry={t.r2*1.1} fill={c2} opacity={ok?0.85:0.45}/>
                     <ellipse cx={t.x+7} cy={100-t.h-17} rx={t.r2*0.5} ry={t.r2*0.4} fill="white" opacity={ok?0.12:0.04}/>
+                    {/* Dead branches if not healthy */}
                     {!ok && <>
-                      <line x1={t.x+4} y1={100-t.h+5} x2={t.x-6} y2={100-t.h-4} stroke="#78350f" strokeWidth="1.5" opacity="0.7"/>
-                      <line x1={t.x+4} y1={100-t.h+8} x2={t.x+14} y2={100-t.h} stroke="#78350f" strokeWidth="1.2" opacity="0.6"/>
+                      <path d={`M${t.x+4},${100-t.h+5} Q${t.x-2},${100-t.h} ${t.x-6},${100-t.h-4}`} stroke="#78350f" strokeWidth="1.5" fill="none" opacity="0.7"/>
+                      <path d={`M${t.x+4},${100-t.h+8} Q${t.x+10},${100-t.h+2} ${t.x+14},${100-t.h}`} stroke="#78350f" strokeWidth="1.2" fill="none" opacity="0.6"/>
                     </>}
                   </g>;
                 })}
@@ -115,28 +124,36 @@
                 {/* Factory */}
                 <g transform="translate(14,38)" filter="url(#u9shadow)">
                   <ellipse cx="32" cy="62" rx="36" ry="5" fill="#0f172a" opacity="0.15"/>
-                  <rect x="10" y="-18" width="9" height="32" rx="3" fill="#475569"/>
-                  <rect x="10" y="-18" width="4" height="32" rx="2" fill="#64748b"/>
-                  <rect x="28" y="-12" width="8" height="26" rx="3" fill="#475569"/>
-                  <rect x="28" y="-12" width="3" height="26" rx="1.5" fill="#64748b"/>
-                  <rect x="8" y="-20" width="13" height="5" rx="2" fill="#334155"/>
-                  <rect x="26" y="-14" width="12" height="4" rx="2" fill="#334155"/>
-                  <rect x="0" y="14" width="62" height="48" rx="3" fill="url(#u9wall)"/>
-                  <rect x="48" y="14" width="14" height="48" rx="3" fill="#0f172a" opacity="0.1"/>
-                  <polygon points="0,14 31,2 62,14" fill="url(#u9roof)"/>
-                  <polygon points="48,14 31,2 62,14" fill="#0f172a" opacity="0.12"/>
-                  <rect x="6" y="22" width="12" height="9" rx="1.5" fill="#bae6fd" opacity="0.8"/>
-                  <rect x="6" y="22" width="6" height="9" rx="1" fill="white" opacity="0.15"/>
-                  <rect x="22" y="22" width="12" height="9" rx="1.5" fill="#bae6fd" opacity="0.8"/>
-                  <rect x="22" y="22" width="6" height="9" rx="1" fill="white" opacity="0.15"/>
-                  <rect x="38" y="22" width="12" height="9" rx="1.5" fill="#bae6fd" opacity="0.8"/>
-                  <rect x="38" y="22" width="6" height="9" rx="1" fill="white" opacity="0.15"/>
-                  <rect x="24" y="38" width="14" height="24" rx="2" fill="#1e293b"/>
-                  <rect x="24" y="38" width="7" height="24" rx="1" fill="#0f172a" opacity="0.18"/>
+                  {/* Chimney 1 - organic tapered shape */}
+                  <path d="M12,-18 Q10,0 11,14 L18,14 Q19,0 17,-18 Z" fill="#475569"/>
+                  <path d="M12,-18 Q10,0 11,14 L14,14 L14,-18 Z" fill="#64748b" opacity="0.6"/>
+                  <ellipse cx="14.5" cy="-18" rx="3" ry="1.5" fill="#334155"/>
+                  {/* Chimney 2 - organic tapered shape */}
+                  <path d="M30,-12 Q28,5 29,14 L35,14 Q36,5 34,-12 Z" fill="#475569"/>
+                  <path d="M30,-12 Q28,5 29,14 L31,14 L31,-12 Z" fill="#64748b" opacity="0.6"/>
+                  <ellipse cx="32.5" cy="-12" rx="2.5" ry="1.2" fill="#334155"/>
+                  {/* Main building - organic shape */}
+                  <path d="M0,14 Q-2,30 2,62 L62,62 Q66,30 64,14 Z" fill="url(#u9wall)"/>
+                  <path d="M48,14 Q50,30 48,62 L62,62 Q64,30 64,14 Z" fill="#0f172a" opacity="0.08"/>
+                  {/* Roof - curved organic shape */}
+                  <path d="M-5,14 Q31,-5 67,14 Q31,8 -5,14" fill="url(#u9roof)"/>
+                  <path d="M48,14 Q31,-5 67,14" fill="#0f172a" opacity="0.1"/>
+                  {/* Windows - rounded organic shapes */}
+                  <ellipse cx="12" cy="26" rx="6" ry="4.5" fill="#bae6fd" opacity="0.85"/>
+                  <ellipse cx="9" cy="26" rx="2.5" ry="4.5" fill="white" opacity="0.2"/>
+                  <ellipse cx="28" cy="26" rx="6" ry="4.5" fill="#bae6fd" opacity="0.85"/>
+                  <ellipse cx="25" cy="26" rx="2.5" ry="4.5" fill="white" opacity="0.2"/>
+                  <ellipse cx="44" cy="26" rx="6" ry="4.5" fill="#bae6fd" opacity="0.85"/>
+                  <ellipse cx="41" cy="26" rx="2.5" ry="4.5" fill="white" opacity="0.2"/>
+                  {/* Door - arched organic shape */}
+                  <path d="M24,38 Q24,32 31,32 Q38,32 38,38 L38,62 L24,62 Z" fill="#1e293b"/>
+                  <path d="M24,38 Q24,32 27.5,32 L27.5,62 L24,62 Z" fill="#0f172a" opacity="0.15"/>
                   <circle cx="36" cy="50" r="1.5" fill="#94a3b8"/>
-                  <rect x="8" y="34" width="14" height="6" rx="1" fill="#1e293b" opacity="0.7"/>
-                  <text x="15" y="39" textAnchor="middle" fontSize="4" fontWeight="bold" fill="#94a3b8">BATIK</text>
-                  <rect x="28" y="62" width="8" height="4" rx="1" fill="#475569"/>
+                  {/* Sign - organic banner */}
+                  <path d="M8,34 Q15,32 22,34 L22,38 Q15,36 8,38 Z" fill="#1e293b" opacity="0.7"/>
+                  <text x="15" y="38" textAnchor="middle" fontSize="4" fontWeight="bold" fill="#94a3b8">BATIK</text>
+                  {/* Base - organic ground connection */}
+                  <ellipse cx="32" cy="64" rx="8" ry="2" fill="#475569"/>
                 </g>
                 {/* Smoke */}
                 <g filter="url(#u9blur)">
@@ -159,62 +176,69 @@
                 <line x1="50" y1="100" x2="50" y2="114" stroke={treatment==="None"?"#ef4444":"#22c55e"} strokeWidth="3.5" strokeLinecap="round"/>
                 <line x1="50" y1="114" x2={treatment!=="None"?96:148} y2="114" stroke={treatment==="None"?"#ef4444":"#22c55e"} strokeWidth="3.5" strokeLinecap="round"/>
                 {treatment==="None" && <line x1="148" y1="114" x2="148" y2="120" stroke="#ef4444" strokeWidth="3.5" strokeLinecap="round"/>}
-                {/* IPAL */}
+                {/* IPAL - organic tank design */}
                 {treatment!=="None" && <g transform="translate(96,88)" filter="url(#u9shadow)">
                   <ellipse cx="24" cy="26" rx="26" ry="4" fill="#0f172a" opacity="0.13"/>
-                  <rect width="48" height="28" rx="5" fill="url(#u9ipal)" stroke="#22c55e" strokeWidth="1.5"/>
-                  <rect x="0" y="0" width="24" height="28" rx="5" fill="white" opacity="0.07"/>
-                  <rect x="5" y="5" width="16" height="16" rx="3" fill="#dcfce7" stroke="#4ade80" strokeWidth="1"/>
-                  <rect x="27" y="5" width="16" height="16" rx="3" fill="#dcfce7" stroke="#4ade80" strokeWidth="1"/>
+                  {/* Main tank - rounded organic shape */}
+                  <path d="M2,4 Q0,14 4,26 L44,26 Q48,14 46,4 Q24,0 2,4" fill="url(#u9ipal)" stroke="#22c55e" strokeWidth="1.5"/>
+                  <path d="M2,4 Q0,14 4,26 L24,26 L24,4 Q13,2 2,4" fill="white" opacity="0.07"/>
+                  {/* Treatment chamber 1 - circular */}
+                  <circle cx="13" cy="13" r="8" fill="#dcfce7" stroke="#4ade80" strokeWidth="1"/>
                   <circle cx="13" cy="13" r="4" fill="#4ade80" opacity="0.55"/>
-                  <circle cx="35" cy="13" r="4" fill="#4ade80" opacity="0.55"/>
                   <circle cx="13" cy="13" r="2" fill="#16a34a" opacity="0.8"/>
+                  {/* Treatment chamber 2 - circular */}
+                  <circle cx="35" cy="13" r="8" fill="#dcfce7" stroke="#4ade80" strokeWidth="1"/>
+                  <circle cx="35" cy="13" r="4" fill="#4ade80" opacity="0.55"/>
                   <circle cx="35" cy="13" r="2" fill="#16a34a" opacity="0.8"/>
                   <text x="24" y="36" textAnchor="middle" fontSize="5.5" fontWeight="bold" fill="#166534">IPAL</text>
-                  <line x1="48" y1="14" x2="60" y2="14" stroke="#22c55e" strokeWidth="3" strokeLinecap="round"/>
-                  <line x1="60" y1="14" x2="60" y2="32" stroke="#22c55e" strokeWidth="3" strokeLinecap="round"/>
+                  {/* Pipes - curved organic */}
+                  <path d="M48,14 Q54,14 58,14 L60,14" stroke="#22c55e" strokeWidth="3" fill="none" strokeLinecap="round"/>
+                  <path d="M60,14 Q60,20 60,28" stroke="#22c55e" strokeWidth="3" fill="none" strokeLinecap="round"/>
                 </g>}
 
-                {/* River */}
-                <rect x="0" y="118" width="400" height="42" fill="url(#u9river)"/>
-                <rect x="0" y="118" width="400" height="42" fill="url(#u9shimmer)"/>
-                <path d="M0,122 Q50,116 100,122 Q150,128 200,122 Q250,116 300,122 Q350,128 400,122" fill="none" stroke="white" strokeWidth="1.8" opacity="0.25" style={{animation:"u9-wave-shift 3s linear infinite"}}/>
-                <path d="M0,132 Q50,126 100,132 Q150,138 200,132 Q250,126 300,132 Q350,138 400,132" fill="none" stroke="white" strokeWidth="1.1" opacity="0.15" style={{animation:"u9-wave-shift 4s linear infinite 0.5s"}}/>
-                <path d="M0,142 Q60,137 120,142 Q180,147 240,142 Q300,137 360,142 Q380,144 400,142" fill="none" stroke="white" strokeWidth="0.7" opacity="0.09" style={{animation:"u9-wave-shift 5s linear infinite 1s"}}/>
-                <ellipse cx="320" cy="130" rx="45" ry="6" fill="white" opacity="0.06" style={{animation:"u9-shimmer-move 4s ease-in-out infinite"}}/>
-                {/* Discharge plume */}
+                {/* River - organic flowing shape */}
+                <path d="M0,118 Q100,115 200,120 Q300,125 400,118 L400,160 Q300,165 200,160 Q100,155 0,160 Z" fill="url(#u9river)"/>
+                <path d="M0,118 Q100,115 200,120 Q300,125 400,118 L400,160 Q300,165 200,160 Q100,155 0,160 Z" fill="url(#u9shimmer)"/>
+                {/* Wave patterns - more organic curves */}
+                <path d="M0,125 Q50,118 100,125 Q150,132 200,125 Q250,118 300,125 Q350,132 400,125" fill="none" stroke="white" strokeWidth="1.8" opacity="0.25" style={{animation:"u9-wave-shift 3s linear infinite"}}/>
+                <path d="M0,138 Q50,132 100,138 Q150,144 200,138 Q250,132 300,138 Q350,144 400,138" fill="none" stroke="white" strokeWidth="1.1" opacity="0.15" style={{animation:"u9-wave-shift 4s linear infinite 0.5s"}}/>
+                <path d="M0,150 Q60,145 120,150 Q180,155 240,150 Q300,145 360,150 Q380,152 400,150" fill="none" stroke="white" strokeWidth="0.7" opacity="0.09" style={{animation:"u9-wave-shift 5s linear infinite 1s"}}/>
+                <ellipse cx="320" cy="135" rx="45" ry="6" fill="white" opacity="0.06" style={{animation:"u9-shimmer-move 4s ease-in-out infinite"}}/>
+                {/* Discharge plume - organic flowing shape */}
                 {treatment==="None" && <g filter="url(#u9blur)" opacity="0.75">
-                  <ellipse cx="148" cy="122" rx="22" ry="7" fill={dyeType==="Synthetic"?"#3b82f6":"#92400e"} opacity="0.55"/>
-                  <ellipse cx="168" cy="127" rx="16" ry="5" fill={dyeType==="Synthetic"?"#1d4ed8":"#78350f"} opacity="0.4"/>
-                  <ellipse cx="188" cy="132" rx="12" ry="4" fill={dyeType==="Synthetic"?"#1e40af":"#451a03"} opacity="0.25"/>
+                  <path d="M126,122 Q132,115 148,115 Q164,115 170,122 Q164,129 148,129 Q132,129 126,122" fill={dyeType==="Synthetic"?"#3b82f6":"#92400e"} opacity="0.55"/>
+                  <path d="M152,127 Q158,122 168,122 Q178,122 184,127 Q178,132 168,132 Q158,132 152,127" fill={dyeType==="Synthetic"?"#1d4ed8":"#78350f"} opacity="0.4"/>
+                  <path d="M176,132 Q182,128 188,128 Q194,128 200,132 Q194,136 188,136 Q182,136 176,132" fill={dyeType==="Synthetic"?"#1e40af":"#451a03"} opacity="0.25"/>
                 </g>}
-                {/* Fish 1 */}
+                {/* Fish 1 - more realistic organic shape */}
                 {outputs.waterQuality!=="Poor" && <g style={{animation:"u9-fish-swim 4s ease-in-out infinite", transformOrigin:"158px 131px"}}>
                   <g transform="translate(158,131)">
-                    <ellipse cx="0" cy="0" rx="11" ry="5.5" fill="#fbbf24"/>
-                    <ellipse cx="-2" cy="-1" rx="5" ry="3" fill="#fde68a" opacity="0.45"/>
-                    <path d="M11,0 L18,-5 L18,5 Z" fill="#f59e0b"/>
+                    <path d="M-8,0 Q-4,-5.5 4,-4.5 Q10,-3 11,0 Q10,3 4,4.5 Q-4,5.5 -8,0 Z" fill="#fbbf24"/>
+                    <ellipse cx="-3" cy="-0.5" rx="4" ry="2.5" fill="#fde68a" opacity="0.45"/>
+                    <path d="M10,0 Q15,-4 18,-2 L18,2 Q15,4 10,0 Z" fill="#f59e0b"/>
                     <circle cx="-6" cy="-1" r="1.8" fill="#1e293b"/>
-                    <circle cx="-6.5" cy="-1.3" r="0.7" fill="white"/>
-                    <path d="M-3,-4 Q2,-7 7,-4" stroke="#f59e0b" strokeWidth="1.2" fill="none" opacity="0.55"/>
-                    <path d="M2,3 Q5,6 8,3" stroke="#f59e0b" strokeWidth="1" fill="none" opacity="0.45"/>
+                    <circle cx="-6.3" cy="-1.2" r="0.6" fill="white"/>
+                    <path d="M-2,-4 Q2,-6 6,-4" stroke="#f59e0b" strokeWidth="1" fill="none" opacity="0.5"/>
+                    <path d="M0,3 Q3,5 6,3" stroke="#f59e0b" strokeWidth="0.8" fill="none" opacity="0.4"/>
+                    <path d="M-5,0 L-3,0" stroke="#d97706" strokeWidth="0.8" opacity="0.6"/>
                   </g>
                 </g>}
-                {/* Fish 2 */}
+                {/* Fish 2 - more realistic organic shape */}
                 {outputs.waterQuality==="Good" && <g style={{animation:"u9-fish2-swim 6s ease-in-out infinite", transformOrigin:"222px 143px"}}>
                   <g transform="translate(222,143)">
-                    <ellipse cx="0" cy="0" rx="8" ry="4" fill="#34d399"/>
-                    <ellipse cx="-1" cy="-0.5" rx="3.5" ry="2" fill="#6ee7b7" opacity="0.45"/>
-                    <path d="M8,0 L13,-4 L13,4 Z" fill="#10b981"/>
+                    <path d="M-6,0 Q-3,-4 3,-3.5 Q7,-2 8,0 Q7,2 3,3.5 Q-3,4 -6,0 Z" fill="#34d399"/>
+                    <ellipse cx="-2" cy="-0.3" rx="3" ry="1.8" fill="#6ee7b7" opacity="0.45"/>
+                    <path d="M7,0 Q11,-3 13,-1.5 L13,1.5 Q11,3 7,0 Z" fill="#10b981"/>
                     <circle cx="-4" cy="-0.5" r="1.4" fill="#1e293b"/>
-                    <circle cx="-4.4" cy="-0.8" r="0.5" fill="white"/>
+                    <circle cx="-4.3" cy="-0.7" r="0.5" fill="white"/>
+                    <path d="M-4,0 L-2.5,0" stroke="#059669" strokeWidth="0.6" opacity="0.6"/>
                   </g>
                 </g>}
-                {/* Pollution */}
+                {/* Pollution - organic irregular shapes */}
                 {outputs.waterQuality==="Poor" && <g filter="url(#u9blur)" opacity="0.8">
-                  <ellipse cx="132" cy="126" rx="18" ry="7" fill="#1e293b" opacity="0.58" style={{animation:"u9-pollution-pulse 2s ease-in-out infinite"}}/>
-                  <ellipse cx="212" cy="134" rx="14" ry="6" fill="#0f172a" opacity="0.52" style={{animation:"u9-pollution-pulse 2.5s ease-in-out infinite 0.4s"}}/>
-                  <ellipse cx="292" cy="128" rx="16" ry="6" fill="#1e293b" opacity="0.48" style={{animation:"u9-pollution-pulse 3s ease-in-out infinite 0.8s"}}/>
+                  <path d="M114,126 Q120,119 132,119 Q144,119 150,126 Q144,133 132,133 Q120,133 114,126" fill="#1e293b" opacity="0.58" style={{animation:"u9-pollution-pulse 2s ease-in-out infinite"}}/>
+                  <path d="M198,134 Q204,128 212,128 Q220,128 226,134 Q220,140 212,140 Q204,140 198,134" fill="#0f172a" opacity="0.52" style={{animation:"u9-pollution-pulse 2.5s ease-in-out infinite 0.4s"}}/>
+                  <path d="M276,128 Q284,122 292,122 Q300,122 308,128 Q300,134 292,134 Q284,134 276,128" fill="#1e293b" opacity="0.48" style={{animation:"u9-pollution-pulse 3s ease-in-out infinite 0.8s"}}/>
                   <circle cx="172" cy="132" r="5" fill="#0f172a" opacity="0.42" style={{animation:"u9-bubble 2s ease-out infinite 0.3s"}}/>
                   <circle cx="252" cy="138" r="4" fill="#0f172a" opacity="0.38" style={{animation:"u9-bubble 2.5s ease-out infinite 1s"}}/>
                 </g>}

@@ -41,7 +41,7 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
   const { lang } = useLanguage();
   const isId = lang === "id";
   const [currentStep, setCurrentStep] = useState(0);
-  const [timer, setTimer] = useState("20:00");
+
   const [showWritingGuide, setShowWritingGuide] = useState(false);
   const [videoWatched, setVideoWatched] = useState(false);
 
@@ -68,24 +68,7 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
     return text.trim().split(/\s+/).filter(w => w.length > 0).length;
   };
 
-  useEffect(() => {
-    let minutes = 20;
-    let seconds = 0;
-    const interval = setInterval(() => {
-      if (seconds === 0) {
-        if (minutes === 0) {
-          clearInterval(interval);
-          return;
-        }
-        minutes -= 1;
-        seconds = 59;
-      } else {
-        seconds -= 1;
-      }
-      setTimer(`${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+
 
   const isStepValid = () => {
     if (currentStep === 0) return true;
@@ -261,7 +244,7 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
       <main className="flex-1 flex overflow-hidden">
 
         {/* ── LEFT: Questions ── */}
-        <div className="w-[45%] bg-white border-r border-border/60 flex flex-col overflow-hidden">
+        <div className="w-[45%] bg-violet-50/60 border-r border-violet-200 flex flex-col overflow-hidden">
           <div className="p-6 overflow-y-auto h-full space-y-4 exam-scrollbar">
 
             {/* ── STEP 0: Introduction ── */}
@@ -547,7 +530,7 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
         </div>
 
         {/* -- RIGHT: Simulation -- */}
-        <div className="flex-1 bg-gradient-to-b from-slate-50 to-white flex flex-col overflow-hidden">
+        <div className="flex-1 bg-indigo-50/50 flex flex-col overflow-hidden">
           <div className="p-5 h-full flex flex-col gap-4 overflow-y-auto exam-scrollbar">
 
             {/* Header */}

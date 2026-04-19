@@ -575,9 +575,9 @@ const QuestionPanel = ({
                   {tooShort && (
                     <div className="mx-4 mb-3 px-3 py-2 bg-red-50 border border-red-200 rounded-lg">
                       <p className="text-[11px] text-red-700 font-medium">
-                        {isId 
-                          ? `⚠️ Jawaban harus minimal 15 kata. Saat ini: ${wordCount} kata.`
-                          : `⚠️ Answer must be at least 15 words. Current: ${wordCount} words.`
+                        {isId
+                          ? `Jawaban harus minimal 15 kata. Saat ini: ${wordCount} kata.`
+                          : `Answer must be at least 15 words. Current: ${wordCount} words.`
                         }
                       </p>
                     </div>

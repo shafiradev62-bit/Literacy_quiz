@@ -213,8 +213,9 @@ const NasiJamblangSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
                     </svg>
                   </div>
                 </div>
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[9px] font-bold text-emerald-700 whitespace-nowrap">
-                  🍃 {isId ? "Daun Jati Alami" : "Natural Teak Leaf"}
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[9px] font-bold text-emerald-700 whitespace-nowrap flex items-center gap-0.5">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" fill="#22c55e"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" stroke="#16a34a" strokeWidth="2" strokeLinecap="round"/></svg>
+                  {isId ? "Daun Jati Alami" : "Natural Teak Leaf"}
                 </div>
                 {/* Pores / texture dots */}
                 {[...Array(8)].map((_, i) => (
@@ -229,8 +230,9 @@ const NasiJamblangSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
                   <div className="w-16 h-1 bg-blue-400/60 rounded mb-1" />
                   <div className="w-12 h-1 bg-blue-400/40 rounded" />
                 </div>
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[9px] font-bold text-blue-600 whitespace-nowrap">
-                  🛍️ {isId ? "Plastik - 500 tahun terurai" : "Plastic - 500 yrs to decompose"}
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[9px] font-bold text-blue-600 whitespace-nowrap flex items-center gap-0.5">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" fill="#3b82f6"/><line x1="3" y1="6" x2="21" y2="6" stroke="#1d4ed8" strokeWidth="2"/><path d="M16 10a4 4 0 0 1-8 0" stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round"/></svg>
+                  {isId ? "Plastik - 500 tahun terurai" : "Plastic - 500 yrs to decompose"}
                 </div>
                 {/* Shine */}
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-4 h-8 bg-white/30 rounded-r-full" />
@@ -242,8 +244,9 @@ const NasiJamblangSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
                   <div className="w-16 h-1 bg-amber-400/50 rounded mb-1" />
                   <div className="w-10 h-1 bg-amber-400/30 rounded" />
                 </div>
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[9px] font-bold text-amber-600 whitespace-nowrap">
-                  📄 {isId ? "Kertas - 150 hari terurai" : "Paper - 150 days to decompose"}
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[9px] font-bold text-amber-600 whitespace-nowrap flex items-center gap-0.5">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#f1f5f9"/><polyline points="14,2 14,8 20,8" fill="#e2e8f0"/><line x1="8" y1="13" x2="16" y2="13" stroke="#cbd5e1" strokeWidth="1.5"/><line x1="8" y1="17" x2="13" y2="17" stroke="#cbd5e1" strokeWidth="1.5"/></svg>
+                  {isId ? "Kertas - 150 hari terurai" : "Paper - 150 days to decompose"}
                 </div>
               </>
             )}
@@ -255,7 +258,7 @@ const NasiJamblangSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
               {[1,2,3].map(i => (
                 <div key={i} className="w-3 h-3 rounded-full bg-blue-400/40 animate-ping" style={{ animationDelay: `${i * 0.8}s` }} />
               ))}
-              <span className="text-[9px] text-blue-400 font-bold ml-1 mt-0.5">⚠️</span>
+              <span className="text-[9px] text-blue-400 font-bold ml-1 mt-0.5 flex items-center"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" fill="#f59e0b"/><line x1="12" y1="9" x2="12" y2="13" stroke="white" strokeWidth="2" strokeLinecap="round"/><circle cx="12" cy="17" r="1" fill="white"/></svg></span>
             </div>
           )}
           {packType === "teak" && (
@@ -263,7 +266,7 @@ const NasiJamblangSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
               {[1,2].map(i => (
                 <div key={i} className="w-2 h-2 rounded-full bg-emerald-400/60 animate-bounce" style={{ animationDelay: `${i * 0.6}s` }} />
               ))}
-              <span className="text-[9px] text-emerald-500 font-bold">♻️</span>
+              <span className="text-[9px] text-emerald-500 font-bold flex items-center"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M12 3l-1.5 4.5L7 9l4.5 1.5L12 15l1.5-4.5L18 9l-4.5-1.5L12 3z" fill="#22c55e"/><path d="M5.6 11.5L2 15l3.5 1.5" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round"/><path d="M18.4 11.5L22 15l-3.5 1.5" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round"/><path d="M9 17l-3 3.5" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round"/><path d="M15 17l3 3.5" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round"/></svg></span>
             </div>
           )}
 
@@ -295,7 +298,7 @@ const NasiJamblangSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
               className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all ${
                 packType === p ? (p === "teak" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : p === "paper" ? "border-amber-500 bg-amber-50 text-amber-700" : "border-blue-500 bg-blue-50 text-blue-700") : "border-border/40 bg-white text-muted-foreground hover:bg-muted"
               }`}>
-              {p === "teak" ? (isId ? "🍃 Daun Jati" : "🍃 Teak Leaf") : p === "paper" ? (isId ? "📄 Kertas" : "📄 Paper") : (isId ? "🛍️ Plastik" : "🛍️ Plastic")}
+              {p === "teak" ? (isId ? "Daun Jati" : "Teak Leaf") : p === "paper" ? (isId ? "Kertas" : "Paper") : (isId ? "Plastik" : "Plastic")}
             </button>
           ))}
         </div>
@@ -307,7 +310,7 @@ const NasiJamblangSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
         <SliderRow label={isId ? "Lama Penyimpanan" : "Storage Duration"} value={storageDays} min={1} max={30} unit={isId ? " hari" : " days"} color="#6366f1" onChange={setStorageDays} />
         <SliderRow label={isId ? "Suhu Penyimpanan" : "Storage Temperature"} value={temp} min={15} max={45} unit="°C" color="#ef4444" onChange={setTemp} />
         <button onClick={handleRun} className="w-full mt-2 py-2.5 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md">
-          {isId ? "📊 Simpan Data" : "📊 Record Data"}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="2" y="14" width="20" height="8" rx="2" fill="white"/><rect x="4" y="18" width="4" height="4" rx="1" fill="#6366f1"/><rect x="10" y="15" width="4" height="7" rx="1" fill="#6366f1"/><rect x="16" y="11" width="4" height="11" rx="1" fill="#6366f1"/><path d="M5 12l4-4 4 2 6-6" stroke="#4338ca" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Simpan Data" : "Record Data"}
         </button>
       </SimCard>
 
@@ -485,7 +488,7 @@ const TerasiSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
         <SliderRow label={isId ? "Tingkat Kebersihan" : "Hygiene Level"} value={hygieneVal} min={0} max={100} color="#10b981" onChange={setHygieneVal} />
         <SliderRow label={isId ? "Suhu Fermentasi" : "Fermentation Temp"} value={temp} min={20} max={45} unit="°C" color="#ef4444" onChange={setTemp} note="°C" />
         <button onClick={handleRun} className="w-full mt-1 py-2.5 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md">
-          {isId ? "📊 Simpan Data" : "📊 Record Data"}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="2" y="14" width="20" height="8" rx="2" fill="white"/><rect x="4" y="18" width="4" height="4" rx="1" fill="#6366f1"/><rect x="10" y="15" width="4" height="7" rx="1" fill="#6366f1"/><rect x="16" y="11" width="4" height="11" rx="1" fill="#6366f1"/><path d="M5 12l4-4 4 2 6-6" stroke="#4338ca" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Simpan Data" : "Record Data"}
         </button>
       </SimCard>
 
@@ -687,7 +690,7 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
         <SliderRow label={isId ? "Besar Panas" : "Heat Input"} value={heatInput} min={20} max={100} unit="" color="#ef4444" onChange={setHeatInput} />
         <SliderRow label={isId ? "Volume Air" : "Water Volume"} value={waterVolume} min={1} max={10} color="#3b82f6" onChange={setWaterVolume} />
         <button onClick={handleRun} className="w-full mt-1 py-2.5 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md">
-          {isId ? "📊 Simpan Data" : "📊 Record Data"}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="2" y="14" width="20" height="8" rx="2" fill="white"/><rect x="4" y="18" width="4" height="4" rx="1" fill="#6366f1"/><rect x="10" y="15" width="4" height="7" rx="1" fill="#6366f1"/><rect x="16" y="11" width="4" height="11" rx="1" fill="#6366f1"/><path d="M5 12l4-4 4 2 6-6" stroke="#4338ca" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Simpan Data" : "Record Data"}
         </button>
       </SimCard>
 
@@ -764,7 +767,11 @@ const KerupukMelaratSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => v
             {isId ? "Visualisasi Penggorengan" : "Frying Visualization"}
           </p>
           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full text-white ${fryMedium === "sand" ? "bg-amber-600" : "bg-yellow-500"}`}>
-            {fryMedium === "sand" ? "🏖️ Pasir" : "🛢️ Minyak"}
+            {fryMedium === "sand" ? (
+              <span className="flex items-center gap-0.5"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="3" fill="#fbbf24"/><path d="M3 21h18" stroke="#d97706" strokeWidth="2"/><path d="M3 21 Q12,17 21,21" fill="#fbbf24"/></svg>Pasir</span>
+            ) : (
+              <span className="flex items-center gap-0.5"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="3" fill="#78716c"/><rect x="5" y="4" width="14" height="4" rx="2" fill="#57534e"/></svg>Minyak</span>
+            )}
           </span>
         </div>
 
@@ -848,12 +855,12 @@ const KerupukMelaratSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => v
           {/* Oil absorption warning */}
           {fryMedium === "oil" && calc.oilAbsorption > 40 && (
             <div className="absolute top-3 right-3 text-[9px] font-bold text-red-500 bg-red-50 border border-red-200 rounded-lg px-2 py-1 animate-pulse">
-              ⚠️ {isId ? "Penyerapan Tinggi!" : "High Oil Absorption!"}
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" className="inline mr-0.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" fill="#ef4444"/><line x1="12" y1="9" x2="12" y2="13" stroke="white" strokeWidth="2" strokeLinecap="round"/><circle cx="12" cy="17" r="1" fill="white"/></svg> {isId ? "Penyerapan Tinggi!" : "High Oil Absorption!"}
             </div>
           )}
           {fryMedium === "sand" && (
             <div className="absolute top-3 right-3 text-[9px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-lg px-2 py-1">
-              ✅ {isId ? "Rendah Minyak!" : "Low Oil!"}
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" className="inline mr-0.5"><circle cx="12" cy="12" r="10" fill="#22c55e"/><polyline points="8,12 11,15 16,9" stroke="white" strokeWidth="2.5" strokeLinecap="round"/></svg> {isId ? "Rendah Minyak!" : "Low Oil!"}
             </div>
           )}
         </div>
@@ -862,11 +869,11 @@ const KerupukMelaratSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => v
         <div className="flex gap-2 mt-3">
           <button onClick={() => setFryMedium("sand")}
             className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all ${fryMedium === "sand" ? "border-amber-500 bg-amber-50 text-amber-700" : "border-border/40 bg-white text-muted-foreground"}`}>
-            🏖️ {isId ? "Pasir Panas" : "Hot Sand"}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1"><circle cx="12" cy="5" r="3" fill="#fbbf24"/><path d="M3 21h18" stroke="#d97706" strokeWidth="2"/><path d="M3 21 Q12,17 21,21" fill="#fbbf24"/></svg>{isId ? "Pasir Panas" : "Hot Sand"}
           </button>
           <button onClick={() => setFryMedium("oil")}
             className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all ${fryMedium === "oil" ? "border-yellow-500 bg-yellow-50 text-yellow-700" : "border-border/40 bg-white text-muted-foreground"}`}>
-            🛢️ {isId ? "Minyak Goreng" : "Cooking Oil"}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="5" y="4" width="14" height="16" rx="3" fill="#78716c"/><rect x="5" y="4" width="14" height="4" rx="2" fill="#57534e"/><ellipse cx="12" cy="8" rx="5" ry="1.5" fill="#a8a29e"/></svg>{isId ? "Minyak Goreng" : "Cooking Oil"}
           </button>
         </div>
       </SimCard>
@@ -886,7 +893,7 @@ const KerupukMelaratSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => v
           </button>
         </div>
         <button onClick={handleRun} className="w-full py-2.5 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md">
-          {isId ? "📊 Simpan Data" : "📊 Record Data"}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="2" y="14" width="20" height="8" rx="2" fill="white"/><rect x="4" y="18" width="4" height="4" rx="1" fill="#6366f1"/><rect x="10" y="15" width="4" height="7" rx="1" fill="#6366f1"/><rect x="16" y="11" width="4" height="11" rx="1" fill="#6366f1"/><path d="M5 12l4-4 4 2 6-6" stroke="#4338ca" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Simpan Data" : "Record Data"}
         </button>
       </SimCard>
 
@@ -952,7 +959,7 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
     <div className="space-y-4">
       {/* How-to banner */}
       <div className="bg-amber-50 border-2 border-amber-300 rounded-xl px-4 py-3 flex items-start gap-3">
-        <span className="text-2xl shrink-0">🍚</span>
+        <span className="text-2xl shrink-0"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="14" rx="9" ry="5" fill="#fde68a"/><ellipse cx="12" cy="12" rx="7" ry="4" fill="#fef3c7"/><ellipse cx="9" cy="10" rx="2.5" ry="1.5" fill="#fde68a"/><ellipse cx="13" cy="9" rx="2" ry="1.3" fill="#fef9c3"/><ellipse cx="16" cy="11" rx="2.3" ry="1.4" fill="#fde68a"/></svg></span>
         <div>
           <p className="text-[11px] font-bold text-amber-800 mb-1">{isId ? "Cara Menggunakan Simulasi Tape Ketan" : "How to Use the Tape Ketan Simulation"}</p>
           <ol className="text-[10px] text-amber-700 space-y-0.5 list-decimal pl-3">
@@ -971,7 +978,11 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
           </p>
           <div className="flex gap-2">
             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full text-white ${packaging === "banana" ? "bg-emerald-500" : "bg-blue-500"}`}>
-              {packaging === "banana" ? "🍌🍃" : "🛍️"}
+              {packaging === "banana" ? (
+                <span className="flex items-center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 20 Q3 14 6 9 Q9 5 15 4 Q19 3.5 20 5 Q20 7 17 8 Q12 9 8 14 Q6 17 6 20 Z" fill="#fde047"/></svg></span>
+              ) : (
+                <span className="flex items-center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" fill="#3b82f6"/><line x1="3" y1="6" x2="21" y2="6" stroke="#1d4ed8" strokeWidth="2"/><path d="M16 10a4 4 0 0 1-8 0" stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round"/></svg></span>
+              )}
             </span>
             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full text-white ${starterQuality === "good" ? "bg-emerald-500" : starterQuality === "medium" ? "bg-amber-500" : "bg-red-500"}`}>
               {starterQuality}
@@ -1140,7 +1151,7 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
 
                 {/* Label */}
                 <text x="160" y="185" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#166534" fontFamily="sans-serif">
-                  {isId ? "🍌 Tape Ketan — Daun Pisang" : "🍌 Tape Ketan — Banana Leaf"}
+                  {isId ? "Tape Ketan - Daun Pisang" : "Tape Ketan - Banana Leaf"}
                 </text>
               </g>
             ) : (
@@ -1193,7 +1204,7 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
                 ))}
 
                 <text x="160" y="185" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#1d4ed8" fontFamily="sans-serif">
-             k ⚠️" : "🛍️ Tape Ketan — Plastic ⚠️"}
+                  {isId ? "Tape Ketan - Plastik" : "Tape Ketan - Plastic"}
                 </text>
               </g>
             )}
@@ -1221,7 +1232,7 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
               <circle cx="12" cy="12" r="14" fill="white" stroke="#d97706" strokeWidth="1.5"/>
               <circle cx="12" cy="12" r="1.5" fill="#92400e"/>
               {/* Clock hands */}
-       eWidth="1.5" strokeLinecap="round"/>
+              <line x1="12" y1="12" x2="12" y2="3" stroke="#92400e" strokeWidth="1.5" strokeLinecap="round"/>
               <line x1="12" y1="12"
                 x2={12 + Math.cos((fermTime / 96 * 360 - 90) * Math.PI / 180) * 8}
                 y2={12 + Math.sin((fermTime / 96 * 360 - 90) * Math.PI / 180) * 8}
@@ -1236,25 +1247,25 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
             <rect x="90" y="8" width="140" height="22" rx="11" fill="white" stroke="#d97706" strokeWidth="1" opacity="0.9"/>
             <text x="160" y="23" textAnchor="middle" fontSize="8.5" fontWeight="bold"
               fill={calc.sweetness > 60 ? "#16a34a" : calc.sweetness > 30 ? "#d97706" : "#64748b"}
-      "sans-serif">
+              fontFamily="sans-serif">
               {calc.sweetness > 60
-                ? (isId ? "🍯 Fermentasi Optimal!" : "🍯 Optimal Fermentation!")
+                ? (isId ? "Fermentasi Optimal!" : "Optimal Fermentation!")
                 : calc.sweetness > 30
-                ? (isId ? "⏳ Sedang Fermentasi..." : "⏳ Fermenting...")
-                : (isId ? "🌱 Awal Fermentasi" : "🌱 Early Stage")}
+                ? (isId ? "Sedang Fermentasi..." : "Fermenting...")
+                : (isId ? "Awal Fermentasi" : "Early Stage")}
             </text>
           </svg>
-        </div>        fontFamily=       <line x1="12" y1="12" x2="12" y2="3" stroke="#92400e" strokp > 35 ?      {isId ? "🛍️ Tape Ketan — Plasti     fill=
+        </div>
 
         {/* Packaging selector */}
         <div className="flex gap-2 mt-3">
           <button onClick={() => setPackaging("banana")}
             className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all ${packaging === "banana" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : "border-border/40 bg-white text-muted-foreground"}`}>
-            🍌🍃 {isId ? "Daun Pisang" : "Banana Leaf"}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1"><path d="M5 20 Q3 14 6 9 Q9 5 15 4 Q19 3.5 20 5 Q20 7 17 8 Q12 9 8 14 Q6 17 6 20 Z" fill="#fde047"/><path d="M6 19 Q4 14 7 10 Q10 6 15 5" stroke="#eab308" strokeWidth="1" strokeLinecap="round" fill="none"/></svg>{isId ? "Daun Pisang" : "Banana Leaf"}
           </button>
           <button onClick={() => setPackaging("plastic")}
             className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all ${packaging === "plastic" ? "border-blue-500 bg-blue-50 text-blue-700" : "border-border/40 bg-white text-muted-foreground"}`}>
-            🛍️ {isId ? "Plastik" : "Plastic"}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" fill="#3b82f6"/><line x1="3" y1="6" x2="21" y2="6" stroke="#1d4ed8" strokeWidth="2"/><path d="M16 10a4 4 0 0 1-8 0" stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Plastik" : "Plastic"}
           </button>
         </div>
       </SimCard>
@@ -1270,13 +1281,13 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
             {(["good", "medium", "poor"] as const).map(s => (
               <button key={s} onClick={() => setStarterQuality(s)}
                 className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all ${starterQuality === s ? (s === "good" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : s === "medium" ? "border-amber-500 bg-amber-50 text-amber-700" : "border-red-500 bg-red-50 text-red-700") : "border-border/40 bg-white text-muted-foreground"}`}>
-                {s === "good" ? "🥇" : s === "medium" ? "🥈" : "🥉"} {s.charAt(0).toUpperCase() + s.slice(1)}
+                {s === "good" ? (<svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1"><circle cx="12" cy="12" r="9" fill="#fbbf24" stroke="#d97706" strokeWidth="1.5"/><text x="12" y="16" textAnchor="middle" fontSize="9" fontWeight="bold" fill="#92400e">1</text></svg>) : s === "medium" ? (<svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1"><circle cx="12" cy="12" r="9" fill="#d1d5db" stroke="#9ca3af" strokeWidth="1.5"/><text x="12" y="16" textAnchor="middle" fontSize="9" fontWeight="bold" fill="#6b7280">2</text></svg>) : (<svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1"><circle cx="12" cy="12" r="9" fill="#cd7c32" stroke="#92400e" strokeWidth="1.5"/><text x="12" y="16" textAnchor="middle" fontSize="9" fontWeight="bold" fill="#78350f">3</text></svg>)} {s.charAt(0).toUpperCase() + s.slice(1)}
               </button>
             ))}
           </div>
         </div>
         <button onClick={handleRun} className="w-full mt-1 py-2.5 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md">
-          {isId ? "📊 Simpan Data" : "📊 Record Data"}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="2" y="14" width="20" height="8" rx="2" fill="white"/><rect x="4" y="18" width="4" height="4" rx="1" fill="#6366f1"/><rect x="10" y="15" width="4" height="7" rx="1" fill="#6366f1"/><rect x="16" y="11" width="4" height="11" rx="1" fill="#6366f1"/><path d="M5 12l4-4 4 2 6-6" stroke="#4338ca" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Simpan Data" : "Record Data"}
         </button>
       </SimCard>
 
@@ -1285,9 +1296,9 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
         <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-3">{isId ? "Hasil Fermentasi Saat Ini" : "Current Fermentation Results"}</p>
         <div className="space-y-3">
           {[
-            { label: isId ? "🍬 Rasa Manis" : "🍬 Sweetness", value: Math.round(calc.sweetness), color: "bg-amber-400", textColor: "text-amber-700" },
-            { label: isId ? "🍋 Keasaman" : "🍋 Acidity", value: Math.round(calc.acidity), color: "bg-red-400", textColor: "text-red-700" },
-            { label: isId ? "📦 Daya Simpan" : "📦 Shelf Life", value: Math.round(calc.shelfLife), color: "bg-emerald-500", textColor: "text-emerald-700" },
+            { label: isId ? "Rasa Manis" : "Sweetness", value: Math.round(calc.sweetness), color: "bg-amber-400", textColor: "text-amber-700" },
+            { label: isId ? "Keasaman" : "Acidity", value: Math.round(calc.acidity), color: "bg-red-400", textColor: "text-red-700" },
+            { label: isId ? "Daya Simpan" : "Shelf Life", value: Math.round(calc.shelfLife), color: "bg-emerald-500", textColor: "text-emerald-700" },
           ].map(({ label, value, color, textColor }) => (
             <div key={label}>
               <div className="flex items-center justify-between mb-1">
@@ -1301,7 +1312,7 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
           ))}
         </div>
         <p className="text-[10px] text-muted-foreground mt-3 italic">
-          {isId ? "💡 Fermentasi optimal: 36–48 jam, suhu 25–32°C, ragi baik, kemasan daun pisang" : "💡 Optimal: 36–48h, 25–32°C, good starter, banana leaf packaging"}
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1 shrink-0"><path d="M9 18h6M10 22h4" stroke="#a16207" strokeWidth="2" strokeLinecap="round"/><path d="M12 2a7 7 0 0 1 5 11.9V16a2 2 0 0 1-2 2h-6a2 2 0 0 1-2-2v-2.1A7 7 0 0 1 12 2z" fill="#fbbf24"/><path d="M9 22h6" stroke="#a16207" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Fermentasi optimal: 36–48 jam, suhu 25–32°C, ragi baik, kemasan daun pisang" : "Optimal: 36–48h, 25–32°C, good starter, banana leaf packaging"}
         </p>
       </SimCard>
     </div>
@@ -1371,7 +1382,13 @@ const MangroveSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void })
           </p>
           <div className="flex gap-2">
             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full text-white ${coastalUse === "natural" ? "bg-emerald-500" : coastalUse === "housing" ? "bg-slate-500" : "bg-blue-400"}`}>
-              {coastalUse === "natural" ? "🌿" : coastalUse === "housing" ? "🏠" : "🐟"} {coastalUse}
+              {coastalUse === "natural" ? (
+                <span className="flex items-center gap-0.5"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" fill="#22c55e"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" stroke="#16a34a" strokeWidth="2" strokeLinecap="round"/></svg>Natural</span>
+              ) : coastalUse === "housing" ? (
+                <span className="flex items-center gap-0.5"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" fill="#a8a29e"/></svg>Housing</span>
+              ) : (
+                <span className="flex items-center gap-0.5"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><ellipse cx="11" cy="12" rx="8" ry="5" fill="#38bdf8"/><polygon points="19,12 23,8 23,16" fill="#38bdf8"/><circle cx="7" cy="11" r="1.5" fill="#1e3a5f"/></svg>Ponds</span>
+              )}
             </span>
           </div>
         </div>
@@ -1390,13 +1407,13 @@ const MangroveSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void })
             ))}
             {/* Fish */}
             {calc.fishProduction > 40 && (
-              <div className="absolute top-8 left-6 text-[16px] animate-bounce" style={{ animationDuration: "2s" }}>🐟</div>
+              <div className="absolute top-8 left-6 animate-bounce" style={{ animationDuration: "2s" }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><ellipse cx="11" cy="12" rx="8" ry="5" fill="#38bdf8"/><polygon points="19,12 23,8 23,16" fill="#38bdf8"/><circle cx="7" cy="11" r="1.5" fill="#1e3a5f"/></svg></div>
             )}
             {calc.fishProduction > 70 && (
-              <div className="absolute top-12 left-16 text-[14px] animate-bounce" style={{ animationDuration: "2.5s", animationDelay: "0.5s" }}>🐠</div>
+              <div className="absolute top-12 left-16 animate-bounce" style={{ animationDuration: "2.5s", animationDelay: "0.5s" }}><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><ellipse cx="11" cy="12" rx="8" ry="5" fill="#f97316"/><polygon points="19,12 23,8 23,16" fill="#f97316"/><circle cx="7" cy="11" r="1.5" fill="#7c2d12"/><path d="M11 9 Q13 10 13 12 Q13 14 11 15" stroke="#fdba74" strokeWidth="1" fill="none"/></svg></div>
             )}
             {calc.fishProduction < 30 && (
-              <div className="absolute top-8 left-8 text-[12px] opacity-40">🐟</div>
+              <div className="absolute top-8 left-8 opacity-40"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><ellipse cx="11" cy="12" rx="8" ry="5" fill="#38bdf8"/><polygon points="19,12 23,8 23,16" fill="#38bdf8"/><circle cx="7" cy="11" r="1.5" fill="#1e3a5f"/></svg></div>
             )}
           </div>
 
@@ -1405,8 +1422,12 @@ const MangroveSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void })
             style={{ height: `${mangroveCover * 0.24}px`, transition: "height 0.8s ease" }}>
             {/* Tree canopies */}
             {mangroveCover > 20 && [...Array(Math.ceil(mangroveCover / 15))].map((_, i) => (
-              <div key={i} className="mangrove-tree absolute text-[20px]" style={{ bottom: 0, left: `${5 + i * 8}%`, fontSize: `${14 + mangroveCover / 10}px` }}>
-                🌳
+              <div key={i} className="mangrove-tree absolute" style={{ bottom: 0, left: `${5 + i * 8}%` }}>
+                <svg width={14 + mangroveCover / 10} height={14 + mangroveCover / 10} viewBox="0 0 24 24" fill="none">
+                  <rect x="11" y="16" width="2" height="8" fill="#4E342E"/>
+                  <polygon points="12,2 2,16 22,16" fill="#16a34a"/>
+                  <polygon points="12,6 4,16 20,16" fill="#22c55e"/>
+                </svg>
               </div>
             ))}
             {/* Pneumatophores (mangrove roots) */}
@@ -1419,7 +1440,11 @@ const MangroveSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void })
             )}
             {/* Birds */}
             {mangroveCover > 60 && (
-              <div className="absolute top-1 right-8 text-[12px] animate-bounce" style={{ animationDuration: "3s" }}>🐦</div>
+              <div className="absolute top-1 right-8 animate-bounce" style={{ animationDuration: "3s" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#374151" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"/>
+                </svg>
+              </div>
             )}
           </div>
 
@@ -1427,13 +1452,22 @@ const MangroveSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void })
           <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-amber-300 to-amber-200">
             {/* Coastal use indicators */}
             {coastalUse === "housing" && (
-              <div className="absolute bottom-1 right-4 text-[16px]">🏠</div>
+              <div className="absolute bottom-1 right-4">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+              </div>
             )}
             {coastalUse === "ponds" && (
-              <div className="absolute bottom-1 left-1/3 text-[14px]">🐟🐟</div>
+              <div className="absolute bottom-1 left-1/3 flex gap-0.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24" stroke="#d97706" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="#d97706"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24" stroke="#d97706" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="#d97706"/></svg>
+              </div>
             )}
             {coastalUse === "natural" && (
-              <div className="absolute bottom-1 right-6 text-[12px]">🐚</div>
+              <div className="absolute bottom-1 right-6">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#92400e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22c-4-3-9-6-9-12A9 9 0 0 1 21 10c0 6-5 9-9 12z"/></svg>
+              </div>
             )}
             {/* Erosion cracks */}
             {calc.erosion > 50 && (
@@ -1447,15 +1481,17 @@ const MangroveSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void })
 
           {/* Mangrove coverage label */}
           <div className="absolute top-3 left-3">
-            <div className="text-[10px] font-bold text-emerald-700 bg-emerald-100 rounded px-1.5 py-0.5 border border-emerald-200">
-              🌿 {mangroveCover}%
+            <div className="text-[10px] font-bold text-emerald-700 bg-emerald-100 rounded px-1.5 py-0.5 border border-emerald-200 flex items-center gap-1">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+              {mangroveCover}%
             </div>
           </div>
 
           {/* Wave strength */}
           <div className="absolute top-3 left-20">
-            <div className="text-[10px] font-bold text-blue-600 bg-blue-100 rounded px-1.5 py-0.5 border border-blue-200">
-              🌊 {waveStrength}%
+            <div className="text-[10px] font-bold text-blue-600 bg-blue-100 rounded px-1.5 py-0.5 border border-blue-200 flex items-center gap-1">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12c1.5-1.5 3-2 5-2s3.5.5 5 2 3 2 5 2 3.5-.5 5-2"/><path d="M2 17c1.5-1.5 3-2 5-2s3.5.5 5 2 3 2 5 2 3.5-.5 5-2"/><path d="M2 7c1.5-1.5 3-2 5-2s3.5.5 5 2 3 2 5 2 3.5-.5 5-2"/></svg>
+              {waveStrength}%
             </div>
           </div>
         </div>
@@ -1471,16 +1507,19 @@ const MangroveSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void })
         <div className="space-y-1.5">
           <div className="text-[11px] font-medium text-foreground">{isId ? "Penggunaan Lahan Pesisir" : "Coastal Land Use"}</div>
           <div className="flex gap-2">
-            {([["natural", "🌿 Natural"], ["housing", "🏠 Housing"], ["ponds", "🐟 Ponds"]] as const).map(([val, label]) => (
+            {([["natural", isId?"Alami":"Natural"], ["housing", isId?"Pemukiman":"Housing"], ["ponds", isId?"Tambak":"Ponds"]] as const).map(([val, label]) => (
               <button key={val} onClick={() => setCoastalUse(val)}
-                className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all ${coastalUse === val ? (val === "natural" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : val === "housing" ? "border-slate-500 bg-slate-50 text-slate-700" : "border-blue-500 bg-blue-50 text-blue-700") : "border-border/40 bg-white text-muted-foreground"}`}>
+                className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all flex items-center justify-center gap-1 ${coastalUse === val ? (val === "natural" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : val === "housing" ? "border-slate-500 bg-slate-50 text-slate-700" : "border-blue-500 bg-blue-50 text-blue-700") : "border-border/40 bg-white text-muted-foreground"}`}>
+                {val === "natural" && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>}
+                {val === "housing" && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>}
+                {val === "ponds" && <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3" fill="white"/></svg>}
                 {label}
               </button>
             ))}
           </div>
         </div>
         <button onClick={handleRun} className="w-full mt-1 py-2.5 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md">
-          {isId ? "📊 Simpan Data" : "📊 Record Data"}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="2" y="14" width="20" height="8" rx="2" fill="white"/><rect x="4" y="18" width="4" height="4" rx="1" fill="#6366f1"/><rect x="10" y="15" width="4" height="7" rx="1" fill="#6366f1"/><rect x="16" y="11" width="4" height="11" rx="1" fill="#6366f1"/><path d="M5 12l4-4 4 2 6-6" stroke="#4338ca" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Simpan Data" : "Record Data"}
         </button>
       </SimCard>
 
@@ -1557,8 +1596,9 @@ const NadranSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
           <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
             {isId ? "Visualisasi Ekosistem Laut Cirebon" : "Cirebon Marine Ecosystem"}
           </p>
-          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full text-white ${communityAwareness > 60 ? "bg-emerald-500" : communityAwareness > 30 ? "bg-amber-500" : "bg-red-500"}`}>
-            👁️ {communityAwareness}%
+          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full text-white flex items-center gap-1 ${communityAwareness > 60 ? "bg-emerald-500" : communityAwareness > 30 ? "bg-amber-500" : "bg-red-500"}`}>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            {communityAwareness}%
           </span>
         </div>
 
@@ -1567,16 +1607,30 @@ const NadranSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
           <div className="absolute top-2 right-3 w-7 h-7 rounded-full bg-gradient-to-br from-yellow-200 to-amber-300 shadow-lg animate-pulse" />
 
           {/* Clouds */}
-          <div className="absolute top-2 left-4 text-[14px] opacity-60 animate-bounce" style={{ animationDuration: "4s" }}>☁️</div>
-          <div className="absolute top-4 left-20 text-[10px] opacity-40 animate-bounce" style={{ animationDuration: "5s" }}>☁️</div>
+          <div className="absolute top-2 left-4 opacity-60 animate-bounce" style={{ animationDuration: "4s" }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="white" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+            </svg>
+          </div>
+          <div className="absolute top-4 left-20 opacity-40 animate-bounce" style={{ animationDuration: "5s" }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+            </svg>
+          </div>
 
           {/* Fishing boats */}
           {fishingIntensity > 30 && (
             <div className="absolute top-6 flex gap-4">
               {[1,2,3].slice(0, Math.ceil(fishingIntensity / 33)).map(i => (
-                <div key={i} className="boat text-[18px] transition-transform duration-700"
+                <div key={i} className="boat transition-transform duration-700"
                   style={{ animation: `boat-sway ${2 + i * 0.3}s ease-in-out infinite alternate` }}>
-                  🚤
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1 .6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+                    <path d="M19.38 20A11.6 11.6 0 0 0 21 14l-9-4-9 4c0 2.9.94 5.34 2.81 7.76"/>
+                    <path d="M12 10V4"/>
+                    <path d="M12 4l7 4"/>
+                    <path d="M12 4L5 8"/>
+                  </svg>
                 </div>
               ))}
             </div>
@@ -1593,43 +1647,62 @@ const NadranSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
             {/* Fish population visualization */}
             <div className="absolute bottom-4 left-0 right-0 flex items-end justify-center gap-1 px-4">
               {[...Array(20)].map((_, i) => (
-                <div key={i} className="sim-fish text-[10px] animate-bounce transition-opacity"
+                <div key={i} className="sim-fish animate-bounce transition-opacity"
                   style={{
                     opacity: i < calc.fishPopulation / 5 ? 1 : 0.15,
                     animationDuration: `${2 + (i % 4) * 0.5}s`,
                     animationDelay: `${(i % 5) * 0.3}s`,
                     transform: i % 2 === 0 ? "scaleX(1)" : "scaleX(-1)"
                   }}>
-                  🐟
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#fbbf24" stroke="#d97706" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="#d97706"/></svg>
                 </div>
               ))}
             </div>
 
             {/* Coral / reef */}
             {calc.waterQuality > 50 && (
-              <div className="absolute bottom-0 left-4 text-[16px]">🪸</div>
+              <div className="absolute bottom-0 left-4">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f97316" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22V8M5 12H2a10 10 0 0 0 20 0h-3M9 6l3-4 3 4M7 10l5 4 5-4"/>
+                </svg>
+              </div>
             )}
             {calc.waterQuality > 70 && (
-              <div className="absolute bottom-0 right-8 text-[14px]">🦀</div>
+              <div className="absolute bottom-0 right-8">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#dc2626" stroke="#991b1b" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                  <line x1="12" y1="9" x2="12" y2="13" stroke="#fff" strokeWidth="2"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17" stroke="#fff" strokeWidth="2"/>
+                </svg>
+              </div>
             )}
 
             {/* Waste indicator */}
             {(100 - calc.waterQuality) > 40 && (
-              <div className="absolute top-2 right-4 text-[12px] animate-pulse">🗑️⚠️</div>
+              <div className="absolute top-2 right-4 animate-pulse flex items-center gap-0.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
             )}
 
             {/* Conservation indicator */}
             {calc.marineBiodiversity > 60 && (
-              <div className="absolute top-2 left-4 text-[12px]">🐠🦈🐙</div>
+              <div className="absolute top-2 left-4 flex items-center gap-0.5">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="#f97316" stroke="#c2410c" strokeWidth="1"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3" fill="#fff"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1e3a5f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><path d="M22 12c-1.5 1-3.5 1.5-5.5 1.5-3 0-5.5-1-7.5-2.5"/><circle cx="12" cy="12" r="2"/></svg>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="#a855f7" stroke="#7e22ce" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="5" r="2"/><path d="M12 7v14M7 9l5 2 5-2M7 15l5-2 5 2"/></svg>
+              </div>
             )}
           </div>
 
           {/* Labels */}
-          <div className="absolute bottom-10 left-3 text-[9px] font-bold text-white bg-black/30 rounded px-1.5 py-0.5">
-            🐟 {isId ? "Populasi: " : "Fish: "}{Math.round(calc.fishPopulation)}%
+          <div className="absolute bottom-10 left-3 text-[9px] font-bold text-white bg-black/30 rounded px-1.5 py-0.5 flex items-center gap-1">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="#fbbf24" stroke="#d97706" strokeWidth="1.5"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3" fill="#fff"/></svg>
+            {isId ? "Populasi: " : "Fish: "}{Math.round(calc.fishPopulation)}%
           </div>
-          <div className="absolute bottom-10 right-3 text-[9px] font-bold text-white bg-black/30 rounded px-1.5 py-0.5">
-            🌊 {isId ? "Ikan Tangkap: " : "Fishing: "}{fishingIntensity}%
+          <div className="absolute bottom-10 right-3 text-[9px] font-bold text-white bg-black/30 rounded px-1.5 py-0.5 flex items-center gap-1">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#bfdbfe" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12c1.5-1.5 3-2 5-2s3.5.5 5 2 3 2 5 2 3.5-.5 5-2"/><path d="M2 17c1.5-1.5 3-2 5-2s3.5.5 5 2 3 2 5 2 3.5-.5 5-2"/></svg>
+            {isId ? "Ikan Tangkap: " : "Fishing: "}{fishingIntensity}%
           </div>
         </div>
       </SimCard>
@@ -1642,7 +1715,7 @@ const NadranSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
         <SliderRow label={isId ? "Pengelolaan Limbah" : "Waste Management"} value={wasteManagement} min={0} max={100} color="#8b5cf6" onChange={setWasteManagement} note="%" />
         <SliderRow label={isId ? "Upaya Konservasi" : "Conservation Efforts"} value={conservationEfforts} min={0} max={100} color="#f59e0b" onChange={setConservationEfforts} note="%" />
         <button onClick={handleRun} className="w-full mt-1 py-2.5 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md">
-          {isId ? "📊 Simpan Data" : "📊 Record Data"}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="2" y="14" width="20" height="8" rx="2" fill="white"/><rect x="4" y="18" width="4" height="4" rx="1" fill="#6366f1"/><rect x="10" y="15" width="4" height="7" rx="1" fill="#6366f1"/><rect x="16" y="11" width="4" height="11" rx="1" fill="#6366f1"/><path d="M5 12l4-4 4 2 6-6" stroke="#4338ca" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Simpan Data" : "Record Data"}
         </button>
       </SimCard>
 
