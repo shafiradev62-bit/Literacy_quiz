@@ -597,8 +597,8 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
         </div>
 
         {/* Stunning Visual Pot Scene */}
-        <div className="w-full lg:w-[420px] bg-[#0f172a] rounded-[40px] shadow-2xl p-8 flex flex-col items-center justify-center relative overflow-hidden group border border-white/5">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1e293b] to-black opacity-60" />
+        <div className="w-full lg:w-[420px] bg-white rounded-[40px] shadow-2xl p-8 flex flex-col items-center justify-center relative overflow-hidden group border border-slate-100">
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-white opacity-60" />
           
           {/* Subtle thermal glow behind the pot */}
           <div 
@@ -617,12 +617,12 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
               {[...Array(6)].map((_, i) => (
                 <div 
                   key={i}
-                  className="absolute bottom-0 left-1/2 w-8 h-8 bg-white/20 rounded-full blur-xl"
+                  className="absolute bottom-0 left-1/2 w-8 h-8 bg-slate-400/20 rounded-full blur-xl"
                   style={{
                     left: `${40 + Math.random() * 20}%`,
                     animation: `steam-rise ${2 + Math.random() * 2}s infinite linear`,
                     animationDelay: `${i * 0.5}s`,
-                    opacity: heatInput > 20 ? (heatInput / 100) * 0.4 : 0,
+                    opacity: heatInput > 20 ? (heatInput / 100) * 0.6 : 0,
                     transform: `scale(${0.5 + Math.random()})`
                   }}
                 />
@@ -683,7 +683,7 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
           
           <div className="absolute top-6 left-8 flex items-center gap-3">
              <div className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_10px_#fbbf24] animate-ping" />
-             <span className="text-[10px] font-bold text-amber-500/50 uppercase tracking-[0.4em]">Live Thermal Feed</span>
+             <span className="text-[10px] font-bold text-amber-600 uppercase tracking-[0.4em]">Live Thermal Feed</span>
           </div>
         </div>
       </div>
