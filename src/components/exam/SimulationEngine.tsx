@@ -17,19 +17,22 @@ const SliderRow = ({ label, value, min, max, step = 1, onChange, color, unit = "
 }) => {
   const pct = ((value - min) / (max - min)) * 100;
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-1.5 group/slider">
       <div className="flex items-center justify-between">
-        <span className="text-[12px] font-medium text-foreground leading-tight">{label}</span>
+        <span className="text-[12px] font-bold text-slate-700 leading-tight group-hover/slider:text-primary transition-colors">{label}</span>
         <div className="flex items-center gap-2">
-          {note && <span className="text-[10px] text-muted-foreground">{note}</span>}
-          <span className="text-[13px] font-bold text-primary min-w-[40px] text-right">{value}{unit}</span>
+          {note && <span className="text-[10px] text-muted-foreground font-bold">{note}</span>}
+          <span className="text-[14px] font-black text-primary min-w-[40px] text-right">{value}{unit}</span>
         </div>
       </div>
       <input
         type="range" min={min} max={max} step={step} value={value}
         onChange={e => onChange(Number(e.target.value))}
-        className="sim-slider w-full"
-        style={{ background: `linear-gradient(to right, ${color || "#6366f1"} ${pct}%, #e5e7eb ${pct}%)` }}
+        className="sim-slider w-full cursor-grab active:cursor-grabbing transition-all"
+        style={{ 
+          background: `linear-gradient(to right, ${color || "#6366f1"} ${pct}%, #f1f5f9 ${pct}%)`,
+          height: '6px'
+        }}
       />
     </div>
   );
@@ -602,7 +605,7 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
           
           {/* Subtle thermal glow behind the pot */}
           <div 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[80px] transition-all duration-1000" 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[80px] transition-all duration-300" 
             style={{ 
               width: `${150 + heatInput}px`, 
               height: `${150 + heatInput}px`, 
@@ -639,7 +642,7 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
                
                {/* THERMAL COLOR SHIFT OVERLAY */}
                <div 
-                 className="absolute inset-0 mix-blend-overlay transition-opacity duration-500 rounded-full"
+                 className="absolute inset-0 mix-blend-overlay transition-opacity duration-200 rounded-full"
                  style={{ 
                    backgroundColor: '#f59e0b', 
                    opacity: (heatInput / 100) * 0.4,
@@ -1743,13 +1746,13 @@ export const SimulationEngine = ({ unit, onRun }: {
   onRun?: (unitData: Record<string, unknown>) => void;
 }) => {
   switch (unit) {
-    case 1: return <NasiJamblangSim onRun={onRun || (() => {})} />;
-    case 2: return <TerasiSim onRun={onRun || (() => {})} />;
-    case 3: return <EmpalGentongSim onRun={onRun || (() => {})} />;
-    case 4: return <KerupukMelaratSim onRun={onRun || (() => {})} />;
-    case 5: return <TapeKetanSim onRun={onRun || (() => {})} />;
-    case 6: return <MangroveSim onRun={onRun || (() => {})} />;
-    case 7: return <NadranSim onRun={onRun || (() => {})} />;
+    case 1: return <NasiJamblangSim key="u1" onRun={onRun || (() => {})} />;
+    case 2: return <TerasiSim key="u2" onRun={onRun || (() => {})} />;
+    case 3: return <EmpalGentongSim key="u3" onRun={onRun || (() => {})} />;
+    case 4: return <KerupukMelaratSim key="u4" onRun={onRun || (() => {})} />;
+    case 5: return <TapeKetanSim key="u5" onRun={onRun || (() => {})} />;
+    case 6: return <MangroveSim key="u6" onRun={onRun || (() => {})} />;
+    case 7: return <NadranSim key="u7" onRun={onRun || (() => {})} />;
     default: return null;
   }
 };
