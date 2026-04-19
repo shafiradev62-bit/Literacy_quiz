@@ -11,6 +11,22 @@ const SimCard = ({ children, className = "" }: { children: React.ReactNode; clas
   </div>
 );
 
+const MindfulTip = ({ tipId, tipEn }: { tipId: string, tipEn: string }) => {
+  const { lang } = useLanguage();
+  return (
+    <div className="bg-slate-50 border-l-4 border-slate-900 p-4 rounded-r-xl mt-4 animate-in fade-in slide-in-from-left duration-700">
+      <div className="flex gap-3">
+        <div className="w-6 h-6 rounded-full bg-slate-900/10 flex items-center justify-center shrink-0">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="3"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+        </div>
+        <p className="text-[12px] text-slate-600 font-medium leading-relaxed italic">
+          {lang === "id" ? tipId : tipEn}
+        </p>
+      </div>
+    </div>
+  );
+};
+
 const SliderRow = ({ label, value, min, max, step = 1, onChange, color, unit = "%", note }: {
   label: string; value: number; min: number; max: number; step?: number;
   onChange: (v: number) => void; color?: string; unit?: string; note?: string;
@@ -317,11 +333,18 @@ const NasiJamblangSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
         </button>
       </SimCard>
 
-      {/* Live Metrics */}
-      <div className="grid grid-cols-3 gap-2">
-        <StatCard label={isId ? "Kesegaran" : "Freshness"} value={calc.freshness} sub={calc.freshnessLabel} bg="bg-white" />
-        <StatCard label={isId ? "Dampak Lingkungan" : "Env. Impact"} value={calc.envImpact} sub={calc.envLabel} bg="bg-white" />
-        <StatCard label={isId ? "Limbah" : "Waste"} value={calc.waste} sub={calc.wasteLabel} bg="bg-white" />
+      {/* Live Metrics & Tip */}
+      <div className="space-y-4">
+        <div className="grid grid-cols-3 gap-2">
+          <StatCard label={isId ? "Kesegaran" : "Freshness"} value={calc.freshness} sub={calc.freshnessLabel} bg="bg-white" />
+          <StatCard label={isId ? "Dampak Lingkungan" : "Env. Impact"} value={calc.envImpact} sub={calc.envLabel} bg="bg-white" />
+          <StatCard label={isId ? "Limbah" : "Waste"} value={calc.waste} sub={calc.wasteLabel} bg="bg-white" />
+        </div>
+
+        <MindfulTip 
+          tipId="Daun jati memiliki pori-pori alami yang membiarkan nasi 'bernapas' sehingga tidak cepat basi. Ia juga ramah lingkungan karena mudah hancur jadi pupuk!"
+          tipEn="Teak leaves have natural pores that allow rice to 'breathe', preventing it from spoiling. They are also eco-friendly as they easily decompose into fertilizer!"
+        />
       </div>
 
       {/* Chart */}
@@ -495,11 +518,18 @@ const TerasiSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
         </button>
       </SimCard>
 
-      {/* Live Metrics */}
-      <div className="grid grid-cols-3 gap-2">
-        <StatCard label={isId ? "Risiko Keamanan" : "Safety Risk"} value={calc.safetyRisk} sub={calc.riskLabel} bg="bg-white" />
-        <StatCard label={isId ? "Kualitas" : "Quality"} value={calc.quality} sub={calc.qualityLabel} bg="bg-white" />
-        <StatCard label={isId ? "Fermentasi" : "Fermentation"} value={calc.fermentation} sub={calc.fermLabel} bg="bg-white" />
+      {/* Live Metrics & Tip */}
+      <div className="space-y-4">
+        <div className="grid grid-cols-3 gap-2">
+          <StatCard label={isId ? "Risiko Keamanan" : "Safety Risk"} value={calc.safetyRisk} sub={calc.riskLabel} bg="bg-white" />
+          <StatCard label={isId ? "Kualitas" : "Quality"} value={calc.quality} sub={calc.qualityLabel} bg="bg-white" />
+          <StatCard label={isId ? "Fermentasi" : "Fermentation"} value={calc.fermentation} sub={calc.fermLabel} bg="bg-white" />
+        </div>
+
+        <MindfulTip 
+          tipId="Garam berfungsi sebagai pengawet alami yang menghambat bakteri pembusuk (patogen) sambil membiarkan bakteri fermentasi yang baik bekerja!"
+          tipEn="Salt acts as a natural preservative that inhibits decaying bacteria (pathogens) while allowing the beneficial fermentation bacteria to work!"
+        />
       </div>
     </div>
   );
@@ -691,23 +721,30 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
         </div>
       </div>
 
-      {/* Outcome Bento Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { l: isId ? "Retensi Panas" : "Heat Retention", v: Math.round(calc.retention), s: calc.retention > 60 ? (isId ? "Tinggi" : "High") : (isId ? "Normal" : "Normal"), c: "amber" },
-          { l: isId ? "Efisiensi Energi" : "Energy Efficiency", v: Math.round(calc.efficiency), s: calc.efficiency > 60 ? (isId ? "Optimal" : "Optimal") : (isId ? "Rendah" : "Low"), c: "emerald" },
-          { l: isId ? "Kehilangan Panas" : "Heat Loss", v: Math.round(calc.heatLoss), s: calc.heatLoss < 30 ? (isId ? "Minimal" : "Low") : (isId ? "Kritis" : "Critical"), c: "rose" },
-          { l: isId ? "Dataset Log" : "Dataset Log", v: runs.length, s: isId ? "Data Aktif" : "Active Records", c: "indigo" },
-        ].map(st => (
-          <div key={st.l} className="group p-8 bg-white/80 backdrop-blur-xl rounded-[40px] border border-slate-200 shadow-xl flex flex-col justify-between hover:bg-slate-900 hover:text-white transition-all duration-500 overflow-hidden relative">
-             <div className={`absolute -top-10 -right-10 w-32 h-32 bg-${st.c}-500/10 rounded-full blur-[40px] group-hover:bg-white/5`} />
-             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest relative z-10">{st.l}</span>
-             <div className="mt-4 flex items-baseline gap-2 relative z-10">
-                <span className={`text-4xl font-bold ${st.v > 70 ? 'text-emerald-500' : 'text-slate-900 group-hover:text-white'}`}>{st.v}</span>
-                <span className="text-[11px] font-bold uppercase opacity-40">{st.s}</span>
-             </div>
-          </div>
-        ))}
+      {/* Outcome Bento Grid & Tip */}
+      <div className="space-y-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { l: isId ? "Retensi Panas" : "Heat Retention", v: Math.round(calc.retention), s: calc.retention > 60 ? (isId ? "Tinggi" : "High") : (isId ? "Normal" : "Normal"), c: "amber" },
+            { l: isId ? "Efisiensi Energi" : "Energy Efficiency", v: Math.round(calc.efficiency), s: calc.efficiency > 60 ? (isId ? "Optimal" : "Optimal") : (isId ? "Rendah" : "Low"), c: "emerald" },
+            { l: isId ? "Kehilangan Panas" : "Heat Loss", v: Math.round(calc.heatLoss), s: calc.heatLoss < 30 ? (isId ? "Minimal" : "Low") : (isId ? "Kritis" : "Critical"), c: "rose" },
+            { l: isId ? "Dataset Log" : "Dataset Log", v: runs.length, s: isId ? "Data Aktif" : "Active Records", c: "indigo" },
+          ].map(st => (
+            <div key={st.l} className="group p-8 bg-white/80 backdrop-blur-xl rounded-[40px] border border-slate-200 shadow-xl flex flex-col justify-between hover:bg-slate-900 hover:text-white transition-all duration-500 overflow-hidden relative">
+               <div className={`absolute -top-10 -right-10 w-32 h-32 bg-${st.c}-500/10 rounded-full blur-[40px] group-hover:bg-white/5`} />
+               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest relative z-10">{st.l}</span>
+               <div className="mt-4 flex items-baseline gap-2 relative z-10">
+                  <span className={`text-4xl font-bold ${st.v > 70 ? 'text-emerald-500' : 'text-slate-900 group-hover:text-white'}`}>{st.v}</span>
+                  <span className="text-[11px] font-bold uppercase opacity-40">{st.s}</span>
+               </div>
+            </div>
+          ))}
+        </div>
+
+        <MindfulTip 
+          tipId="Kuali tanah liat memiliki kapasitas kalor yang tinggi, artinya ia menyerap panas perlahan tapi menyimpannya lebih lama. Masakan matang merata tanpa boros energi!"
+          tipEn="Clay pots have high specific heat capacity; they absorb heat slowly but retain it much longer. This ensures even cooking while saving energy!"
+        />
       </div>
     </div>
   );
@@ -906,12 +943,19 @@ const KerupukMelaratSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => v
         </button>
       </SimCard>
 
-      {/* Live Metrics */}
-      <div className="grid grid-cols-4 gap-2">
-        <StatCard label={isId ? "Serap Minyak" : "Oil Absorb"} value={Math.round(calc.oilAbsorption)} sub={calc.oilLabel} bg="bg-white" />
-        <StatCard label={isId ? "Kerenyahan" : "Crispiness"} value={Math.round(calc.crispiness)} sub={calc.crispLabel} bg="bg-white" />
-        <StatCard label={isId ? "Energi" : "Energy"} value={Math.round(calc.energy)} sub={calc.energyLabel} bg="bg-white" />
-        <StatCard label={isId ? "Keberlanjutan" : "Sustain."} value={Math.round(calc.sustainability)} sub={calc.sustLabel} bg="bg-white" />
+      {/* Live Metrics & Tip */}
+      <div className="space-y-4">
+        <div className="grid grid-cols-4 gap-2">
+          <StatCard label={isId ? "Serap Minyak" : "Oil Absorb"} value={Math.round(calc.oilAbsorption)} sub={calc.oilLabel} bg="bg-white" />
+          <StatCard label={isId ? "Kerenyahan" : "Crispiness"} value={Math.round(calc.crispiness)} sub={calc.crispLabel} bg="bg-white" />
+          <StatCard label={isId ? "Energi" : "Energy"} value={Math.round(calc.energy)} sub={calc.energyLabel} bg="bg-white" />
+          <StatCard label={isId ? "Keberlanjutan" : "Sustain."} value={Math.round(calc.sustainability)} sub={calc.sustLabel} bg="bg-white" />
+        </div>
+
+        <MindfulTip 
+          tipId="Goreng pasir menggunakan radiasi panas dari butiran pasir kering. Teknik ini menghasilkan kerupuk renyah tanpa tambahan lemak jenuh (kolesterol)!"
+          tipEn="Sand frying uses heat radiation from dry sand grains. This technique produces crispy crackers without adding saturated fats (cholesterol)!"
+        />
       </div>
     </div>
   );
@@ -1300,8 +1344,8 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
         </button>
       </SimCard>
 
-      {/* Live Metrics with progress bars */}
-      <SimCard className="p-4">
+      {/* Live Metrics & Tip */}
+      <SimCard className="p-4 space-y-4">
         <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mb-3">{isId ? "Hasil Fermentasi Saat Ini" : "Current Fermentation Results"}</p>
         <div className="space-y-3">
           {[
@@ -1323,6 +1367,11 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
         <p className="text-[10px] text-muted-foreground mt-3 italic">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1 shrink-0"><path d="M9 18h6M10 22h4" stroke="#a16207" strokeWidth="2" strokeLinecap="round"/><path d="M12 2a7 7 0 0 1 5 11.9V16a2 2 0 0 1-2 2h-6a2 2 0 0 1-2-2v-2.1A7 7 0 0 1 12 2z" fill="#fbbf24"/><path d="M9 22h6" stroke="#a16207" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Fermentasi optimal: 36–48 jam, suhu 25–32°C, ragi baik, kemasan daun pisang" : "Optimal: 36–48h, 25–32°C, good starter, banana leaf packaging"}
         </p>
+
+        <MindfulTip 
+          tipId="Fermentasi adalah proses bioteknologi tradisional di mana mikroorganisme (ragi) memecah pati menjadi gula dan alkohol secara perlahan."
+          tipEn="Fermentation is a traditional biotechnology process where microorganisms (yeast) slowly break down starch into sugar and alcohol."
+        />
       </SimCard>
     </div>
   );
@@ -1530,13 +1579,20 @@ const MangroveSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void })
         </button>
       </SimCard>
 
-      {/* Live Metrics */}
-      <div className="grid grid-cols-5 gap-1.5">
-        <StatCard label={isId ? "Abrasi" : "Erosion"} value={Math.round(calc.erosion)} sub={calc.erosionLabel} bg="bg-white" />
-        <StatCard label={isId ? "Ikan" : "Fish"} value={Math.round(calc.fishProduction)} sub={calc.fishLabel} bg="bg-white" />
-        <StatCard label={isId ? "Karbon" : "Carbon"} value={Math.round(calc.carbonStorage)} sub={calc.carbonLabel} bg="bg-white" />
-        <StatCard label={isId ? "Biodiv." : "Biodiv."} value={Math.round(calc.biodiversity)} sub={calc.biodivLabel} bg="bg-white" />
-        <StatCard label={isId ? "Risiko Banjir" : "Flood"} value={Math.round(calc.floodRisk)} sub={calc.floodLabel} bg="bg-white" />
+      {/* Live Metrics & Tip */}
+      <div className="space-y-4">
+        <div className="grid grid-cols-5 gap-1.5">
+          <StatCard label={isId ? "Abrasi" : "Erosion"} value={Math.round(calc.erosion)} sub={calc.erosionLabel} bg="bg-white" />
+          <StatCard label={isId ? "Ikan" : "Fish"} value={Math.round(calc.fishProduction)} sub={calc.fishLabel} bg="bg-white" />
+          <StatCard label={isId ? "Karbon" : "Carbon"} value={Math.round(calc.carbonStorage)} sub={calc.carbonLabel} bg="bg-white" />
+          <StatCard label={isId ? "Biodiv." : "Biodiv."} value={Math.round(calc.biodiversity)} sub={calc.biodivLabel} bg="bg-white" />
+          <StatCard label={isId ? "Risiko Banjir" : "Flood"} value={Math.round(calc.floodRisk)} sub={calc.floodLabel} bg="bg-white" />
+        </div>
+
+        <MindfulTip 
+          tipId="Mangrove adalah 'benteng hijau' alami. Akarnya menahan tanah dari abrasi dan menjadi rumah bagi ribuan spesies laut kecil untuk berkembang biak."
+          tipEn="Mangroves are natural 'green fortresses'. Their roots hold the soil against erosion and provide a safe nursery for thousands of marine species."
+        />
       </div>
     </div>
   );
@@ -1726,12 +1782,19 @@ const NadranSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
         </button>
       </SimCard>
 
-      {/* Live Metrics */}
-      <div className="grid grid-cols-4 gap-2">
-        <StatCard label={isId ? "Populasi Ikan" : "Fish Pop."} value={Math.round(calc.fishPopulation)} sub={calc.fishLabel} bg="bg-white" />
-        <StatCard label={isId ? "Kualitas Air" : "Water Quality"} value={Math.round(calc.waterQuality)} sub={calc.waterLabel} bg="bg-white" />
-        <StatCard label={isId ? "Keanekaragaman" : "Biodiv."} value={Math.round(calc.marineBiodiversity)} sub={calc.biodivLabel} bg="bg-white" />
-        <StatCard label={isId ? "Skor Keberlanjutan" : "Sustainability"} value={Math.round(calc.sustainabilityScore)} sub={calc.sustLabel} bg="bg-white" />
+      {/* Live Metrics & Tip */}
+      <div className="space-y-4">
+        <div className="grid grid-cols-4 gap-2">
+          <StatCard label={isId ? "Populasi Ikan" : "Fish Pop."} value={Math.round(calc.fishPopulation)} sub={calc.fishLabel} bg="bg-white" />
+          <StatCard label={isId ? "Kualitas Air" : "Water Quality"} value={Math.round(calc.waterQuality)} sub={calc.waterLabel} bg="bg-white" />
+          <StatCard label={isId ? "Keanekaragaman" : "Biodiv."} value={Math.round(calc.marineBiodiversity)} sub={calc.biodivLabel} bg="bg-white" />
+          <StatCard label={isId ? "Skor Keberlanjutan" : "Sustainability"} value={Math.round(calc.sustainabilityScore)} sub={calc.sustLabel} bg="bg-white" />
+        </div>
+
+        <MindfulTip 
+          tipId="Menjaga ekosistem laut berarti menjaga masa depan. Kesadaran kita untuk tidak membuang sampah ke laut sangat menentukan keberlangsungan hidup biota laut!"
+          tipEn="Protecting the marine ecosystem means protecting the future. Our awareness to not throw waste into the sea is crucial for the survival of marine life!"
+        />
       </div>
     </div>
   );
