@@ -617,6 +617,10 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
                 <stop offset="0%" stopColor="white" stopOpacity="0.4" />
                 <stop offset="100%" stopColor="white" stopOpacity="0" />
               </radialGradient>
+              <radialGradient id="liquidSurfaceGrad" cx="50%" cy="20%" r="80%">
+                <stop offset="0%" stopColor="#451a03" stopOpacity="0.4" />
+                <stop offset="100%" stopColor="#1c0d02" stopOpacity="0.8" />
+              </radialGradient>
               <radialGradient id="fireOuter">
                 <stop offset="0%" stopColor="#fbbf24" />
                 <stop offset="40%" stopColor="#f59e0b" />
@@ -648,18 +652,34 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
             {/* Stand */}
             <path d="M60 185 L140 185 M140 185 L155 220 M60 185 L45 220" stroke="#334155" strokeWidth="5" fill="none" strokeLinecap="round" />
 
-            {/* Premium Pot Visualization */}
+            {/* Premium Pot Visualization (2.5D Game Asset Style) */}
             <g transform="translate(100, 115)">
-               {/* Body shadow */}
-               <path d="M-62,-40 A62,52 0 0,0 62,-40 L62,45 A62,52 0 0,1 -62,45 Z" fill="black" opacity="0.3" transform="translate(4, 4)" />
-               {/* Pot Body */}
-               <path d="M-60,-40 A60,50 0 0,0 60,-40 L60,40 A60,50 0 0,1 -60,40 Z" fill="url(#bodyGrad)" />
-               {/* Interior glow */}
-               <ellipse cx="0" cy="0" rx="45" ry="30" fill="#2d1305" />
-               <ellipse cx="0" cy="0" rx="45" ry="30" fill="url(#rimGlow)" />
-               {/* Rim highlight */}
+               {/* External Body Drop Shadow */}
+               <path d="M-62,-40 A62,52 0 0,0 62,-40 L62,45 A62,52 0 0,1 -62,45 Z" fill="black" opacity="0.4" transform="translate(6, 6)" filter="blur(4px)" />
+               
+               {/* Main Pot Body */}
+               <path d="M-60,-40 A60,50 0 0,0 60,-40 L60,40 A60,50 0 0,1 -60,40 Z" fill="url(#bodyGrad)" stroke="#1e293b" strokeWidth="0.5" />
+               
+               {/* 2.5D Recessed Opening Logic */}
+               <g>
+                  {/* The thickness/depth of the wall cut */}
+                  <ellipse cx="0" cy="0" rx="50" ry="33" fill="#1c0d02" /> 
+                  <ellipse cx="0" cy="2" rx="48" ry="31" fill="#3b1901" /> {/* Deep shadow rim */}
+                  
+                  {/* The actual liquid/inner floor */}
+                  <ellipse cx="0" cy="4" rx="45" ry="28" fill="#2d1305" />
+                  
+                  {/* Surface highlights / Liquid glow */}
+                  <ellipse cx="0" cy="4" rx="45" ry="28" fill="url(#liquidSurfaceGrad)" />
+                  
+                  {/* Top Rim Highlight (2.5D effect) */}
+                  <path d="M-50,0 A50,33 0 0,1 50,0" fill="none" stroke="white" strokeWidth="1.5" strokeOpacity="0.2" />
+               </g>
+
+               {/* Top Rim Highlight */}
                <ellipse cx="0" cy="-45" rx="58" ry="14" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.3" />
                <ellipse cx="0" cy="-45" rx="55" ry="12" fill="url(#bodyGrad)" stroke="black" strokeWidth="0.5" strokeOpacity="0.2" />
+               
                {/* Lid Handle */}
                <circle cx="0" cy="-62" r="10" fill="url(#bodyGrad)" stroke="black" strokeWidth="0.5" strokeOpacity="0.3" />
                <circle cx="0" cy="-65" r="4" fill="white" opacity="0.1" />
