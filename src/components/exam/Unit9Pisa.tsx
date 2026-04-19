@@ -173,9 +173,9 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
   return (
     <div className="flex flex-col h-screen bg-background text-foreground font-sans overflow-hidden">
 
-      {/* ── HEADER ── */}
-      <header className="h-14 bg-white border-b border-border/60 flex items-center justify-between px-6 shrink-0 z-10">
-        <div className="flex items-center gap-8">
+      {/* ── RESPONSIVE HEADER ── */}
+      <header className="h-auto md:h-14 bg-white border-b border-border/60 flex flex-col md:flex-row items-center justify-between px-4 md:px-6 py-3 md:py-0 shrink-0 z-50 shadow-sm gap-3 md:gap-0">
+        <div className="flex items-center gap-4 md:gap-8 w-full md:w-auto">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">9</div>
             <span className="font-bold text-sm tracking-tight text-foreground uppercase">
@@ -203,9 +203,9 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
             className="p-1.5 hover:bg-muted rounded-md transition-colors border border-transparent hover:border-border disabled:opacity-30">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
           </button>
-          <div className="w-px h-6 bg-border/60 mx-2" />
-          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground border border-border/60 px-2 py-1 rounded">{stepLabels[currentStep]}</span>
-          <div className="w-px h-6 bg-border/60 mx-2" />
+          <div className="w-px h-6 bg-border/60 mx-1 hidden md:block" />
+          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground border border-border/60 px-2 py-1 rounded whitespace-nowrap">{stepLabels[currentStep]}</span>
+          <div className="w-px h-6 bg-border/60 mx-1 hidden md:block" />
           <button onClick={() => {
             // Validate before submission
             const wordCount2 = q2Answer.trim() ? q2Answer.trim().split(/\s+/).length : 0;
@@ -240,11 +240,11 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
         </div>
       </header>
 
-      {/* ── MAIN ── */}
-      <main className="flex-1 flex overflow-hidden">
+      {/* ── MAIN RESPONSIVE LAYOUT ── */}
+      <main className="flex-1 flex flex-col md:flex-row overflow-hidden">
 
-        {/* ── LEFT: Questions ── */}
-        <div className="w-[45%] bg-violet-100 border-r border-violet-200 flex flex-col overflow-hidden">
+        {/* LEFT: Questions Panel - Responsive Width */}
+        <div className="w-full md:w-[45%] bg-indigo-50/70 border-b md:border-b-0 md:border-r border-indigo-100 flex flex-col overflow-y-auto md:overflow-hidden transition-colors duration-500 max-h-[50vh] md:max-h-none">
           <div className="p-6 overflow-y-auto h-full space-y-4 exam-scrollbar">
 
             {/* ── STEP 0: Introduction ── */}
@@ -408,17 +408,28 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
                 <p className="text-[13px] font-medium text-foreground/90 leading-relaxed whitespace-pre-line">{isId
                   ? "Sebuah workshop batik mengurangi penggunaan air tetapi masih menggunakan pewarna sintetis dan tidak melakukan pengolahan limbah.\n\nPernyataan manakah yang paling tepat menggambarkan hasilnya?"
                   : "A batik workshop reduces water use but still uses synthetic dyes and provides no wastewater treatment.\n\nWhich statement best describes the result?"}</p>
-                <div className="space-y-2.5">
+                <div className="grid gap-3">
                   {[
-                    {val:"A",en:"Environmental impact disappears completely.",id:"Dampak lingkungan hilang sepenuhnya."},
-                    {val:"B",en:"Environmental impact decreases partly, but pollution can still occur.",id:"Dampak lingkungan berkurang sebagian, tetapi pencemaran masih dapat terjadi."},
-                    {val:"C",en:"Environmental impact increases only because water use is lower.",id:"Dampak lingkungan meningkat hanya karena penggunaan air lebih rendah."},
-                    {val:"D",en:"There is no relation between dye type and pollution.",id:"Tidak ada hubungan antara jenis pewarna dan pencemaran."},
-                  ].map(opt => (
-                    <label key={opt.val} className="flex items-center gap-3 p-3.5 bg-white border border-border rounded-lg hover:border-primary/20 hover:bg-muted/10 cursor-pointer transition-all">
-                      <input type="radio" name="q3" className="w-4 h-4 accent-primary" checked={q3Choice===opt.val} onChange={() => setQ3Choice(opt.val)}/>
-                      <span className="text-[13px] font-bold text-muted-foreground w-5">{opt.val}</span>
-                      <span className="text-[13px] text-foreground/70">{isId ? opt.id : opt.en}</span>
+                    {val:"A",en:"Environmental impact disappears completely.",id:"Dampak lingkungan hilang sepenuhnya.", bg:"bg-rose-50/50"},
+                    {val:"B",en:"Environmental impact decreases partly, but pollution can still occur.",id:"Dampak lingkungan berkurang sebagian, tetapi pencemaran masih dapat terjadi.", bg:"bg-blue-50/50"},
+                    {val:"C",en:"Environmental impact increases only because water use is lower.",id:"Dampak lingkungan meningkat hanya karena penggunaan air lebih rendah.", bg:"bg-amber-50/50"},
+                    {val:"D",en:"There is no relation between dye type and pollution.",id:"Tidak ada hubungan antara jenis pewarna dan pencemaran.", bg:"bg-indigo-50/50"},
+                  ].map((opt, idx) => (
+                    <label 
+                      key={opt.val} 
+                      className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                        q3Choice === opt.val 
+                        ? "bg-primary text-white border-primary shadow-lg scale-[1.02] z-10" 
+                        : `${opt.bg} border-slate-200/60 text-foreground/80 hover:border-primary/40 hover:shadow-md hover:scale-[1.01]`
+                      }`}
+                    >
+                      <input type="radio" name="q3" className="hidden" checked={q3Choice===opt.val} onChange={() => setQ3Choice(opt.val)}/>
+                      <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center font-black text-[10px] transition-all ${q3Choice === opt.val ? "bg-white border-white text-primary" : "bg-white/50 border-slate-300 text-slate-400"}`}>
+                        {opt.val}
+                      </span>
+                      <span className={`text-[13px] font-medium leading-relaxed ${q3Choice === opt.val ? "text-white" : "text-slate-700"}`}>
+                        {isId ? opt.id : opt.en}
+                      </span>
                     </label>
                   ))}
                 </div>
@@ -529,8 +540,8 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
           </div>
         </div>
 
-        {/* -- RIGHT: Simulation -- */}
-        <div className="flex-1 bg-slate-50 flex flex-col overflow-hidden">
+        {/* -- RIGHT: Simulation Panel - Clean Slate Theme -- */}
+        <div className="flex-1 bg-white flex flex-col overflow-hidden transition-colors duration-500">
           <div className="p-5 h-full flex flex-col gap-4 overflow-y-auto exam-scrollbar">
 
             {/* Header */}

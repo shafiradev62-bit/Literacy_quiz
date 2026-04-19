@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { ExamQuestion } from "@/data/examQuestions";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SimulationEngine } from "./SimulationEngine";
@@ -46,6 +46,19 @@ const QuestionPanel = ({
 }: QuestionPanelProps) => {
   const { t, lang } = useLanguage();
   const isId = lang === "id";
+
+  const unitStyles = useMemo(() => {
+    const themes: Record<number, { left: string; right: string; border: string; accent: string; options: string[] }> = {
+      1: { left: "bg-emerald-50/50", right: "bg-white", border: "border-emerald-100", accent: "text-emerald-700", options: ["bg-emerald-50/40", "bg-teal-50/40", "bg-green-50/40", "bg-slate-50/40"] },
+      2: { left: "bg-blue-50/50", right: "bg-white", border: "border-blue-100", accent: "text-blue-700", options: ["bg-blue-50/40", "bg-sky-50/40", "bg-indigo-50/40", "bg-slate-50/40"] },
+      3: { left: "bg-amber-50/50", right: "bg-white", border: "border-amber-100", accent: "text-amber-700", options: ["bg-amber-50/40", "bg-yellow-50/40", "bg-orange-50/40", "bg-slate-50/40"] },
+      4: { left: "bg-orange-50/50", right: "bg-white", border: "border-orange-100", accent: "text-orange-700", options: ["bg-orange-50/40", "bg-amber-50/40", "bg-red-50/40", "bg-slate-50/40"] },
+      5: { left: "bg-lime-50/50", right: "bg-white", border: "border-lime-100", accent: "text-lime-700", options: ["bg-lime-50/40", "bg-emerald-50/40", "bg-green-50/40", "bg-slate-50/40"] },
+      6: { left: "bg-teal-50/50", right: "bg-white", border: "border-teal-100", accent: "text-teal-700", options: ["bg-teal-50/40", "bg-cyan-50/40", "bg-sky-50/40", "bg-slate-50/40"] },
+      7: { left: "bg-cyan-50/50", right: "bg-white", border: "border-cyan-100", accent: "text-cyan-700", options: ["bg-cyan-50/40", "bg-blue-50/40", "bg-sky-50/40", "bg-slate-50/40"] },
+    };
+    return themes[unit || 2] || themes[2];
+  }, [unit]);
 
   const [saltVal, setSaltVal] = useState(22);
   const [dryingDays, setDryingDays] = useState(2);
@@ -220,7 +233,7 @@ const QuestionPanel = ({
   };
 
   return (
-    <div className="h-full flex flex-col bg-gradient-to-b from-background via-background to-muted/20">
+    <div className={`h-full flex flex-col ${unitStyles.right} transition-colors duration-500`}>
       {/* Question Navigator */}
       <div className="px-5 pt-4 pb-3 border-b border-exam-divider bg-white/50 backdrop-blur-sm">
         <div className="flex items-center gap-1 mb-2.5">
@@ -476,70 +489,80 @@ const QuestionPanel = ({
 
           {/* Options Container */}
           <div className="space-y-2.5">
-            {/* MCQ Options */}
+             {/* MCQ Options with distinct colors */}
             {question.type === "mcq" && options && (
               <div className="grid gap-3">
-                {options.map((option) => {
+                {options.map((option, idx) => {
                   const isSelected = selectedMCQ === option;
+                  const optionBg = unitStyles.options[idx % unitStyles.options.length];
                   return (
                     <button
                       key={option}
                       onClick={() => handleMCQ(option)}
-                      className={`group w-full text-left px-4 py-3.5 text-[14px] rounded-lg transition-all duration-200 border flex items-center gap-4 ${
+                      className={`group w-full text-left px-5 py-4 text-[14px] rounded-2xl transition-all duration-300 border flex items-center gap-4 ${
                         isSelected
-                          ? "bg-primary/5 border-primary/30 text-foreground shadow-sm"
-                          : "bg-white border-border/50 text-foreground/80 hover:bg-secondary/50 hover:border-primary/20"
+                          ? "bg-primary text-white border-primary shadow-lg scale-[1.02] z-10"
+                          : `${optionBg} border-slate-200/60 text-foreground/80 hover:border-primary/40 hover:shadow-md hover:scale-[1.01]`
                       }`}
                     >
                       <span
-                        className={`flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
+                        className={`flex-shrink-0 w-7 h-7 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
                           isSelected
-                            ? "bg-primary border-primary"
-                            : "border-muted-foreground/30 group-hover:border-primary/50"
+                            ? "bg-white border-white scale-110"
+                            : "bg-white/50 border-slate-300 group-hover:border-primary/50"
                         }`}
                       >
-                        {isSelected && (
-                          <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        {isSelected ? (
+                          <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3.5} d="M5 13l4 4L19 7" />
                           </svg>
+                        ) : (
+                          <span className="text-[10px] font-black text-slate-400 group-hover:text-primary transition-colors">
+                            {String.fromCharCode(65 + idx)}
+                          </span>
                         )}
                       </span>
-                      <span className="flex-1 leading-relaxed">{option}</span>
+                      <span className={`flex-1 leading-relaxed font-medium ${isSelected ? "text-white" : "text-slate-700"}`}>{option}</span>
                     </button>
                   );
                 })}
               </div>
             )}
 
-            {/* Checkbox Options */}
+             {/* Checkbox Options with distinct colors */}
             {question.type === "checkbox" && options && (
               <div className="grid gap-3">
-                {options.map((option) => {
+                {options.map((option, idx) => {
                   const isSelected = selectedCheckbox.includes(option);
+                  const optionBg = unitStyles.options[idx % unitStyles.options.length];
                   return (
                     <button
                       key={option}
                       onClick={() => handleCheckbox(option)}
-                      className={`group w-full text-left px-4 py-3.5 text-[14px] rounded-lg transition-all duration-200 border flex items-center gap-4 ${
+                      className={`group w-full text-left px-5 py-4 text-[14px] rounded-2xl transition-all duration-300 border flex items-center gap-4 ${
                         isSelected
-                          ? "bg-primary/5 border-primary/30 text-foreground shadow-sm"
-                          : "bg-white border-border/50 text-foreground/80 hover:bg-secondary/50 hover:border-primary/20"
+                          ? "bg-primary text-white border-primary shadow-lg scale-[1.02] z-10"
+                          : `${optionBg} border-slate-200/60 text-foreground/80 hover:border-primary/40 hover:shadow-md hover:scale-[1.01]`
                       }`}
                     >
                       <span
-                        className={`flex-shrink-0 w-6 h-6 ${checkboxShouldBeSingle ? "rounded-full" : "rounded-md"} border-2 flex items-center justify-center transition-all duration-200 ${
+                        className={`flex-shrink-0 w-7 h-7 ${checkboxShouldBeSingle ? "rounded-full" : "rounded-xl"} border-2 flex items-center justify-center transition-all duration-300 ${
                           isSelected
-                            ? "bg-primary border-primary"
-                            : "border-muted-foreground/30 group-hover:border-primary/50"
+                            ? "bg-white border-white rotate-[360deg] scale-110"
+                            : "bg-white/50 border-slate-300 group-hover:border-primary/50"
                         }`}
                       >
-                        {isSelected && (
-                          <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        {isSelected ? (
+                          <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3.5} d="M5 13l4 4L19 7" />
                           </svg>
+                        ) : (
+                          <span className="text-[10px] font-black text-slate-400 group-hover:text-primary transition-colors">
+                            {String.fromCharCode(65 + idx)}
+                          </span>
                         )}
                       </span>
-                      <span className="flex-1 leading-relaxed">{option}</span>
+                      <span className={`flex-1 leading-relaxed font-medium ${isSelected ? "text-white" : "text-slate-700"}`}>{option}</span>
                     </button>
                   );
                 })}
@@ -1085,8 +1108,8 @@ function Unit7Simulation({ isId }: { isId: boolean }) {
 
   return (
     <div className="mb-5 space-y-4">
-      {/* Metric Cards */}
-      <div className="grid grid-cols-4 gap-2">
+      {/* Metric Cards - Responsive Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         {[
           { label: isId ? "Populasi Ikan" : "Fish Pop.", value: u7Calc.fishPop, sub: u7Calc.fLabel },
           { label: isId ? "Kualitas Air" : "Water Quality", value: u7Calc.waterQuality, sub: u7Calc.wLabel },

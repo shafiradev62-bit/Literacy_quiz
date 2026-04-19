@@ -503,50 +503,51 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
     <div className="flex flex-col h-screen bg-background text-foreground font-sans overflow-hidden">
 
       {/* HEADER */}
-      <header className="h-14 bg-white border-b border-border/60 flex items-center justify-between px-6 shrink-0 z-10">
-        <div className="flex items-center gap-8">
+      {/* ── RESPONSIVE HEADER ── */}
+      <header className="h-auto md:h-14 bg-white border-b border-border/60 flex flex-col md:flex-row items-center justify-between px-4 md:px-6 py-3 md:py-0 shrink-0 z-50 shadow-sm gap-3 md:gap-0">
+        <div className="flex items-center gap-4 md:gap-8 w-full md:w-auto">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">10</div>
-            <span className="font-bold text-sm tracking-tight text-black uppercase">
-              {isId ? "Unit 10: Sistem Pangan Lokal Berkelanjutan" : "Unit 10: Sustainable Local Food Systems"}
+            <span className="font-bold text-sm tracking-tight text-black uppercase whitespace-nowrap overflow-hidden text-ellipsis">
+              {isId ? "Unit 10: Sistem Pangan" : "Unit 10: Food Systems"}
             </span>
           </div>
-          <div className="h-6 w-px bg-border/60" />
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5">
-              {[1,2,3,4,5].map(s => (
-                <div key={s} className="flex flex-col items-center gap-0.5">
-                  <div className={`w-7 h-1.5 rounded-full transition-all ${currentStep >= s ? "bg-primary" : "bg-border"}`} />
-                  <span className={`text-[8px] font-bold uppercase tracking-wider ${currentStep >= s ? "text-primary" : "text-muted-foreground/40"}`}>{s}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <div className="h-6 w-px bg-border/60 hidden md:block" />
+          <nav className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0">
+            {[1, 2, 3, 4, 5].map(s => (
+              <button key={s} onClick={() => setCurrentStep(s)} className="flex flex-col items-center gap-0.5">
+                <div className={`w-6 md:w-7 h-1.5 rounded-full transition-all ${currentStep >= s ? "bg-primary" : "bg-border"}`} />
+                <span className={`text-[8px] font-bold uppercase tracking-wider ${currentStep >= s ? "text-primary" : "text-muted-foreground/40"}`}>{s}</span>
+              </button>
+            ))}
+          </nav>
         </div>
-        <div className="flex items-center gap-3">
-          <button onClick={() => setCurrentStep(p => Math.max(0, p-1))} disabled={currentStep === 0}
-            className="p-1.5 hover:bg-muted rounded-md transition-colors border border-transparent hover:border-border disabled:opacity-30">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/></svg>
-          </button>
-          <button onClick={() => setCurrentStep(p => Math.min(5, p+1))} disabled={currentStep === 5 || !isStepValid()}
-            className="p-1.5 hover:bg-muted rounded-md transition-colors border border-transparent hover:border-border disabled:opacity-30">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
-          </button>
-          <div className="w-px h-6 bg-border/60 mx-2" />
-          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground border border-border/60 px-2 py-1 rounded">{stepLabels[currentStep]}</span>
-          <div className="w-px h-6 bg-border/60 mx-2" />
+        <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 pt-2 md:pt-0">
+          <div className="flex items-center gap-2">
+            <button onClick={() => setCurrentStep(p => Math.max(0, p - 1))} disabled={currentStep === 0}
+              className="p-1.5 hover:bg-muted rounded-md transition-colors border border-transparent hover:border-border disabled:opacity-30">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button onClick={() => setCurrentStep(p => Math.min(5, p + 1))} disabled={currentStep === 5 || !isStepValid()}
+              className="p-1.5 hover:bg-muted rounded-md transition-colors border border-transparent hover:border-border disabled:opacity-30">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+          <div className="w-px h-6 bg-border/60 mx-1 hidden md:block" />
+          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground border border-border/60 px-2 py-1 rounded whitespace-nowrap">{stepLabels[currentStep]}</span>
+          <div className="w-px h-6 bg-border/60 mx-1 hidden md:block" />
           <button onClick={onExit} className="px-3 py-1.5 bg-background text-foreground text-[10px] font-bold rounded border border-border hover:bg-muted transition-colors uppercase tracking-wider">
             {isId ? "Kembali" : "Back"}
           </button>
         </div>
       </header>
 
-      {/* MAIN */}
-      <main className="flex-1 flex overflow-hidden" style={{ height: 'calc(100vh - 64px)' }}>
+      {/* ── MAIN RESPONSIVE LAYOUT ── */}
+      <main className="flex-1 flex flex-col md:flex-row overflow-hidden">
 
-        {/* LEFT: Questions */}
-        <div className="w-[45%] bg-orange-100 border-r border-orange-200 flex flex-col overflow-hidden">
-          <div className="p-6 overflow-y-auto flex-1 space-y-4 exam-scrollbar" style={{ maxHeight: '100%' }}>
+        {/* LEFT: Questions Panel - Responsive Width */}
+        <div className="w-full md:w-[45%] bg-slate-50/70 border-b md:border-b-0 md:border-r border-slate-200 flex flex-col overflow-y-auto md:overflow-hidden transition-colors duration-500 max-h-[50vh] md:max-h-none">
+          <div className="p-6 overflow-y-auto flex-1 space-y-4 exam-scrollbar">
 
             {/* STEP 0: Introduction */}
             {currentStep === 0 && (
@@ -725,17 +726,28 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
                 <p className="text-[13px] font-medium text-foreground/90 leading-relaxed whitespace-pre-line">{isId
                   ? "Cara manakah yang paling efektif untuk mengurangi pencemaran limbah tahu?"
                   : "Which method is most effective to reduce tofu wastewater pollution?"}</p>
-                <div className="space-y-2.5">
+                <div className="grid gap-3">
                   {[
-                    { val: "A", id: "Membuang limbah cair langsung ke sungai", en: "Discharge wastewater directly to the river" },
-                    { val: "B", id: "Menambah volume air agar limbah terlihat encer", en: "Add more water so waste looks diluted" },
-                    { val: "C", id: "Mengolah limbah cair tahu sebelum dibuang", en: "Treat tofu wastewater before disposal" },
-                    { val: "D", id: "Membuang limbah hanya pada malam hari", en: "Dispose waste only at night" },
-                  ].map((opt) => (
-                    <label key={opt.val} className="flex items-center gap-3 p-3.5 bg-white border border-border rounded-lg hover:border-primary/20 hover:bg-muted/10 cursor-pointer transition-all">
-                      <input type="radio" name="q2-choice" className="w-4 h-4 accent-primary" checked={q2Choice === opt.val} onChange={() => setQ2Choice(opt.val)} />
-                      <span className="text-[13px] font-bold text-muted-foreground w-5">{opt.val}</span>
-                      <span className="text-[13px] text-foreground/70">{isId ? opt.id : opt.en}</span>
+                    { val: "A", id: "Membuang limbah cair langsung ke sungai", en: "Discharge wastewater directly to the river", bg: "bg-rose-50/50" },
+                    { val: "B", id: "Menambah volume air agar limbah terlihat encer", en: "Add more water so waste looks diluted", bg: "bg-blue-50/50" },
+                    { val: "C", id: "Mengolah limbah cair tahu sebelum dibuang", en: "Treat tofu wastewater before disposal", bg: "bg-emerald-50/50" },
+                    { val: "D", id: "Membuang limbah hanya pada malam hari", en: "Dispose waste only at night", bg: "bg-slate-50/40" },
+                  ].map((opt, idx) => (
+                    <label 
+                      key={opt.val} 
+                      className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                        q2Choice === opt.val 
+                        ? "bg-primary text-white border-primary shadow-lg scale-[1.02] z-10" 
+                        : `${opt.bg} border-slate-200/60 text-foreground/80 hover:border-primary/40 hover:shadow-md hover:scale-[1.01]`
+                      }`}
+                    >
+                      <input type="radio" name="q2-choice" className="hidden" checked={q2Choice === opt.val} onChange={() => setQ2Choice(opt.val)} />
+                      <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center font-black text-[10px] transition-all ${q2Choice === opt.val ? "bg-white border-white text-primary" : "bg-white/50 border-slate-300 text-slate-400"}`}>
+                        {opt.val}
+                      </span>
+                      <span className={`text-[13px] font-medium leading-relaxed ${q2Choice === opt.val ? "text-white" : "text-slate-700"}`}>
+                        {isId ? opt.id : opt.en}
+                      </span>
                     </label>
                   ))}
                 </div>
@@ -752,17 +764,28 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
                 <p className="text-[13px] font-medium text-foreground/90 leading-relaxed">{isId
                   ? "Gunakan simulasi di sebelah kanan. Pengaturan sistem pangan manakah yang paling mungkin memiliki tekanan lingkungan keseluruhan paling rendah?"
                   : "Use the simulation on the right. Which food system setup is most likely to have the lowest overall environmental pressure?"}</p>
-                <div className="space-y-2.5">
+                <div className="grid gap-3">
                   {[
-                    {val:"A", en:"Animal-based protein, non-local ingredients, no treatment",       id:"Protein hewani, bahan non-lokal, tanpa pengolahan limbah"},
-                    {val:"B", en:"Plant-based protein, local ingredients, full treatment",          id:"Protein nabati, bahan lokal, pengolahan limbah penuh"},
-                    {val:"C", en:"Animal-based protein, local ingredients, no treatment",           id:"Protein hewani, bahan lokal, tanpa pengolahan limbah"},
-                    {val:"D", en:"Plant-based protein, non-local ingredients, no treatment",        id:"Protein nabati, bahan non-lokal, tanpa pengolahan limbah"},
-                  ].map(opt => (
-                    <label key={opt.val} className="flex items-center gap-3 p-3.5 bg-white border border-border rounded-lg hover:border-primary/20 hover:bg-muted/10 cursor-pointer transition-all">
-                      <input type="radio" name="q3" className="w-4 h-4 accent-primary" checked={q3Choice===opt.val} onChange={() => setQ3Choice(opt.val)}/>
-                      <span className="text-[13px] font-bold text-muted-foreground w-5">{opt.val}</span>
-                      <span className="text-[13px] text-foreground/70">{isId ? opt.id : opt.en}</span>
+                    {val:"A", en:"Animal-based protein, non-local ingredients, no treatment",       id:"Protein hewani, bahan non-lokal, tanpa pengolahan limbah", bg: "bg-rose-50/50"},
+                    {val:"B", en:"Plant-based protein, local ingredients, full treatment",          id:"Protein nabati, bahan lokal, pengolahan limbah penuh", bg: "bg-emerald-50/50"},
+                    {val:"C", en:"Animal-based protein, local ingredients, no treatment",           id:"Protein hewani, bahan lokal, tanpa pengolahan limbah", bg: "bg-blue-50/50"},
+                    {val:"D", en:"Plant-based protein, non-local ingredients, no treatment",        id:"Protein nabati, bahan non-lokal, tanpa pengolahan limbah", bg: "bg-amber-50/50"},
+                  ].map((opt, idx) => (
+                    <label 
+                      key={opt.val} 
+                      className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                        q3Choice === opt.val 
+                        ? "bg-primary text-white border-primary shadow-lg scale-[1.02] z-10" 
+                        : `${opt.bg} border-slate-200/60 text-foreground/80 hover:border-primary/40 hover:shadow-md hover:scale-[1.01]`
+                      }`}
+                    >
+                      <input type="radio" name="q3" className="hidden" checked={q3Choice===opt.val} onChange={() => setQ3Choice(opt.val)}/>
+                      <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center font-black text-[10px] transition-all ${q3Choice === opt.val ? "bg-white border-white text-primary" : "bg-white/50 border-slate-300 text-slate-400"}`}>
+                        {opt.val}
+                      </span>
+                      <span className={`text-[13px] font-medium leading-relaxed ${q3Choice === opt.val ? "text-white" : "text-slate-700"}`}>
+                        {isId ? opt.id : opt.en}
+                      </span>
                     </label>
                   ))}
                 </div>
@@ -868,8 +891,8 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
           </div>
         </div>
 
-        {/* RIGHT: Simulation */}
-        <div className="flex-1 bg-slate-50 border-l border-amber-200 overflow-hidden">
+        {/* RIGHT: Simulation Panel - Modern Slate Theme */}
+        <div className="flex-1 bg-white border-l border-slate-200 overflow-hidden transition-colors duration-500">
           <SimPanel />
         </div>
 

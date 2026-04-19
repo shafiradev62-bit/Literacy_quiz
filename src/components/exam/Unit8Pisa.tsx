@@ -113,41 +113,48 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
 
   return (
     <div className="flex flex-col h-screen bg-background text-foreground font-sans overflow-hidden">
-      <header className="h-14 bg-white border-b border-border/60 flex items-center justify-between px-6 shrink-0 z-10">
-        <div className="flex items-center gap-8">
+      {/* ── RESPONSIVE HEADER ── */}
+      <header className="h-auto md:h-14 bg-white border-b border-border/60 flex flex-col md:flex-row items-center justify-between px-4 md:px-6 py-3 md:py-0 shrink-0 z-50 shadow-sm gap-3 md:gap-0">
+        <div className="flex items-center gap-4 md:gap-8 w-full md:w-auto">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">8</div>
-            <span className="font-bold text-sm tracking-tight text-foreground uppercase">{isId?"Unit 8: Industri Kerajinan Rotan":"Unit 8: Rattan Craft Industry"}</span>
+            <span className="font-bold text-sm tracking-tight text-foreground uppercase whitespace-nowrap overflow-hidden text-ellipsis">
+              {isId ? "Unit 8: Industri Kerajinan Rotan" : "Unit 8: Rattan Craft Industry"}
+            </span>
           </div>
-          <div className="h-6 w-px bg-border/60"/>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5">
-              {[1,2,3,4,5].map(s=>(
-                <div key={s} className="flex flex-col items-center gap-0.5">
-                  <div className={`w-7 h-1.5 rounded-full transition-all ${currentStep>=s?"bg-primary":"bg-border"}`}/>
-                  <span className={`text-[8px] font-bold uppercase tracking-wider ${currentStep>=s?"text-primary":"text-muted-foreground/40"}`}>{s}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <div className="h-6 w-px bg-border/60 hidden md:block" />
+          <nav className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0">
+            {[1,2,3,4,5].map(s => (
+              <button key={s} onClick={() => setCurrentStep(s)} className="flex flex-col items-center gap-0.5">
+                <div className={`w-6 md:w-7 h-1.5 rounded-full transition-all ${currentStep >= s ? "bg-primary" : "bg-border"}`} />
+                <span className={`text-[8px] font-bold uppercase tracking-wider ${currentStep >= s ? "text-primary" : "text-muted-foreground/40"}`}>{s}</span>
+              </button>
+            ))}
+          </nav>
         </div>
-        <div className="flex items-center gap-3">
-          <button onClick={()=>setCurrentStep(p=>Math.max(0,p-1))} disabled={currentStep===0} className="p-1.5 hover:bg-muted rounded-md transition-colors border border-transparent hover:border-border disabled:opacity-30">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/></svg>
-          </button>
-          <button onClick={()=>setCurrentStep(p=>Math.min(5,p+1))} disabled={currentStep===5 || !isStepValid()} className="p-1.5 hover:bg-muted rounded-md transition-colors border border-transparent hover:border-border disabled:opacity-30">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
-          </button>
-          <div className="w-px h-6 bg-border/60 mx-2"/>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground border border-border/60 px-2 py-1 rounded">{stepLabels[currentStep]}</span>
-          <div className="w-px h-6 bg-border/60 mx-2"/>
+        <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 pt-2 md:pt-0">
+          <div className="flex items-center gap-2">
+            <button onClick={() => setCurrentStep(p => Math.max(0, p - 1))} disabled={currentStep === 0}
+              className="p-1.5 hover:bg-muted rounded-md transition-colors border border-transparent hover:border-border disabled:opacity-30">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button onClick={() => setCurrentStep(p => Math.min(5, p + 1))} disabled={currentStep === 5 || !isStepValid()}
+              className="p-1.5 hover:bg-muted rounded-md transition-colors border border-transparent hover:border-border disabled:opacity-30">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+          <div className="w-px h-6 bg-border/60 mx-1 hidden md:block" />
+          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground border border-border/60 px-2 py-1 rounded whitespace-nowrap">{stepLabels[currentStep]}</span>
+          <div className="w-px h-6 bg-border/60 mx-1 hidden md:block" />
           <button onClick={handleExit} className="px-3 py-1.5 bg-background text-foreground text-[10px] font-bold rounded border border-border hover:bg-muted transition-colors uppercase tracking-wider">{isId?"Kembali":"Back"}</button>
         </div>
       </header>
 
-      <main className="flex-1 flex overflow-hidden">
-        {/* LEFT: Questions */}
-        <div className="w-[45%] bg-emerald-100 border-r border-emerald-200 flex flex-col overflow-hidden">
+      {/* ── MAIN RESPONSIVE LAYOUT ── */}
+      <main className="flex-1 flex flex-col md:flex-row overflow-hidden">
+
+        {/* LEFT: Questions Panel - Responsive Width */}
+        <div className="w-full md:w-[45%] bg-emerald-50/70 border-b md:border-b-0 md:border-r border-emerald-100 flex flex-col overflow-y-auto md:overflow-hidden transition-colors duration-500 max-h-[50vh] md:max-h-none">
           <div className="p-6 overflow-y-auto h-full space-y-4 exam-scrollbar">
 
             {currentStep===0&&(
@@ -248,11 +255,26 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
                   </div>
                 </div>
                 <p className="text-[13px] font-medium text-foreground/90 leading-relaxed whitespace-pre-line">{isId?"Dua siswa memiliki pendapat yang berbeda tentang faktor yang paling bertanggung jawab terhadap penurunan keanekaragaman hayati hutan.\n\nSiswa 1 berpendapat bahwa penurunan keanekaragaman hayati terutama disebabkan oleh tingkat panen yang tinggi.\nSiswa 2 berpendapat bahwa penurunan keanekaragaman hayati terutama disebabkan oleh rendahnya pemanfaatan limbah di workshop.\n\nBerdasarkan data, siswa manakah yang lebih didukung?":"Two students disagree about which factor is most responsible for a decline in forest biodiversity.\n\nStudent 1 thinks biodiversity decline is mainly caused by a high harvest rate.\nStudent 2 thinks biodiversity decline is mainly caused by low waste utilization in the workshop.\n\nAccording to the data, which student is more strongly supported?"}</p>
-                <div className="space-y-2">
-                  {[{val:"student1",en:"Student 1",id:"Siswa 1"},{val:"student2",en:"Student 2",id:"Siswa 2"}].map(opt=>(
-                    <label key={opt.val} className="flex items-center gap-3 p-3.5 bg-white border border-border rounded-lg hover:border-primary/20 hover:bg-muted/10 cursor-pointer transition-all">
-                      <input type="radio" name="q2choice" className="w-4 h-4 accent-primary" checked={q2Choice===opt.val} onChange={()=>setQ2Choice(opt.val)}/>
-                      <span className="text-[13px] text-foreground/80">{isId?opt.id:opt.en}</span>
+                <div className="grid gap-3">
+                  {[
+                    { val: "student1", en: "Student 1", id: "Siswa 1", bg: "bg-blue-50/50" },
+                    { val: "student2", en: "Student 2", id: "Siswa 2", bg: "bg-emerald-50/50" }
+                  ].map((opt, idx) => (
+                    <label 
+                      key={opt.val} 
+                      className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                        q2Choice === opt.val 
+                        ? "bg-primary text-white border-primary shadow-lg scale-[1.02] z-10" 
+                        : `${opt.bg} border-slate-200/60 text-foreground/80 hover:border-primary/40 hover:shadow-md hover:scale-[1.01]`
+                      }`}
+                    >
+                      <input type="radio" name="q2choice" className="hidden" checked={q2Choice===opt.val} onChange={()=>setQ2Choice(opt.val)}/>
+                      <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center font-black text-[10px] transition-all ${q2Choice === opt.val ? "bg-white border-white text-primary" : "bg-white/50 border-slate-300 text-slate-400"}`}>
+                        {String.fromCharCode(65 + idx)}
+                      </span>
+                      <span className={`text-[13px] font-medium ${q2Choice === opt.val ? "text-white" : "text-slate-700"}`}>
+                        {isId?opt.id:opt.en}
+                      </span>
                     </label>
                   ))}
                 </div>
@@ -283,17 +305,28 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
                   </table>
                 </div>
                 <p className="text-[13px] font-medium text-foreground/90 leading-relaxed">{isId?"Prosedur manakah yang akan membuat industri kerajinan rotan menjadi lebih berkelanjutan?":"Which procedure would make the rattan craft industry more sustainable?"}</p>
-                <div className="space-y-2.5">
+                <div className="grid gap-3">
                   {[
-                    {val:"A",en:"Increasing the harvest rate without increasing replanting.",id:"Meningkatkan tingkat panen tanpa meningkatkan penanaman kembali."},
-                    {val:"B",en:"Increasing replanting and reusing more production waste.",id:"Meningkatkan penanaman kembali dan menggunakan kembali lebih banyak limbah produksi."},
-                    {val:"C",en:"Discarding more waste so the workshop stays clean.",id:"Membuang lebih banyak limbah agar workshop tetap bersih."},
-                    {val:"D",en:"Focusing only on short-term income from harvesting.",id:"Hanya berfokus pada pendapatan jangka pendek dari hasil panen."},
-                  ].map(opt=>(
-                    <label key={opt.val} className="flex items-center gap-3 p-3.5 bg-white border border-border rounded-lg hover:border-primary/20 hover:bg-muted/10 cursor-pointer transition-all">
-                      <input type="radio" name="q3" className="w-4 h-4 accent-primary" checked={q3Choice===opt.val} onChange={()=>setQ3Choice(opt.val)}/>
-                      <span className="text-[13px] font-bold text-muted-foreground w-5">{opt.val}</span>
-                      <span className="text-[13px] text-foreground/70">{isId?opt.id:opt.en}</span>
+                    {val:"A", en:"Increasing the harvest rate without increasing replanting.", id:"Meningkatkan tingkat panen tanpa meningkatkan penanaman kembali.", bg: "bg-rose-50/50"},
+                    {val:"B", en:"Increasing replanting and reusing more production waste.", id:"Meningkatkan penanaman kembali dan menggunakan kembali lebih banyak limbah produksi.", bg: "bg-emerald-50/50"},
+                    {val:"C", en:"Discarding more waste so the workshop stays clean.", id:"Membuang lebih banyak limbah agar workshop tetap bersih.", bg: "bg-blue-50/50"},
+                    {val:"D", en:"Focusing only on short-term income from harvesting.", id:"Hanya berfokus pada pendapatan jangka pendek dari hasil panen.", bg: "bg-amber-50/50"},
+                  ].map((opt, idx)=>(
+                    <label 
+                      key={opt.val} 
+                      className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                        q3Choice === opt.val 
+                        ? "bg-primary text-white border-primary shadow-lg scale-[1.02] z-10" 
+                        : `${opt.bg} border-slate-200/60 text-foreground/80 hover:border-primary/40 hover:shadow-md hover:scale-[1.01]`
+                      }`}
+                    >
+                      <input type="radio" name="q3" className="hidden" checked={q3Choice===opt.val} onChange={()=>setQ3Choice(opt.val)}/>
+                      <span className={`w-6 h-6 rounded-full border-2 flex items-center justify-center font-black text-[10px] transition-all ${q3Choice === opt.val ? "bg-white border-white text-primary" : "bg-white/50 border-slate-300 text-slate-400"}`}>
+                        {opt.val}
+                      </span>
+                      <span className={`text-[13px] font-medium leading-relaxed ${q3Choice === opt.val ? "text-white" : "text-slate-700"}`}>
+                        {isId?opt.id:opt.en}
+                      </span>
                     </label>
                   ))}
                 </div>
@@ -330,7 +363,6 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
                     </tbody>
                   </table>
                 </div>
-                {/* Hint: what "balanced" looks like */}
                 <div className="bg-blue-50 border-2 border-blue-300 rounded-lg px-4 py-3 flex items-start gap-2">
                   <svg className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                   <div className="text-[11px] text-blue-800 leading-relaxed">
@@ -425,8 +457,8 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
           </div>
         </div>
 
-        {/* RIGHT: Simulation */}
-        <div className="flex-1 bg-slate-50 flex flex-col overflow-hidden">
+        {/* RIGHT: Simulation Panel - Clean Slate Theme */}
+        <div className="flex-1 bg-white flex flex-col overflow-hidden transition-colors duration-500">
           <div className="p-6 h-full flex flex-col gap-5 overflow-y-auto exam-scrollbar">
             <div className="flex items-center justify-between border-b border-border/60 pb-3">
               <div className="flex items-center gap-2">

@@ -186,8 +186,8 @@ const NasiJamblangSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
   return (
     <div className="space-y-4">
       {/* Visual Scene */}
-      <SimCard className="p-4">
-        <div className="flex items-center justify-between mb-3">
+      <SimCard className="p-0 overflow-hidden relative">
+        <div className="bg-white flex items-center justify-between p-4 border-b border-border/30">
           <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
             {isId ? "Visualisasi Pengemasan" : "Packaging Visualization"}
           </p>
@@ -198,7 +198,7 @@ const NasiJamblangSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
           </span>
         </div>
 
-        <div ref={animRef} className="relative h-48 bg-gradient-to-b from-sky-100 via-sky-50 to-amber-50 rounded-xl overflow-hidden border border-border/30">
+        <div ref={animRef} className="relative h-48 bg-white rounded-xl overflow-hidden border border-border/30">
           {/* Sky */}
           <div className="absolute top-0 left-0 right-0 h-12 flex items-center justify-center">
             <div className="flex gap-1">
@@ -212,7 +212,7 @@ const NasiJamblangSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
           <div className="absolute top-3 right-6 w-10 h-10 rounded-full bg-gradient-to-br from-yellow-200 to-amber-400 shadow-lg shadow-amber-200 animate-pulse" style={{ animationDuration: "3s" }} />
 
           {/* Ground */}
-          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-amber-200 to-amber-100">
+          <div className="absolute bottom-0 left-0 right-0 h-20 bg-white">
             <div className="absolute top-0 left-0 right-0 h-3 bg-gradient-to-r from-transparent via-amber-300/50 to-transparent" />
           </div>
 
@@ -311,7 +311,7 @@ const NasiJamblangSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
         </div>
 
         {/* Packaging selector */}
-        <div className="flex gap-2 mt-3">
+        <div className="flex gap-2 p-4">
           {(["teak", "paper", "plastic"] as const).map(p => (
             <button key={p} onClick={() => setPackType(p)}
               className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all ${
@@ -424,7 +424,7 @@ const TerasiSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
           </span>
         </div>
 
-        <div ref={animRef} className="relative h-52 bg-gradient-to-b from-amber-50 via-orange-50 to-amber-100 rounded-xl overflow-hidden border border-border/30">
+        <div ref={animRef} className="relative h-52 bg-white rounded-xl overflow-hidden border border-border/30">
           {/* Background sun/heat glow */}
           <div className="absolute top-2 right-4 w-8 h-8 rounded-full bg-gradient-to-br from-yellow-300 to-orange-400 shadow-lg shadow-orange-200 animate-pulse" style={{ animationDuration: `${2 + temp / 20}s` }} />
           <div className="text-[9px] text-orange-400 absolute top-12 right-3 font-bold">{temp}°C</div>
@@ -575,7 +575,7 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
     <div className="flex flex-col gap-6 animate-in fade-in duration-700">
       <div className="flex flex-col lg:flex-row gap-6 items-stretch">
         {/* Modern Bento Control Card */}
-        <div className="flex-1 bg-white/80 backdrop-blur-xl rounded-[40px] border border-slate-200 shadow-2xl p-8 space-y-8">
+        <div className="flex-1 bg-white rounded-[40px] border border-slate-200 shadow-2xl p-8 space-y-8">
           <div className="flex items-center justify-between">
              <h3 className="text-xl font-bold text-slate-900 tracking-tight">{isId ? "Simulasi Konsep Kalor" : "Heat Concept Simulation"}</h3>
              <div className="px-3 py-1 bg-amber-100 rounded-full text-[10px] font-bold text-amber-600 uppercase">Unit 03</div>
@@ -631,7 +631,7 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
 
         {/* Stunning Visual Pot Scene */}
         <div className="w-full lg:w-[420px] bg-white rounded-[40px] shadow-2xl p-8 flex flex-col items-center justify-center relative overflow-hidden group border border-slate-100">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-white opacity-60" />
+          <div className="absolute inset-0 bg-white opacity-60" />
           
           {/* Subtle thermal glow behind the pot */}
           <div 
@@ -698,7 +698,7 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
                <g transform="translate(100, 70)">
                  {[...Array(3)].map((_, i) => (
                     <path 
-                      key={i}
+                      key={i} 
                       d="M-20,0 Q0,-40 20,0 Z" 
                       fill="url(#fireCore)" 
                       opacity={0.6}
@@ -715,8 +715,10 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
           </div>
           
           <div className="absolute top-6 left-8 flex items-center gap-3">
-             <div className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_10px_#fbbf24] animate-ping" />
-             <span className="text-[10px] font-bold text-amber-600 uppercase tracking-[0.4em]">Live Thermal Feed</span>
+             <div className={`w-2 h-2 rounded-full shadow-[0_0_10px_rgba(251,191,36,0.5)] animate-ping ${heatInput > 66 ? 'bg-red-500' : heatInput > 33 ? 'bg-orange-400' : 'bg-blue-400'}`} />
+             <span className="text-[10px] font-bold text-slate-800 uppercase tracking-[0.4em]">
+               {heatInput > 66 ? (isId ? "Status: PANAS" : "Status: HOT") : heatInput > 33 ? (isId ? "Status: HANGAT" : "Status: WARM") : (isId ? "Status: DINGIN" : "Status: COLD")}
+             </span>
           </div>
         </div>
       </div>
@@ -730,7 +732,7 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
             { l: isId ? "Kehilangan Panas" : "Heat Loss", v: Math.round(calc.heatLoss), s: calc.heatLoss < 30 ? (isId ? "Minimal" : "Low") : (isId ? "Kritis" : "Critical"), c: "rose" },
             { l: isId ? "Dataset Log" : "Dataset Log", v: runs.length, s: isId ? "Data Aktif" : "Active Records", c: "indigo" },
           ].map(st => (
-            <div key={st.l} className="group p-8 bg-white/80 backdrop-blur-xl rounded-[40px] border border-slate-200 shadow-xl flex flex-col justify-between hover:bg-slate-900 hover:text-white transition-all duration-500 overflow-hidden relative">
+            <div key={st.l} className="group p-8 bg-white rounded-[40px] border border-slate-200 shadow-xl flex flex-col justify-between hover:bg-slate-900 hover:text-white transition-all duration-500 overflow-hidden relative">
                <div className={`absolute -top-10 -right-10 w-32 h-32 bg-${st.c}-500/10 rounded-full blur-[40px] group-hover:bg-white/5`} />
                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest relative z-10">{st.l}</span>
                <div className="mt-4 flex items-baseline gap-2 relative z-10">
@@ -821,7 +823,7 @@ const KerupukMelaratSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => v
           </span>
         </div>
 
-        <div ref={animRef} className="relative h-44 bg-gradient-to-b from-orange-50 via-amber-50 to-amber-100 rounded-xl overflow-hidden border border-border/30">
+        <div ref={animRef} className="relative h-44 bg-white rounded-xl overflow-hidden border border-border/30">
           {/* Heat source */}
           <div className="absolute bottom-0 left-0 right-0 flex justify-center">
             <div className="flex gap-1 mb-1">
@@ -1011,7 +1013,7 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
   return (
     <div className="space-y-4">
       {/* How-to banner */}
-      <div className="bg-amber-50 border-2 border-amber-300 rounded-xl px-4 py-3 flex items-start gap-3">
+      <div className="bg-white border-2 border-amber-300 rounded-xl px-4 py-3 flex items-start gap-3">
         <span className="text-2xl shrink-0"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="14" rx="9" ry="5" fill="#fde68a"/><ellipse cx="12" cy="12" rx="7" ry="4" fill="#fef3c7"/><ellipse cx="9" cy="10" rx="2.5" ry="1.5" fill="#fde68a"/><ellipse cx="13" cy="9" rx="2" ry="1.3" fill="#fef9c3"/><ellipse cx="16" cy="11" rx="2.3" ry="1.4" fill="#fde68a"/></svg></span>
         <div>
           <p className="text-[11px] font-bold text-amber-800 mb-1">{isId ? "Cara Menggunakan Simulasi Tape Ketan" : "How to Use the Tape Ketan Simulation"}</p>

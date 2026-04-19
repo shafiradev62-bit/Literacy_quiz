@@ -378,15 +378,15 @@ const Quiz = () => {
         totalQuestions={questions.length}
       />
 
-      <div className="flex-1 flex overflow-hidden">
-        <div className={`hidden md:block md:w-1/2 border-r ${colors.border} overflow-hidden ${colors.left}`}>
+      <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
+        <div className={`w-full md:w-1/2 border-b md:border-b-0 md:border-r ${colors.border} overflow-y-auto md:overflow-hidden ${colors.left} max-h-[40vh] md:max-h-none`}>
           <StimulusPanel 
             unit={selectedUnit as 1 | 2 | 3 | 4 | 5 | 6 | 7} 
             imageUrl={(meta as any).imageUrl}
             videoUrl={(meta as any).videoUrl}
           />
         </div>
-        <div className={`w-full md:w-1/2 overflow-hidden ${colors.right}`}>
+        <div className={`flex-1 overflow-hidden ${colors.right}`}>
           <QuestionPanel
             question={questions[current]}
             answer={answers[questions[current].id]}

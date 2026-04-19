@@ -24,8 +24,21 @@ const StimulusPanel = ({ unit = 2, imageUrl, videoUrl, images = [], videos = [] 
   const allVideos = [videoUrl, ...videos].filter(Boolean) as string[];
   const hasMedia = allImages.length > 0 || allVideos.length > 0;
 
+  const unitStyles = {
+    1: "bg-emerald-50/70 border-emerald-100",
+    2: "bg-blue-50/70 border-blue-100",
+    3: "bg-amber-50/70 border-amber-100",
+    4: "bg-orange-50/70 border-orange-100",
+    5: "bg-lime-50/70 border-lime-100",
+    6: "bg-teal-50/70 border-teal-100",
+    7: "bg-cyan-50/70 border-cyan-100",
+    8: "bg-emerald-100 border-emerald-200",
+    9: "bg-indigo-50 border-indigo-100",
+    10: "bg-slate-100 border-slate-200",
+  }[unit] || "bg-muted/30";
+
   return (
-    <div className="h-full flex flex-col overflow-hidden">
+    <div className={`h-full flex flex-col overflow-hidden ${unitStyles} transition-colors duration-500`}>
       <div className="shrink-0 flex border-b border-border/50 bg-muted/30 px-4 pt-3 gap-1">
         <button onClick={() => setTab("en")} className={`px-3 py-1.5 text-[11px] font-medium rounded-t-md transition-all ${tab === "en" ? "bg-white border border-b-white border-border/50 text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
           Bahasa Inggris (English)
