@@ -1525,8 +1525,8 @@ const MangroveSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void })
             ))}
           </div>
         </div>
-        <button onClick={handleRun} className="w-full mt-1 py-2.5 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="2" y="14" width="20" height="8" rx="2" fill="white"/><rect x="4" y="18" width="4" height="4" rx="1" fill="#6366f1"/><rect x="10" y="15" width="4" height="7" rx="1" fill="#6366f1"/><rect x="16" y="11" width="4" height="11" rx="1" fill="#6366f1"/><path d="M5 12l4-4 4 2 6-6" stroke="#4338ca" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Simpan Data" : "Record Data"}
+        <button onClick={handleRun} className="w-full mt-1 py-3 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md uppercase tracking-[0.2em]">
+          {isId ? "Simpan Data" : "Record Data"}
         </button>
       </SimCard>
 
@@ -1721,8 +1721,8 @@ const NadranSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
         <SliderRow label={isId ? "Kesadaran Masyarakat" : "Community Awareness"} value={communityAwareness} min={0} max={100} color="#10b981" onChange={setCommunityAwareness} note="%" />
         <SliderRow label={isId ? "Pengelolaan Limbah" : "Waste Management"} value={wasteManagement} min={0} max={100} color="#8b5cf6" onChange={setWasteManagement} note="%" />
         <SliderRow label={isId ? "Upaya Konservasi" : "Conservation Efforts"} value={conservationEfforts} min={0} max={100} color="#f59e0b" onChange={setConservationEfforts} note="%" />
-        <button onClick={handleRun} className="w-full mt-1 py-2.5 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="2" y="14" width="20" height="8" rx="2" fill="white"/><rect x="4" y="18" width="4" height="4" rx="1" fill="#6366f1"/><rect x="10" y="15" width="4" height="7" rx="1" fill="#6366f1"/><rect x="16" y="11" width="4" height="11" rx="1" fill="#6366f1"/><path d="M5 12l4-4 4 2 6-6" stroke="#4338ca" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Simpan Data" : "Record Data"}
+        <button onClick={handleRun} className="w-full mt-1 py-3 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md uppercase tracking-[0.2em]">
+          {isId ? "Simpan Data" : "Record Data"}
         </button>
       </SimCard>
 

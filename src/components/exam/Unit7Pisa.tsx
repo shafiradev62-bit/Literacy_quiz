@@ -272,13 +272,13 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                 <div className="grid grid-cols-1 gap-4 pt-4">
                   {[
                     currentStep === 2 ? [
-                      { label: "A", en: "Poor waste management", idText: "Pengelolaan limbah yang buruk", icon: "🗑️", color: "blue" },
-                      { label: "B", en: "High fishing intensity", idText: "Intensitas pancing yang tinggi", icon: "⚡", color: "emerald" },
-                      { label: "C", en: "Natural traditions", idText: "Tradisi budaya setempat", icon: "🏺", color: "amber" },
+                      { label: "A", en: "Poor waste management", idText: "Pengelolaan limbah yang buruk", color: "blue" },
+                      { label: "B", en: "High fishing intensity", idText: "Intensitas pancing yang tinggi", color: "emerald" },
+                      { label: "C", en: "Natural traditions", idText: "Tradisi budaya setempat", color: "amber" },
                     ] : [
-                      { label: "A", en: "Intensity has no effect", idText: "Intensitas tidak berpengaruh", icon: "❌", color: "blue" },
-                      { label: "B", en: "Cultural awareness influences behavior", idText: "Kesadaran budaya mengubah perilaku", icon: "🧠", color: "emerald" },
-                      { label: "C", en: "Only natural factors control reefs", idText: "Hanya faktor alam yang mengontrol", icon: "🏺", color: "amber" },
+                      { label: "A", en: "Intensity has no effect", idText: "Intensitas tidak berpengaruh", color: "blue" },
+                      { label: "B", en: "Cultural awareness influences behavior", idText: "Kesadaran budaya mengubah perilaku", color: "emerald" },
+                      { label: "C", en: "Only natural factors control reefs", idText: "Hanya faktor alam yang mengontrol", color: "amber" },
                     ]
                   ][0].map(opt => {
                     const choice = currentStep === 2 ? q2Choice : currentStep === 3 ? q3Choice : q4Choice;
@@ -304,7 +304,6 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                            <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${selected ? "bg-white text-slate-900" : "bg-white border shadow-sm text-slate-400"}`}>{opt.label}</span>
                            <span className="text-[14px] font-bold">{isId ? opt.idText : opt.en}</span>
                         </div>
-                        <span className="text-xl">{opt.icon}</span>
                       </button>
                     );
                   })}
