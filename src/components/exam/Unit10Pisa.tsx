@@ -545,7 +545,7 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
       <main className="flex-1 flex overflow-hidden" style={{ height: 'calc(100vh - 64px)' }}>
 
         {/* LEFT: Questions */}
-        <div className="w-[45%] bg-orange-50/60 border-r border-orange-200 flex flex-col overflow-hidden">
+        <div className="w-[45%] bg-orange-100 border-r border-orange-200 flex flex-col overflow-hidden">
           <div className="p-6 overflow-y-auto flex-1 space-y-4 exam-scrollbar" style={{ maxHeight: '100%' }}>
 
             {/* STEP 0: Introduction */}
@@ -869,7 +869,7 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
         </div>
 
         {/* RIGHT: Simulation */}
-        <div className="flex-1 bg-amber-50/50 border-l border-amber-200 overflow-hidden">
+        <div className="flex-1 bg-slate-50 border-l border-amber-200 overflow-hidden">
           <SimPanel />
         </div>
 

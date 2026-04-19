@@ -147,7 +147,7 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
 
       <main className="flex-1 flex overflow-hidden">
         {/* LEFT: Questions */}
-        <div className="w-[45%] bg-emerald-50/60 border-r border-emerald-200 flex flex-col overflow-hidden">
+        <div className="w-[45%] bg-emerald-100 border-r border-emerald-200 flex flex-col overflow-hidden">
           <div className="p-6 overflow-y-auto h-full space-y-4 exam-scrollbar">
 
             {currentStep===0&&(
@@ -426,7 +426,7 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
         </div>
 
         {/* RIGHT: Simulation */}
-        <div className="flex-1 bg-lime-50/50 flex flex-col overflow-hidden">
+        <div className="flex-1 bg-slate-50 flex flex-col overflow-hidden">
           <div className="p-6 h-full flex flex-col gap-5 overflow-y-auto exam-scrollbar">
             <div className="flex items-center justify-between border-b border-border/60 pb-3">
               <div className="flex items-center gap-2">

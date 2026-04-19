@@ -72,6 +72,21 @@ const LangTabs = ({ children }: { children: [React.ReactNode, React.ReactNode] }
 };
 
 const AdminPortal = () => {
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [password, setPassword] = useState("");
+  const { lang } = useLanguage();
+  const isId = lang === "id";
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === "admin123") {
+      setIsAuthorized(true);
+      toast.success("Welcome back, teacher!");
+    } else {
+      toast.error(isId ? "Password salah!" : "Incorrect password!");
+    }
+  };
+
   const [activePage, setActivePage] = useState<AdminPage>("units");
   const [selectedUnit, setSelectedUnit] = useState(1);
 
@@ -128,6 +143,41 @@ const AdminPortal = () => {
       </button>
     );
   };
+
+  if (!isAuthorized) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-[#F8F9FA] p-6">
+        <Card className="w-full max-w-md shadow-xl border-border/40">
+          <CardHeader className="text-center pb-2">
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4">
+              <Settings className="w-8 h-8" />
+            </div>
+            <CardTitle className="text-xl font-display">{isId ? "Akses Terbatas" : "Restricted Access"}</CardTitle>
+            <CardDescription className="text-xs">
+              {isId ? "Silakan masukkan kata sandi guru untuk melanjutkan." : "Please enter the teacher's password to continue."}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-1.5">
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder={isId ? "Masukkan kata sandi..." : "Enter password..."}
+                  className="h-12 bg-muted/50 border-border/60 text-center text-lg"
+                  autoFocus
+                />
+              </div>
+              <Button type="submit" className="w-full h-11 text-sm font-bold rounded-xl shadow-lg transition-all active:scale-[0.98]">
+                {isId ? "Masuk Panel Admin" : "Enter Admin Panel"}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-[#F8F9FA] overflow-hidden">

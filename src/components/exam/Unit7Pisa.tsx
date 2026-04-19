@@ -202,7 +202,7 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
       {/* ── MAIN CONTENT AREA ── */}
       <main className="flex-1 flex overflow-hidden">
         {/* ── LEFT COLUMN: Questions & Text ── */}
-        <div className="w-[45%] bg-blue-50/60 border-r border-blue-200 flex flex-col overflow-hidden">
+        <div className="w-[45%] bg-blue-100 border-r border-blue-200 flex flex-col overflow-hidden">
           <div className="p-6 overflow-y-auto h-full space-y-4 exam-scrollbar">
 
             {/* ── STEP 0: Introduction ── */}
@@ -592,7 +592,7 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
         </div>
 
         {/* ── RIGHT COLUMN: Marine Sustainability Simulation ── */}
-        <div className="flex-1 bg-blue-50/50 flex flex-col overflow-hidden">
+        <div className="flex-1 bg-slate-50 flex flex-col overflow-hidden">
           <div className="p-6 h-full flex flex-col gap-5 overflow-y-auto exam-scrollbar">
 
             {/* Section Header */}

@@ -11,7 +11,6 @@ const SiteHeader = () => {
     { to: "/learn", label: t("Learn", "Belajar") },
     { to: "/quiz", label: "Quiz" },
     { to: "/dashboard", label: t("Results", "Hasil") },
-    { to: "/admin", label: "Admin" },
   ];
 
   const handleNavClick = (e: React.MouseEvent, to: string) => {
