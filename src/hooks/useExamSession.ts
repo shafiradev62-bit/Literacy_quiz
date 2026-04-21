@@ -1,6 +1,13 @@
 import { useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { getQuestionsForUnit } from "@/data/examQuestions";
+import {
+  syncSessionToFirebase,
+  updateLiveState,
+  clearLiveState,
+  syncStudentToFirebase,
+} from "@/integrations/firebase/realtimeService";
 
 export function getDeviceId(): string {
   let id = localStorage.getItem("exam_device_id");
@@ -46,6 +53,14 @@ function saveSessions(sessions: LocalSession[]) {
   localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
 }
 
+// Sync session to both Supabase and Firebase
+async function syncSession(session: LocalSession) {
+  // Firebase — always attempt (handles offline gracefully internally)
+  syncSessionToFirebase(session);
+  // Supabase — existing logic below
+  return syncSessionToSupabase(session);
+}
+
 // Sync session to Supabase with offline handling
 async function syncSessionToSupabase(session: LocalSession) {
   // Check if we're online
@@ -81,6 +96,28 @@ async function syncSessionToSupabase(session: LocalSession) {
     } else {
       // Clear pending sync flag
       localStorage.removeItem(`sync_pending_${session.id}`);
+
+      // SYNC ESSAYS TO `essay_answers` TABLE
+      try {
+        const questions = getQuestionsForUnit(session.unit);
+        if (questions && questions.length > 0 && session.student_id) {
+          const essayQs = questions.filter((q: any) => q.type === "open");
+          for (const eq of essayQs) {
+            const answerText = session.answers[eq.id];
+            if (typeof answerText === "string" && answerText.trim().length > 0) {
+              await supabase.from('essay_answers').upsert({
+                session_id: session.id,
+                student_id: session.student_id,
+                unit: session.unit,
+                question_id: eq.id.toString(),
+                answer_text: answerText,
+              }, { onConflict: 'session_id, question_id' });
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error syncing essays to separate table:", err);
+      }
     }
   } catch (error) {
     console.error('Error syncing session:', error);
@@ -90,8 +127,11 @@ async function syncSessionToSupabase(session: LocalSession) {
 
 // Retry pending syncs when back online
 function retryPendingSyncs() {
-  const pendingKeys = Object.keys(localStorage).filter(key => key.startsWith('sync_pending_'));
-  pendingKeys.forEach(key => {
+  const keys = Object.keys(localStorage);
+  
+  // Pending Exam Sessions
+  const pendingSessionKeys = keys.filter(key => key.startsWith('sync_pending_') && !key.startsWith('sync_pending_login_') && !key.startsWith('sync_pending_profile_'));
+  pendingSessionKeys.forEach(key => {
     const sessionId = key.replace('sync_pending_', '');
     const sessions = getAllSessions();
     const session = sessions.find(s => s.id === sessionId);
@@ -100,6 +140,46 @@ function retryPendingSyncs() {
       syncSessionToSupabase(session);
     } else {
       localStorage.removeItem(key);
+    }
+  });
+
+  // Pending Logins
+  const pendingLoginKeys = keys.filter(key => key.startsWith('sync_pending_login_'));
+  pendingLoginKeys.forEach(async key => {
+    try {
+      const data = JSON.parse(localStorage.getItem(key) || '{}');
+      const { error } = await supabase.from('login_sessions').insert(data);
+      if (!error) {
+        localStorage.removeItem(key);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  });
+
+  // Pending Profiles
+  const pendingProfileKeys = keys.filter(key => key.startsWith('sync_pending_profile_'));
+  pendingProfileKeys.forEach(async key => {
+    try {
+      const p = JSON.parse(localStorage.getItem('studentProfile') || '{}');
+      if (p.id) {
+        const { error } = await supabase.from('student_profiles').upsert({
+          id: p.id,
+          device_id: localStorage.getItem("exam_device_id") || p.id,
+          name: p.name,
+          class: p.class,
+          school: p.school,
+          contact: p.contact,
+          instagram: p.instagram,
+        });
+        if (!error) {
+          localStorage.removeItem(key);
+        }
+      } else {
+        localStorage.removeItem(key);
+      }
+    } catch (e) {
+      console.error(e);
     }
   });
 }
@@ -167,8 +247,26 @@ export function useExamSession({ unit, answers, enabled, studentId }: UseExamSes
     all.unshift(session);
     saveSessions(all);
 
-    // Sync to Supabase
-    syncSessionToSupabase(session);
+    // Sync to Supabase + Firebase
+    syncSession(session);
+
+    // Sync student profile to Firebase
+    if (profile.id) {
+      syncStudentToFirebase({
+        id: profile.id,
+        name: profile.name,
+        class: profile.class,
+        school: profile.school,
+        email: profile.email,
+        contact: profile.contact,
+        instagram: profile.instagram,
+      });
+    }
+
+    return () => {
+      // Clear live state when exam unmounts
+      clearLiveState(deviceId);
+    };
   }, [unit, enabled]);
 
   // Auto-save answers
@@ -184,8 +282,12 @@ export function useExamSession({ unit, answers, enabled, studentId }: UseExamSes
         all[idx].updated_at = new Date().toISOString();
         saveSessions(all);
 
-        // Sync updated session to Supabase
-        syncSessionToSupabase(all[idx]);
+        // Sync to Supabase + Firebase
+        syncSession(all[idx]);
+
+        // Update live state in Firebase
+        const profile = getStudentProfile();
+        updateLiveState(deviceId, unit, answers as Record<string, unknown>, 0, profile.name);
       }
     }, 800);
     return () => clearTimeout(timer);
@@ -204,8 +306,12 @@ export function useExamSession({ unit, answers, enabled, studentId }: UseExamSes
       all[idx].updated_at = new Date().toISOString();
       saveSessions(all);
 
-      // Sync completed session to Supabase
-      await syncSessionToSupabase(all[idx]);
+      // Sync completed session to Supabase + Firebase
+      await syncSession(all[idx]);
+
+      // Clear live state — exam done
+      clearLiveState(deviceId);
+
       toast.success("Session completed and synced!");
     }
   };
@@ -242,8 +348,8 @@ export async function saveCompletedSession(unit: number, answers: Record<string,
   all.unshift(session);
   saveSessions(all);
 
-  // Sync to Supabase
-  await syncSessionToSupabase(session);
+  // Sync to Supabase + Firebase
+  await syncSession(session);
 
   return session.id;
 }

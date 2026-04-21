@@ -3,6 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { getAllLocalSessions, LocalSession } from "@/hooks/useExamSession";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { listenToSessions, listenToLive } from "@/integrations/firebase/realtimeService";
 
 const unitNames: Record<number, string> = {
   1: "Unit 1 — Nasi Jamblang",
@@ -54,8 +55,11 @@ const Dashboard = () => {
     unitStats: {} as Record<number, { count: number; avgScore: number; avgTime: number }>,
   });
   const [filter, setFilter] = useState<"all" | "completed" | "incomplete">("all");
-  const [viewMode, setViewMode] = useState<"overview" | "students" | "sessions">("overview");
+  const [viewMode, setViewMode] = useState<"overview" | "students" | "sessions" | "live">("overview");
   const [loading, setLoading] = useState(true);
+  // Firebase realtime state
+  const [firebaseSessions, setFirebaseSessions] = useState<Record<string, LocalSession>>({});
+  const [liveSessions, setLiveSessions] = useState<Record<string, any>>({});
 
   useEffect(() => {
     const loadData = async () => {
@@ -159,6 +163,21 @@ const Dashboard = () => {
     window.addEventListener('online', handleOnline);
     return () => window.removeEventListener('online', handleOnline);
   }, [isId]);
+
+  // Firebase realtime listeners
+  useEffect(() => {
+    if (!import.meta.env.VITE_FIREBASE_DATABASE_URL) return;
+    const unsubSessions = listenToSessions((data) => {
+      setFirebaseSessions(data);
+    });
+    const unsubLive = listenToLive((data) => {
+      setLiveSessions(data as Record<string, any>);
+    });
+    return () => {
+      unsubSessions();
+      unsubLive();
+    };
+  }, []);
 
   // Combine local and Supabase sessions, preferring Supabase for display
   const allSessions = [
@@ -348,6 +367,7 @@ const Dashboard = () => {
             { key: "overview", label: isId ? "Ringkasan" : "Overview" },
             { key: "students", label: isId ? "Siswa" : "Students" },
             { key: "sessions", label: isId ? "Sesi" : "Sessions" },
+            { key: "live", label: isId ? "🔴 Live" : "🔴 Live" },
           ].map(mode => (
             <button
               key={mode.key}
@@ -530,6 +550,94 @@ const Dashboard = () => {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Live Monitoring View — Firebase Realtime */}
+        {viewMode === "live" && (
+          <div className="space-y-4">
+            {/* Live active exams */}
+            <div className="bg-white rounded-xl border border-border/50 shadow-sm overflow-hidden">
+              <div className="px-5 py-3 bg-red-50 border-b border-red-100 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <p className="text-[11px] font-semibold uppercase tracking-widest text-red-700">
+                  {isId ? "Ujian Berlangsung" : "Active Exams"} ({Object.keys(liveSessions).length})
+                </p>
+              </div>
+              {Object.keys(liveSessions).length === 0 ? (
+                <div className="px-5 py-6 text-center text-[12px] text-muted-foreground">
+                  {isId ? "Tidak ada ujian yang sedang berlangsung." : "No active exams right now."}
+                </div>
+              ) : (
+                Object.entries(liveSessions).map(([deviceId, live]: [string, any]) => (
+                  <div key={deviceId} className="px-5 py-4 border-b border-border/40 last:border-b-0">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-[13px] font-semibold text-foreground">
+                          {live.studentName ?? (isId ? "Siswa tidak dikenal" : "Unknown student")}
+                        </p>
+                        <p className="text-[11px] text-muted-foreground">
+                          Unit {live.unit} · {Object.keys(live.answers ?? {}).length} {isId ? "soal dijawab" : "answered"}
+                        </p>
+                        <p className="text-[10px] text-muted-foreground mt-0.5">
+                          {isId ? "Terakhir aktif:" : "Last seen:"} {live.lastSeen ? new Date(live.lastSeen).toLocaleTimeString() : "—"}
+                        </p>
+                      </div>
+                      <span className="text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-semibold">
+                        {isId ? "Sedang ujian" : "In progress"}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Firebase completed sessions */}
+            <div className="bg-white rounded-xl border border-border/50 shadow-sm overflow-hidden">
+              <div className="px-5 py-3 border-b border-border/40">
+                <p className="text-[11px] font-semibold uppercase tracking-widest text-foreground">
+                  {isId ? "Sesi Selesai (Firebase Realtime)" : "Completed Sessions (Firebase Realtime)"} ({Object.values(firebaseSessions).filter(s => s.completed).length})
+                </p>
+              </div>
+              {Object.values(firebaseSessions).filter(s => s.completed).length === 0 ? (
+                <div className="px-5 py-6 text-center text-[12px] text-muted-foreground">
+                  {isId ? "Belum ada data dari Firebase." : "No Firebase data yet."}
+                </div>
+              ) : (
+                Object.values(firebaseSessions)
+                  .filter(s => s.completed)
+                  .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
+                  .map((s) => (
+                    <div key={s.id} className="px-5 py-4 border-b border-border/40 last:border-b-0">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="text-[13px] font-semibold text-foreground">
+                            {s.student_name ?? "—"} · {s.student_class ?? "—"}
+                          </p>
+                          <p className="text-[11px] text-muted-foreground">
+                            {unitNames[s.unit] ?? `Unit ${s.unit}`} · {s.student_school ?? "—"}
+                          </p>
+                          <p className="text-[10px] text-muted-foreground mt-0.5">
+                            {new Date(s.updated_at).toLocaleString(isId ? "id-ID" : "en-US")}
+                          </p>
+                        </div>
+                        {s.score !== null && s.total !== null && (
+                          <div className="text-right shrink-0">
+                            <div className="text-xl font-bold text-foreground">
+                              {s.score}<span className="text-sm font-normal text-muted-foreground">/{s.total}</span>
+                            </div>
+                            <div className={`text-[11px] font-bold mt-0.5 ${
+                              (s.score / s.total!) >= 0.8 ? "text-green-600" : (s.score / s.total!) >= 0.5 ? "text-amber-600" : "text-red-500"
+                            }`}>
+                              {Math.round((s.score / s.total!) * 100)}%
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))
+              )}
+            </div>
           </div>
         )}
 
