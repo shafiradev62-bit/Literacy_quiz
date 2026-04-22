@@ -10,10 +10,20 @@ import {
   syncEssaysToFirebase,
 } from "@/integrations/firebase/realtimeService";
 
+function generateUUID() {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 export function getDeviceId(): string {
   let id = localStorage.getItem("exam_device_id");
   if (!id) {
-    id = crypto.randomUUID();
+    id = generateUUID();
     localStorage.setItem("exam_device_id", id);
   }
   return id;
@@ -242,7 +252,7 @@ export function useExamSession({ unit, answers, enabled, studentId }: UseExamSes
   useEffect(() => {
     if (!enabled) return;
     const profile = getStudentProfile();
-    const sessionId = crypto.randomUUID();
+    const sessionId = generateUUID();
     sessionIdRef.current = sessionId;
 
     const session: LocalSession = {
@@ -350,7 +360,7 @@ export async function saveCompletedSession(unit: number, answers: Record<string,
   const deviceId = getDeviceId();
   const profile = (() => { try { return JSON.parse(localStorage.getItem("studentProfile") || "{}"); } catch { return {}; } })();
   const session: LocalSession = {
-    id: crypto.randomUUID(),
+    id: generateUUID(),
     device_id: deviceId,
     unit,
     answers,

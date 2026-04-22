@@ -33,8 +33,8 @@ const Quiz = () => {
   const [answers, setAnswers] = useState<Record<number, string | string[]>>({});
   const [flagged, setFlagged] = useState<Set<number>>(new Set());
 
-  const questions = getQuestionsForUnit(selectedUnit);
-  const meta = getUnitMeta(selectedUnit);
+  const questions = getQuestionsForUnit(selectedUnit) || [];
+  const meta = getUnitMeta(selectedUnit) || { title: `Unit ${selectedUnit}`, subtitle: "" };
 
 
   const { completeSession, trackQuestionAttempt } = useExamSession({
@@ -48,15 +48,17 @@ const Quiz = () => {
   useExamLock(screen === "exam");
 
   // Set localStorage flag so navbar knows exam is active
-  if (screen === "exam") {
-    localStorage.setItem("exam_active", "1");
-  } else {
-    localStorage.removeItem("exam_active");
-  }
+  useEffect(() => {
+    if (screen === "exam") {
+      localStorage.setItem("exam_active", "1");
+    } else {
+      localStorage.removeItem("exam_active");
+    }
+  }, [screen]);
 
   const handleAnswer = (questionId: number, answer: string | string[]) => {
     setAnswers((prev) => ({ ...prev, [questionId]: answer }));
-    trackQuestionAttempt(questionId.toString());
+    if (questionId) trackQuestionAttempt(questionId.toString());
   };
 
   const handleFlag = (questionId: number) =>
@@ -383,10 +385,10 @@ const Quiz = () => {
       <div className="bg-white border-b border-border/60 px-4 py-2 shrink-0 flex items-center gap-3">
         <button onClick={() => setScreen("intro")} className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1">
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/></svg>
-          {meta.title}
+          {meta?.title}
         </button>
         <span className="text-xs text-muted-foreground">·</span>
-        <span className="text-xs text-muted-foreground">{meta.subtitle}</span>
+        <span className="text-xs text-muted-foreground">{meta?.subtitle}</span>
       </div>
 
       <ExamToolbar
@@ -398,31 +400,35 @@ const Quiz = () => {
         <div className={`w-full md:w-1/2 border-b md:border-b-0 md:border-r ${colors.border} overflow-y-auto md:overflow-hidden ${colors.left} max-h-[40vh] md:max-h-none`}>
           <StimulusPanel 
             unit={selectedUnit as 1 | 2 | 3 | 4 | 5 | 6 | 7} 
-            imageUrl={(meta as any).imageUrl}
-            videoUrl={(meta as any).videoUrl}
+            imageUrl={meta?.imageUrl}
+            videoUrl={meta?.videoUrl}
           />
         </div>
         <div className={`flex-1 overflow-hidden ${colors.right}`}>
-          <QuestionPanel
-            question={questions[current]}
-            answer={answers[questions[current].id]}
-            isFlagged={flagged.has(questions[current].id)}
-            onAnswer={handleAnswer}
-            onFlag={handleFlag}
-            onPrev={() => setCurrent((c) => Math.max(0, c - 1))}
-            onNext={() => setCurrent((c) => Math.min(questions.length - 1, c + 1))}
-            onSubmit={handleSubmit}
-            isFirst={current === 0}
-            isLast={current === questions.length - 1}
-            questionIndex={current}
-            totalQuestions={questions.length}
-            answeredCount={answeredCount}
-            flaggedSet={flagged}
-            onGoTo={setCurrent}
-            unit={selectedUnit as 1 | 2 | 3 | 4 | 5 | 6 | 7}
-            allAnswers={answers}
-            questions={questions}
-          />
+          {questions[current] ? (
+            <QuestionPanel
+              question={questions[current]}
+              answer={answers[questions[current].id]}
+              isFlagged={flagged.has(questions[current].id)}
+              onAnswer={handleAnswer}
+              onFlag={handleFlag}
+              onPrev={() => setCurrent((c) => Math.max(0, c - 1))}
+              onNext={() => setCurrent((c) => Math.min(questions.length - 1, c + 1))}
+              onSubmit={handleSubmit}
+              isFirst={current === 0}
+              isLast={current === questions.length - 1}
+              questionIndex={current}
+              totalQuestions={questions.length}
+              answeredCount={answeredCount}
+              flaggedSet={flagged}
+              onGoTo={setCurrent}
+              unit={selectedUnit as 1 | 2 | 3 | 4 | 5 | 6 | 7}
+              allAnswers={answers}
+              questions={questions}
+            />
+          ) : (
+            <div className="p-10 text-center">Loading questions...</div>
+          )}
         </div>
       </div>
     </div>
