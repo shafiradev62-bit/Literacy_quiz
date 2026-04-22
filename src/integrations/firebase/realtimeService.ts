@@ -17,6 +17,7 @@ import {
   off,
   serverTimestamp,
   DatabaseReference,
+  push,
 } from "firebase/database";
 import type { LocalSession } from "@/hooks/useExamSession";
 
@@ -27,14 +28,58 @@ export async function syncSessionToFirebase(session: LocalSession) {
   if (!import.meta.env.VITE_FIREBASE_DATABASE_URL) return; // skip if not configured
 
   try {
-    const sessionRef = ref(db, `sessions/${session.id}`);
-    await set(sessionRef, {
+    const timestamp = new Date().toISOString();
+    const data = {
       ...session,
-      updated_at: new Date().toISOString(),
+      updated_at: timestamp,
       _ts: serverTimestamp(),
-    });
+    };
+
+    // 1. All Sessions (Standard)
+    await set(ref(db, `sessions/${session.id}`), data);
+
+    // 2. Organized by Student (if student exists)
+    if (session.student_id) {
+      await update(ref(db, `students/${session.student_id}/sessions/${session.id}`), data);
+      
+      // 3. Organized by Category (Unit) per Student
+      // This makes it easy to see all attempts of a specific unit for a specific student
+      await update(ref(db, `categories/unit_${session.unit}/${session.student_id}/${session.id}`), {
+        id: session.id,
+        score: session.score,
+        total: session.total,
+        completed: session.completed,
+        updated_at: timestamp
+      });
+    }
+
   } catch (err) {
     console.error("[Firebase] syncSession error:", err);
+  }
+}
+
+/** Sync essay answers to a dedicated clean path */
+export async function syncEssaysToFirebase(
+  sessionId: string,
+  studentId: string | null,
+  unit: number,
+  essays: Array<{ questionId: string; question: string; answer: string }>
+) {
+  if (!import.meta.env.VITE_FIREBASE_DATABASE_URL) return;
+
+  try {
+    for (const essay of essays) {
+      const cleanPath = `essays/unit_${unit}/${studentId || 'anonymous'}/${sessionId}/${essay.questionId}`;
+      await set(ref(db, cleanPath), {
+        question: essay.question,
+        answer: essay.answer,
+        studentId: studentId,
+        timestamp: new Date().toISOString(),
+        _ts: serverTimestamp()
+      });
+    }
+  } catch (err) {
+    console.error("[Firebase] syncEssays error:", err);
   }
 }
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { syncStudentToFirebase } from "@/integrations/firebase/realtimeService";
 
 interface StudentProfile {
   id: string;
@@ -93,11 +94,37 @@ export default function StudentIdentityForm({ onDone }: Props) {
       localStorage.setItem(`sync_pending_profile_${profile.id}`, 'true');
     }
 
+    // ALWAYS sync to Firebase (handles offline internally)
+    syncStudentToFirebase({
+      ...profile,
+      email: null // contact is used instead in this app
+    });
+
     onDone(profile);
   };
 
-  const handleLogin = () => {
-    if (savedProfile) onDone(savedProfile);
+  const handleLogin = async () => {
+    if (savedProfile) {
+      if (navigator.onLine) {
+        try {
+          await supabase.from('login_sessions').insert({
+            student_id: savedProfile.id,
+            device_id: localStorage.getItem("exam_device_id") || "unknown",
+            status: 'success'
+          });
+        } catch (error) {
+          console.error("Failed to log login session", error);
+        }
+      } else {
+        // queue for offline logic or ignore since it's just logging
+        localStorage.setItem(`sync_pending_login_${crypto.randomUUID()}`, JSON.stringify({
+          student_id: savedProfile.id,
+          device_id: localStorage.getItem("exam_device_id") || "unknown",
+          login_time: new Date().toISOString()
+        }));
+      }
+      onDone(savedProfile);
+    }
   };
 
   const field = (key: keyof typeof form, label: string, labelId: string, placeholder: string, placeholderId: string, type = "text") => (

@@ -7,6 +7,7 @@ import {
   updateLiveState,
   clearLiveState,
   syncStudentToFirebase,
+  syncEssaysToFirebase,
 } from "@/integrations/firebase/realtimeService";
 
 export function getDeviceId(): string {
@@ -57,6 +58,28 @@ function saveSessions(sessions: LocalSession[]) {
 async function syncSession(session: LocalSession) {
   // Firebase — always attempt (handles offline gracefully internally)
   syncSessionToFirebase(session);
+  
+  // Sync Essays specifically for Firebase to the dedicated path
+  try {
+    const questions = getQuestionsForUnit(session.unit);
+    if (questions && questions.length > 0) {
+      const essayQs = questions.filter((q: any) => q.type === "open");
+      const essaysToSync = essayQs
+        .map(q => ({
+          questionId: q.id.toString(),
+          question: q.questionIdn || q.question,
+          answer: session.answers[q.id.toString()] as string
+        }))
+        .filter(e => typeof e.answer === "string" && e.answer.trim().length > 0);
+      
+      if (essaysToSync.length > 0) {
+        syncEssaysToFirebase(session.id, session.student_id, session.unit, essaysToSync);
+      }
+    }
+  } catch (err) {
+    console.error("[Firebase] sync essays error:", err);
+  }
+
   // Supabase — existing logic below
   return syncSessionToSupabase(session);
 }
