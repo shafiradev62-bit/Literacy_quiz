@@ -3,34 +3,27 @@ import { getAnalytics, isSupported } from "firebase/analytics";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+  apiKey: "AIzaSyD5uZt3DUqIKllEyFPC9MOvnA6QIeHOI74",
+  authDomain: "literacy-quiz-8a0e9.firebaseapp.com",
+  databaseURL: "https://literacy-quiz-8a0e9-default-rtdb.firebaseio.com/",
+  projectId: "literacy-quiz-8a0e9",
+  storageBucket: "literacy-quiz-8a0e9.firebasestorage.app",
+  messagingSenderId: "593953618362",
+  appId: "1:593953618362:web:67285f3fca5fc9fe0a0583",
+  measurementId: "G-241RZEJQB1",
 };
 
 let app;
 let db;
 
 try {
-  // Only initialize if databaseURL is provided
-  if (firebaseConfig.databaseURL) {
-    // Prevent duplicate app initialization (Vite HMR)
-    app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
-    // Analytics — only in browser and if supported
-    isSupported().then((supported) => {
-      if (supported && app) getAnalytics(app);
-    }).catch(() => {});
+  isSupported().then((supported) => {
+    if (supported && app) getAnalytics(app);
+  }).catch(() => {});
 
-    db = getDatabase(app);
-  } else {
-    console.warn("[Firebase] Database URL not configured. Firebase features disabled.");
-  }
+  db = getDatabase(app);
 } catch (error) {
   console.error("[Firebase] Initialization failed:", error);
 }
