@@ -1,0 +1,323 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 220 10% 18%;
+
+    --card: 0 0% 98%;
+    --card-foreground: 220 10% 18%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 10% 18%;
+
+    --primary: 152 24% 36%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 6% 94%;
+    --secondary-foreground: 220 10% 25%;
+
+    --muted: 220 6% 96%;
+    --muted-foreground: 220 6% 50%;
+
+    --accent: 152 18% 93%;
+    --accent-foreground: 152 24% 28%;
+
+    --destructive: 0 60% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 6% 90%;
+    --input: 220 6% 88%;
+    --ring: 152 24% 36%;
+
+    --radius: 0.25rem;
+
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-display: 'Newsreader', Georgia, serif;
+
+    /* Exam-specific tokens */
+    --exam-toolbar: 220 8% 97%;
+    --exam-toolbar-foreground: 220 10% 30%;
+    --exam-divider: 220 6% 88%;
+    --exam-panel-bg: 0 0% 100%;
+    --exam-highlight: 50 80% 92%;
+    --exam-selected: 152 24% 36%;
+    --exam-selected-foreground: 0 0% 100%;
+    --exam-flagged: 45 90% 55%;
+    --exam-answered: 152 24% 36%;
+    --exam-unanswered: 220 6% 85%;
+    --exam-current: 220 10% 18%;
+    --exam-timer-warn: 0 70% 55%;
+
+    /* Button color tokens */
+    --btn-success: 152 70% 35%;
+    --btn-success-hover: 152 70% 30%;
+    --btn-warning: 38 90% 50%;
+    --btn-warning-hover: 38 90% 45%;
+    --btn-danger: 0 70% 55%;
+    --btn-danger-hover: 0 70% 50%;
+    --btn-nav: 220 6% 94%;
+    --btn-nav-hover: 220 6% 90%;
+    --btn-flag: 45 90% 55%;
+    --btn-flag-hover: 45 90% 50%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 220 10% 18%;
+    --sidebar-primary: 152 24% 36%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 152 18% 93%;
+    --sidebar-accent-foreground: 152 24% 28%;
+    --sidebar-border: 220 6% 90%;
+    --sidebar-ring: 152 24% 36%;
+  }
+}
+
+@layer base {
+  *, *::before, *::after {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: none;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer utilities {
+  .editorial-heading {
+    font-family: var(--font-display);
+    @apply font-light tracking-tight leading-tight;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+    opacity: 0;
+  }
+
+  .fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+    opacity: 0;
+  }
+
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.15s; }
+  .stagger-3 { animation-delay: 0.2s; }
+  .stagger-4 { animation-delay: 0.25s; }
+
+  /* Exam-specific utilities */
+  .exam-panel {
+    background: hsl(var(--exam-panel-bg));
+  }
+
+  .exam-toolbar-bg {
+    background: hsl(var(--exam-toolbar));
+    color: hsl(var(--exam-toolbar-foreground));
+  }
+
+  .exam-divider {
+    background: hsl(var(--exam-divider));
+  }
+
+  .exam-highlight-text {
+    background: hsl(var(--exam-highlight));
+  }
+
+  .exam-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .exam-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .exam-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--exam-unanswered));
+    border-radius: 3px;
+  }
+  .exam-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground));
+  }
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Simulation slider custom style */
+.sim-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 9999px;
+  outline: none;
+  cursor: pointer;
+  display: block;
+  /* background set via inline style */
+}
+
+.sim-slider::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 9999px;
+  background: transparent;
+}
+
+.sim-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #111827;
+  cursor: grab;
+  margin-top: -7px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+  transition: transform 0.1s ease;
+}
+
+.sim-slider:active::-webkit-slider-thumb {
+  cursor: grabbing;
+  transform: scale(1.15);
+}
+
+.sim-slider::-moz-range-track {
+  height: 8px;
+  border-radius: 9999px;
+  background: transparent;
+}
+
+.sim-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #111827;
+  cursor: grab;
+  border: none;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+}
+
+.sim-slider::-moz-range-progress {
+  height: 8px;
+  border-radius: 9999px;
+  background: #4a7c59;
+}
+
+/* force rebuild */
+
+/* ── Simulation Animations ── */
+@keyframes sway {
+  0%, 100% { transform: rotate(-2deg) scaleX(1); }
+  50% { transform: rotate(2deg) scaleX(1); }
+}
+
+@keyframes float-sand {
+  0% { transform: translateY(0) translateX(0); }
+  100% { transform: translateY(-8px) translateX(3px); }
+}
+
+@keyframes wave-move {
+  0% { transform: translateX(-5px); opacity: 0.3; }
+  100% { transform: translateX(5px); opacity: 0.7; }
+}
+
+@keyframes boat-sway {
+  0% { transform: translateY(0) rotate(-2deg); }
+  100% { transform: translateY(-3px) rotate(2deg); }
+}
+
+@keyframes fry-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px) rotate(-1deg); }
+  75% { transform: translateX(3px) rotate(1deg); }
+}
+
+@keyframes steam-rise {
+  0% { transform: translateY(0) scaleX(1); opacity: 0.5; }
+  100% { transform: translateY(-20px) scaleX(1.2); opacity: 0; }
+}
+
+/* ── Unit 9 Scene Animations ── */
+@keyframes u9-fish-swim {
+  0%   { transform: translateX(0px) translateY(0px); }
+  25%  { transform: translateX(18px) translateY(-3px); }
+  50%  { transform: translateX(36px) translateY(0px); }
+  75%  { transform: translateX(18px) translateY(3px); }
+  100% { transform: translateX(0px) translateY(0px); }
+}
+
+@keyframes u9-fish2-swim {
+  0%   { transform: translateX(0px) translateY(0px) scaleX(1); }
+  40%  { transform: translateX(-28px) translateY(2px) scaleX(1); }
+  41%  { transform: translateX(-28px) translateY(2px) scaleX(-1); }
+  80%  { transform: translateX(0px) translateY(-2px) scaleX(-1); }
+  81%  { transform: translateX(0px) translateY(-2px) scaleX(1); }
+  100% { transform: translateX(0px) translateY(0px) scaleX(1); }
+}
+
+@keyframes u9-sun-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes u9-sun-pulse {
+  0%, 100% { opacity: 0.85; r: 24; }
+  50%       { opacity: 1;    r: 28; }
+}
+
+@keyframes u9-smoke-rise {
+  0%   { transform: translateY(0px) translateX(0px) scale(1);   opacity: 0.55; }
+  50%  { transform: translateY(-14px) translateX(4px) scale(1.2); opacity: 0.35; }
+  100% { transform: translateY(-28px) translateX(-2px) scale(1.5); opacity: 0; }
+}
+
+@keyframes u9-smoke2-rise {
+  0%   { transform: translateY(0px) translateX(0px) scale(1);   opacity: 0.42; }
+  50%  { transform: translateY(-12px) translateX(-3px) scale(1.15); opacity: 0.25; }
+  100% { transform: translateY(-24px) translateX(5px) scale(1.4); opacity: 0; }
+}
+
+@keyframes u9-wave-shift {
+  0%   { transform: translateX(0px); }
+  100% { transform: translateX(-40px); }
+}
+
+@keyframes u9-shimmer-move {
+  0%   { transform: translateX(-100px); opacity: 0; }
+  30%  { opacity: 0.18; }
+  70%  { opacity: 0.12; }
+  100% { transform: translateX(500px); opacity: 0; }
+}
+
+@keyframes u9-bubble {
+  0%   { transform: translateY(0px) scale(1);   opacity: 0.6; }
+  100% { transform: translateY(-12px) scale(1.3); opacity: 0; }
+}
+
+@keyframes u9-pollution-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%       { opacity: 0.75; transform: scale(1.08); }
+}

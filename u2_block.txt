@@ -1,0 +1,227 @@
+          {/* SIMULATION - Only for Question 2 */}
+          {showSim && (
+            <div className="mb-5 space-y-4">
+              {/* Metric Cards */}
+              <div className="grid grid-cols-4 gap-2">
+                {[
+                  { label: isId ? "Kualitas" : "Quality Score", value: simCalc.quality, sub: simCalc.qualityLabel },
+                  { label: isId ? "Risiko Keamanan" : "Safety Risk", value: simCalc.safetyRisk, sub: simCalc.riskLabel },
+                  { label: isId ? "Keberlanjutan" : "Sustainability", value: simCalc.sustainability, sub: simCalc.sustLabel },
+                  { label: isId ? "Stok Udang" : "Shrimp Stock", value: shrimpVal, sub: shrimpVal >= 67 ? "Good" : shrimpVal >= 34 ? "Medium" : "Low" },
+                ].map(({ label, value, sub }) => (
+                  <div key={label} className="bg-white rounded-xl border border-border/50 p-3 shadow-sm text-center">
+                    <div className="text-[10px] text-muted-foreground mb-1 leading-tight">{label}</div>
+                    <div className="text-2xl font-bold text-foreground leading-none">{value}</div>
+                    <div className={`text-[10px] mt-1 font-semibold px-2 py-0.5 rounded-full inline-block text-white ${sub === "High" || sub === "Good" ? "bg-gray-800" : sub === "Medium" ? "bg-gray-500" : "bg-gray-400"}`}>{sub}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Simulation Controls + Diagram */}
+              <div className="flex gap-3">
+                <div className="flex-1 bg-white rounded-xl border border-border/50 p-5 shadow-sm">
+                  <div className="text-[13px] font-semibold text-foreground mb-4">{isId ? "Kontrol Simulasi" : "Simulation Controls"}</div>
+                  <div className="space-y-5">
+                  {/* Salt */}
+                  <div>
+                    <div className="text-[13px] text-foreground mb-2">
+                      Salt concentration / Konsentrasi garam (%) : <span className="font-semibold">{saltVal}</span>
+                    </div>
+                    <input type="range" min={0} max={100} step={1} value={saltVal}
+                      onChange={(e) => setSaltVal(Number(e.target.value))}
+                      className="sim-slider"
+                      style={{ background: `linear-gradient(to right, #111827 ${saltVal}%, #e5e7eb ${saltVal}%)` }}
+                    />
+                  </div>
+                  {/* Drying */}
+                  <div>
+                    <div className="text-[13px] text-foreground mb-2">
+                      Drying time / Waktu pengeringan (days/hari) : <span className="font-semibold">{dryingDays}</span>
+                    </div>
+                    <input type="range" min={1} max={7} step={1} value={dryingDays}
+                      onChange={(e) => setDryingDays(Number(e.target.value))}
+                      className="sim-slider"
+                      style={{ background: `linear-gradient(to right, #111827 ${((dryingDays - 1) / 6) * 100}%, #e5e7eb ${((dryingDays - 1) / 6) * 100}%)` }}
+                    />
+                  </div>
+                  {/* Hygiene */}
+                  <div>
+                    <div className="text-[13px] text-foreground mb-2">
+                      Hygiene level / Tingkat kebersihan (%) : <span className="font-semibold">{hygieneVal}</span>
+                    </div>
+                    <input type="range" min={0} max={100} step={1} value={hygieneVal}
+                      onChange={(e) => setHygieneVal(Number(e.target.value))}
+                      className="sim-slider"
+                      style={{ background: `linear-gradient(to right, #111827 ${hygieneVal}%, #e5e7eb ${hygieneVal}%)` }}
+                    />
+                  </div>
+                  {/* Shrimp */}
+                  <div>
+                    <div className="text-[13px] text-foreground mb-2">
+                      Shrimp population availability / Ketersediaan udang (%) : <span className="font-semibold">{shrimpVal}</span>
+                    </div>
+                    <input type="range" min={0} max={100} step={1} value={shrimpVal}
+                      onChange={(e) => setShrimpVal(Number(e.target.value))}
+                      className="sim-slider"
+                      style={{ background: `linear-gradient(to right, #111827 ${shrimpVal}%, #e5e7eb ${shrimpVal}%)` }}
+                    />
+                  </div>
+                  </div>
+                  <button onClick={runSim} className="mt-6 px-5 py-2 bg-gray-900 text-white text-[13px] font-semibold rounded-full hover:opacity-90">
+                    Save current run (Simpan run saat ini)
+                  </button>
+                </div>
+
+                {/* Terasi Process Diagram */}
+                <div className="flex flex-col gap-3 w-44">
+                  <div className="bg-white rounded-xl border border-border/50 p-2 shadow-sm flex items-center justify-center">
+                    <svg viewBox="0 0 160 240" width="140" height="210" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                          <feGaussianBlur in="SourceAlpha" stdDeviation="1.5" />
+                          <feOffset dx="0.5" dy="1" result="offsetblur" />
+                          <feComponentTransfer>
+                            <feFuncA type="linear" slope="0.3" />
+                          </feComponentTransfer>
+                          <feMerge>
+                            <feMergeNode />
+                            <feMergeNode in="SourceGraphic" />
+                          </feMerge>
+                        </filter>
+                        
+                        <radialGradient id="sunGrad" cx="50%" cy="50%" r="50%">
+                          <stop offset="0%" stopColor="#fff9c4" />
+                          <stop offset="60%" stopColor="#fdd835" />
+                          <stop offset="100%" stopColor="#fbc02d" />
+                        </radialGradient>
+                        
+                        <radialGradient id="shrimpGrad" cx="50%" cy="40%" r="60%">
+                          <stop offset="0%" stopColor={shrimpVal > 60 ? "#fb923c" : shrimpVal > 30 ? "#fca5a5" : "#fee2e2"} />
+                          <stop offset="100%" stopColor={shrimpVal > 60 ? "#c2410c" : shrimpVal > 30 ? "#b91c1c" : "#991b1b"} />
+                        </radialGradient>
+
+                        <linearGradient id="jarGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#f8fafc" />
+                          <stop offset="50%" stopColor="#f1f5f9" />
+                          <stop offset="100%" stopColor="#e2e8f0" />
+                        </linearGradient>
+
+                        <radialGradient id="pasteGrad" cx="50%" cy="40%" r="60%">
+                          <stop offset="0%" stopColor={simCalc.quality > 60 ? "#a78bfa" : "#c4b5fd"} />
+                          <stop offset="100%" stopColor={simCalc.quality > 60 ? "#4c1d95" : "#6d28d9"} />
+                        </radialGradient>
+
+                        <linearGradient id="sealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor={hygieneVal > 60 ? "#34d399" : hygieneVal > 30 ? "#fbbf24" : "#f87171"} />
+                          <stop offset="100%" stopColor={hygieneVal > 60 ? "#059669" : hygieneVal > 30 ? "#d97706" : "#dc2626"} />
+                        </linearGradient>
+                      </defs>
+
+                      {/* Sun Section */}
+                      <g transform="translate(80, 25)" filter="url(#shadow)">
+                        <circle r="16" fill="url(#sunGrad)" />
+                        {[0, 45, 90, 135, 180, 225, 270, 315].map(a => (
+                          <g key={a} transform={`rotate(${a})`}>
+                            <line y1="18" y2="24" stroke="#fbc02d" strokeWidth="2" strokeLinecap="round" />
+                          </g>
+                        ))}
+                        <text y="4" fontSize="8" fontWeight="bold" fill="#92400e" textAnchor="middle" fontFamily="sans-serif">{dryingDays}d</text>
+                        <text x="-40" y="0" fontSize="7" fill="#64748b" textAnchor="end" fontFamily="sans-serif">{isId ? "Matahari" : "Sun"}</text>
+                      </g>
+
+                      {/* Input Section (Shrimp) */}
+                      <g transform="translate(80, 85)" filter="url(#shadow)">
+                        <ellipse rx="42" ry="20" fill="url(#shrimpGrad)" />
+                        <path d="M-30,-5 Q-20,-12 0,-12 Q20,-12 30,-5" fill="none" stroke="white" strokeWidth="1" strokeOpacity="0.3" />
+                        <text y="4" fontSize="9" fontWeight="bold" fill="white" textAnchor="middle" fontFamily="sans-serif">
+                          {isId ? "UDANG" : "SHRIMP"}
+                        </text>
+                        <text x="-40" y="0" fontSize="7" fill="#64748b" textAnchor="end" fontFamily="sans-serif">{isId ? "Bahan" : "Input"}</text>
+                      </g>
+
+                      {/* Salt Section */}
+                      <g transform="translate(80, 120)">
+                        {[...Array(8)].map((_, i) => (
+                          <rect key={i} x={(i-4)*6} y="-2" width="3" height="3" rx="0.5" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="0.5" transform={`rotate(${i*45})`} />
+                        ))}
+                        <text y="14" fontSize="8" fontWeight="medium" fill="#64748b" textAnchor="middle" fontFamily="sans-serif">
+                          {isId ? "Garam" : "Salt"} {saltVal}%
+                        </text>
+                      </g>
+
+                      {/* Process Section (Jar) */}
+                      <g transform="translate(55, 150)" filter="url(#shadow)">
+                        <rect width="50" height="60" rx="8" fill="url(#jarGrad)" stroke="#94a3b8" strokeWidth="1" />
+                        <rect x="5" y="15" width="40" height={Math.max(10, Math.round(simCalc.quality * 0.4))} rx="3" fill="url(#pasteGrad)" opacity="0.9" />
+                        <path d="M-2,0 L52,0 L52,10 Q52,14 45,14 L5,14 Q-2,14 -2,10 Z" fill="#475569" />
+                        <text x="25" y="75" fontSize="8" fontWeight="bold" fill="#334155" textAnchor="middle" fontFamily="sans-serif">{isId ? "TERASI" : "PASTE"}</text>
+                        <text x="-15" y="30" fontSize="7" fill="#64748b" textAnchor="end" fontFamily="sans-serif">{isId ? "Proses" : "Process"}</text>
+                      </g>
+
+                      {/* Hygiene Seal */}
+                      <g transform="translate(125, 190)" filter="url(#shadow)">
+                        <circle r="12" fill="url(#sealGrad)" stroke="white" strokeWidth="1.5" />
+                        <text y="3" fontSize="8" fontWeight="bold" fill="white" textAnchor="middle" fontFamily="sans-serif">H</text>
+                        <text y="22" fontSize="7" fontWeight="bold" fill={hygieneVal > 60 ? "#059669" : hygieneVal > 30 ? "#d97706" : "#dc2626"} textAnchor="middle" fontFamily="sans-serif">
+                          {isId ? "BERSIH" : "HYGIENE"}
+                        </text>
+                      </g>
+                    </svg>
+                  </div>
+                  {/* Bar chart */}
+                  <div className="bg-white rounded-xl border border-border/50 p-3 shadow-sm flex flex-col justify-between flex-1">
+                    <div className="text-[9px] text-muted-foreground text-right mb-1">100</div>
+                    <div className="flex items-end gap-1 h-24">
+                      {[
+                        { v: simCalc.quality, label: "Q" },
+                        { v: simCalc.safetyRisk, label: "R" },
+                        { v: simCalc.sustainability, label: "S" },
+                      ].map(({ v, label }) => (
+                        <div key={label} className="flex-1 flex flex-col items-center gap-0.5">
+                          <div className="w-full bg-gray-900 rounded-sm transition-all duration-300" style={{ height: `${v}%` }} />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="text-[9px] text-muted-foreground mb-1">0</div>
+                    <div className="flex gap-0.5 mt-1">
+                      {[{label:"Quality"},{label:"Risk"},{label:"Sust."}].map(({ label }) => (
+                        <div key={label} className="flex-1 text-center text-[7px] text-muted-foreground leading-tight">{label}</div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Saved Data Table */}
+              <div>
+                <div className="text-[13px] font-semibold text-foreground mb-3">{isId ? "Tabel Data Tersimpan" : "Saved Data Table"}</div>
+                <div className="bg-white rounded-xl border border-border/50 shadow-sm overflow-x-auto">
+                  <table className="w-full text-[11px]">
+                    <thead>
+                      <tr className="border-b border-border/50">
+                        {["No","Salt %","Drying Days","Hygiene %","Shrimp Stock %","Quality","Safety Risk","Sustainability"].map(h => (
+                          <th key={h} className="p-2 text-left font-semibold text-foreground whitespace-nowrap">{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {simRuns.length === 0 ? (
+                        <tr><td colSpan={8} className="p-3 text-center text-muted-foreground text-[11px]">{isId ? "Belum ada data" : "No saved runs yet"}</td></tr>
+                      ) : simRuns.map((r) => (
+                        <tr key={r.no} className="border-t border-border/30 hover:bg-muted/20">
+                          <td className="p-2">{r.no}</td>
+                          <td className="p-2">{r.salt}</td>
+                          <td className="p-2">{r.drying}</td>
+                          <td className="p-2">{r.hygiene}</td>
+                          <td className="p-2">{r.shrimp}</td>
+                          <td className="p-2">{r.quality}</td>
+                          <td className="p-2">{r.safetyRisk}</td>
+                          <td className="p-2">{r.sustainability}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
