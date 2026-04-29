@@ -662,90 +662,153 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
               ))}
             </div>
 
-            {/* CSS-BASED POT ILLUSTRATION */}
-            <div className="relative z-10 w-64 h-72 group-hover:scale-105 transition-transform duration-700">
-              {/* Pot lid */}
-              <div
-                className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-8 rounded-t-full transition-colors duration-300"
-                style={{
-                  background: potType === 'clay' 
-                    ? 'linear-gradient(180deg, #FFD700 0%, #DAA520 50%, #B8860B 100%)'
-                    : 'linear-gradient(180deg, #A8A8A8 0%, #808080 50%, #606060 100%)',
-                  boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
-                }}
-              >
-                {/* Lid knob */}
-                <div
-                  className="absolute top-2 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full"
-                  style={{
-                    background: potType === 'clay'
-                      ? 'radial-gradient(circle at 30% 30%, #FFD700, #B8860B)'
-                      : 'radial-gradient(circle at 30% 30%, #C0C0C0, #606060)',
-                    boxShadow: '0 2px 4px rgba(0,0,0,0.4)'
-                  }}
-                />
-              </div>
-
-              {/* Pot body */}
-              <div
-                className="absolute top-8 left-1/2 -translate-x-1/2 w-48 h-44 rounded-b-[90px] rounded-t-lg drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-colors duration-300"
-                style={{
-                  background: potType === 'clay'
-                    ? 'linear-gradient(135deg, #FFD700 0%, #DAA520 30%, #B8860B 60%, #8B7355 100%)'
-                    : 'linear-gradient(135deg, #C0C0C0 0%, #A8A8A8 25%, #808080 50%, #606060 75%, #404040 100%)'
-                }}
-              >
-                {/* Metallic texture overlay for metal pot */}
-                {potType === 'metal' && (
-                  <div className="absolute inset-0 opacity-30" style={{
-                    background: 'repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.1) 2px, rgba(255,255,255,0.1) 4px)'
-                  }} />
-                )}
+            {/* SVG-BASED REALISTIC POT */}
+            <svg viewBox="0 0 200 180" className="relative z-10 w-64 h-72 group-hover:scale-105 transition-transform duration-700">
+              <defs>
+                {/* Clay pot gradient */}
+                <linearGradient id="clayBody" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#D4A574" />
+                  <stop offset="30%" stopColor="#C4956A" />
+                  <stop offset="60%" stopColor="#A67B5B" />
+                  <stop offset="100%" stopColor="#8B6F47" />
+                </linearGradient>
+                <linearGradient id="clayHighlight" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#E8C49A" stopOpacity="0.6" />
+                  <stop offset="50%" stopColor="#D4A574" stopOpacity="0" />
+                  <stop offset="100%" stopColor="#8B6F47" stopOpacity="0.4" />
+                </linearGradient>
                 
-                {/* Pot rim with 3D effect */}
-                <div
-                  className="absolute -top-3 left-1/2 -translate-x-1/2 w-52 h-7 rounded-full"
-                  style={{
-                    background: potType === 'clay'
-                      ? 'linear-gradient(180deg, #FFEC8B 0%, #FFD700 30%, #DAA520 70%, #B8860B 100%)'
-                      : 'linear-gradient(180deg, #D3D3D3 0%, #C0C0C0 30%, #A8A8A8 70%, #808080 100%)',
-                    boxShadow: '0 2px 6px rgba(0,0,0,0.3)'
-                  }}
-                />
+                {/* Metal pot gradient */}
+                <linearGradient id="metalBody" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#D3D3D3" />
+                  <stop offset="20%" stopColor="#B8B8B8" />
+                  <stop offset="40%" stopColor="#909090" />
+                  <stop offset="60%" stopColor="#707070" />
+                  <stop offset="80%" stopColor="#505050" />
+                  <stop offset="100%" stopColor="#404040" />
+                </linearGradient>
+                <linearGradient id="metalHighlight" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#E8E8E8" stopOpacity="0.8" />
+                  <stop offset="30%" stopColor="#D3D3D3" stopOpacity="0.3" />
+                  <stop offset="70%" stopColor="#606060" stopOpacity="0.2" />
+                  <stop offset="100%" stopColor="#404040" stopOpacity="0.5" />
+                </linearGradient>
                 
-                {/* Pot handles (ears) with realistic design */}
-                <div className="absolute top-10 -left-8 w-8 h-14 rounded-l-full transition-colors duration-300"
-                  style={{
-                    background: potType === 'clay'
-                      ? 'linear-gradient(90deg, #8B7355 0%, #B8860B 50%, #DAA520 100%)'
-                      : 'linear-gradient(90deg, #404040 0%, #808080 50%, #A8A8A8 100%)',
-                    boxShadow: 'inset -2px 0 4px rgba(0,0,0,0.3), 2px 0 4px rgba(255,255,255,0.1)'
-                  }}
-                />
-                <div className="absolute top-10 -right-8 w-8 h-14 rounded-r-full transition-colors duration-300"
-                  style={{
-                    background: potType === 'clay'
-                      ? 'linear-gradient(90deg, #DAA520 0%, #B8860B 50%, #8B7355 100%)'
-                      : 'linear-gradient(90deg, #A8A8A8 0%, #808080 50%, #404040 100%)',
-                    boxShadow: 'inset 2px 0 4px rgba(0,0,0,0.3), -2px 0 4px rgba(255,255,255,0.1)'
-                  }}
-                />
+                {/* Metallic shine pattern */}
+                <pattern id="metalShine" patternUnits="userSpaceOnUse" width="4" height="4">
+                  <line x1="0" y1="0" x2="0" y2="4" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+                </pattern>
                 
-                {/* Surface highlight for 3D effect */}
-                <div className="absolute top-14 left-6 w-10 h-24 rounded-full bg-white/20 blur-sm" />
-                <div className="absolute top-14 right-6 w-6 h-16 rounded-full bg-black/10 blur-sm" />
-              </div>
+                {/* Fire glow filter */}
+                <filter id="potGlow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
               
-              {/* THERMAL COLOR SHIFT OVERLAY */}
-              <div 
-                className="absolute inset-0 mix-blend-overlay transition-opacity duration-200 rounded-full"
-                style={{ 
-                  backgroundColor: '#f59e0b', 
-                  opacity: (heatInput / 100) * 0.4,
-                  filter: 'blur(20px)'
-                }}
+              {/* Pot shadow */}
+              <ellipse cx="100" cy="165" rx="55" ry="8" fill="rgba(0,0,0,0.2)" filter="url(#potGlow)" />
+              
+              {/* Left handle */}
+              <path 
+                d="M45,70 Q30,75 25,90 Q20,105 35,115 Q50,120 60,110 Q70,100 68,85 Q66,70 55,68" 
+                fill={potType === 'clay' ? 'url(#clayBody)' : 'url(#metalBody)'}
+                stroke={potType === 'clay' ? '#8B6F47' : '#404040'}
+                strokeWidth="2"
               />
-            </div>
+              <path 
+                d="M42,75 Q30,80 28,95 Q26,110 38,115 Q48,118 58,110" 
+                fill="none"
+                stroke={potType === 'clay' ? '#E8C49A' : '#E8E8E8'}
+                strokeWidth="1"
+                opacity="0.4"
+              />
+              
+              {/* Right handle */}
+              <path 
+                d="M155,70 Q170,75 175,90 Q180,105 165,115 Q150,120 140,110 Q130,100 132,85 Q134,70 145,68" 
+                fill={potType === 'clay' ? 'url(#clayBody)' : 'url(#metalBody)'}
+                stroke={potType === 'clay' ? '#8B6F47' : '#404040'}
+                strokeWidth="2"
+              />
+              <path 
+                d="M158,75 Q170,80 172,95 Q174,110 162,115 Q152,118 142,110" 
+                fill="none"
+                stroke={potType === 'clay' ? '#E8C49A' : '#E8E8E8'}
+                strokeWidth="1"
+                opacity="0.4"
+              />
+              
+              {/* Pot body */}
+              <path 
+                d="M45,70 Q40,90 35,120 Q30,150 50,160 Q70,168 100,170 Q130,168 150,160 Q170,150 165,120 Q160,90 155,70 Q120,60 100,58 Q80,60 45,70" 
+                fill={potType === 'clay' ? 'url(#clayBody)' : 'url(#metalBody)'}
+                stroke={potType === 'clay' ? '#6B5344' : '#303030'}
+                strokeWidth="2"
+              />
+              
+              {/* Metallic overlay */}
+              {potType === 'metal' && (
+                <path 
+                  d="M45,70 Q40,90 35,120 Q30,150 50,160 Q70,168 100,170 Q130,168 150,160 Q170,150 165,120 Q160,90 155,70 Q120,60 100,58 Q80,60 45,70" 
+                  fill="url(#metalShine)"
+                  opacity="0.3"
+                />
+              )}
+              
+              {/* Pot rim */}
+              <ellipse cx="100" cy="68" rx="58" ry="12" 
+                fill={potType === 'clay' ? '#D4A574' : '#B8B8B8'}
+                stroke={potType === 'clay' ? '#8B6F47' : '#606060'}
+                strokeWidth="2"
+              />
+              <ellipse cx="100" cy="66" rx="54" ry="10" 
+                fill={potType === 'clay' ? '#E8C49A' : '#D3D3D3'}
+                opacity={0.5}
+              />
+              
+              {/* Lid */}
+              <path 
+                d="M48,65 Q50,45 70,38 Q85,32 100,30 Q115,32 130,38 Q150,45 152,65" 
+                fill={potType === 'clay' ? 'url(#clayBody)' : 'url(#metalBody)'}
+                stroke={potType === 'clay' ? '#8B6F47' : '#404040'}
+                strokeWidth="2"
+              />
+              
+              {/* Lid knob */}
+              <ellipse cx="100" cy="32" rx="8" ry="5" 
+                fill={potType === 'clay' ? '#C4956A' : '#909090'}
+                stroke={potType === 'clay' ? '#8B6F47' : '#505050'}
+                strokeWidth="1.5"
+              />
+              <ellipse cx="98" cy="30" rx="3" ry="2" 
+                fill={potType === 'clay' ? '#E8C49A' : '#D3D3D3'}
+                opacity="0.6"
+              />
+              
+              {/* Surface highlights */}
+              <path 
+                d="M55,85 Q60,110 65,140 Q70,155 80,162" 
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                strokeWidth="3"
+                strokeLinecap="round"
+              />
+              <path 
+                d="M145,85 Q140,110 135,140 Q130,155 120,162" 
+                fill="none"
+                stroke="rgba(0,0,0,0.2)"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              
+              {/* Thermal glow overlay */}
+              <ellipse cx="100" cy="120" rx="45" ry="40" 
+                fill="#f59e0b"
+                opacity={(heatInput / 100) * 0.3}
+                style={{ mixBlendMode: 'overlay' }}
+              />
+            </svg>
 
              {/* STAND & FIRE */}
              <svg viewBox="0 0 200 120" className="absolute bottom-0 w-full h-36 z-0">
