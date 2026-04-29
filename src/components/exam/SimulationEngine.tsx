@@ -643,7 +643,7 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
             }} 
           />
           
-          <div className="relative w-full aspect-[4/5] flex items-center justify-center">
+          <div className="relative w-full aspect-[4/5] flex flex-col items-center justify-center">
             
             {/* STEAM EFFECT */}
             <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-32 h-48 pointer-events-none z-20">
@@ -663,7 +663,7 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
             </div>
 
             {/* SVG-BASED REALISTIC POT */}
-            <svg viewBox="0 0 200 180" className="relative z-10 w-64 h-72 group-hover:scale-105 transition-transform duration-700">
+            <svg viewBox="0 0 200 180" className="relative z-10 w-56 h-64 group-hover:scale-105 transition-transform duration-700" style={{ marginBottom: '0px' }}>
               <defs>
                 {/* Clay pot gradient */}
                 <linearGradient id="clayBody" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -811,7 +811,7 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
             </svg>
 
              {/* STAND & FIRE */}
-             <svg viewBox="0 0 200 120" className="absolute bottom-0 w-full h-36 z-0">
+             <svg viewBox="0 0 200 120" className="absolute bottom-0 w-full h-32 z-0">
                <defs>
                  <radialGradient id="fireCore">
                     <stop offset="0%" stopColor="#ffffff" />
