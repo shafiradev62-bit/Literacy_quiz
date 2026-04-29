@@ -663,28 +663,77 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
             </div>
 
             {/* CSS-BASED POT ILLUSTRATION */}
-            <div className="relative z-10 w-64 h-64 group-hover:scale-105 transition-transform duration-700">
-              {/* Pot body */}
+            <div className="relative z-10 w-64 h-72 group-hover:scale-105 transition-transform duration-700">
+              {/* Pot lid */}
               <div
-                className="absolute top-8 left-1/2 -translate-x-1/2 w-48 h-40 rounded-b-[80px] rounded-t-lg drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-colors duration-300"
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-8 rounded-t-full transition-colors duration-300"
                 style={{
-                  backgroundColor: potType === 'clay' ? '#8B4513' : '#6B7280',
-                  background: `linear-gradient(135deg, ${potType === 'clay' ? '#A0522D' : '#9CA3AF'} 0%, ${potType === 'clay' ? '#8B4513' : '#6B7280'} 50%, ${potType === 'clay' ? '#654321' : '#4B5563'} 100%)`
+                  background: potType === 'clay' 
+                    ? 'linear-gradient(180deg, #FFD700 0%, #DAA520 50%, #B8860B 100%)'
+                    : 'linear-gradient(180deg, #A8A8A8 0%, #808080 50%, #606060 100%)',
+                  boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
                 }}
               >
-                {/* Pot rim */}
+                {/* Lid knob */}
                 <div
-                  className="absolute -top-3 left-1/2 -translate-x-1/2 w-52 h-6 rounded-full"
+                  className="absolute top-2 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full"
                   style={{
-                    backgroundColor: potType === 'clay' ? '#A0522D' : '#9CA3AF',
-                    background: `linear-gradient(180deg, ${potType === 'clay' ? '#CD853F' : '#D1D5DB'} 0%, ${potType === 'clay' ? '#A0522D' : '#9CA3AF'} 100%)`
+                    background: potType === 'clay'
+                      ? 'radial-gradient(circle at 30% 30%, #FFD700, #B8860B)'
+                      : 'radial-gradient(circle at 30% 30%, #C0C0C0, #606060)',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.4)'
                   }}
                 />
-                {/* Pot handles */}
-                <div className="absolute top-8 -left-6 w-6 h-12 rounded-l-full" style={{ backgroundColor: potType === 'clay' ? '#654321' : '#4B5563' }} />
-                <div className="absolute top-8 -right-6 w-6 h-12 rounded-r-full" style={{ backgroundColor: potType === 'clay' ? '#654321' : '#4B5563' }} />
-                {/* Surface highlight */}
-                <div className="absolute top-12 left-8 w-8 h-20 rounded-full bg-white/10 blur-sm" />
+              </div>
+
+              {/* Pot body */}
+              <div
+                className="absolute top-8 left-1/2 -translate-x-1/2 w-48 h-44 rounded-b-[90px] rounded-t-lg drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-colors duration-300"
+                style={{
+                  background: potType === 'clay'
+                    ? 'linear-gradient(135deg, #FFD700 0%, #DAA520 30%, #B8860B 60%, #8B7355 100%)'
+                    : 'linear-gradient(135deg, #C0C0C0 0%, #A8A8A8 25%, #808080 50%, #606060 75%, #404040 100%)'
+                }}
+              >
+                {/* Metallic texture overlay for metal pot */}
+                {potType === 'metal' && (
+                  <div className="absolute inset-0 opacity-30" style={{
+                    background: 'repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.1) 2px, rgba(255,255,255,0.1) 4px)'
+                  }} />
+                )}
+                
+                {/* Pot rim with 3D effect */}
+                <div
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 w-52 h-7 rounded-full"
+                  style={{
+                    background: potType === 'clay'
+                      ? 'linear-gradient(180deg, #FFEC8B 0%, #FFD700 30%, #DAA520 70%, #B8860B 100%)'
+                      : 'linear-gradient(180deg, #D3D3D3 0%, #C0C0C0 30%, #A8A8A8 70%, #808080 100%)',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.3)'
+                  }}
+                />
+                
+                {/* Pot handles (ears) with realistic design */}
+                <div className="absolute top-10 -left-8 w-8 h-14 rounded-l-full transition-colors duration-300"
+                  style={{
+                    background: potType === 'clay'
+                      ? 'linear-gradient(90deg, #8B7355 0%, #B8860B 50%, #DAA520 100%)'
+                      : 'linear-gradient(90deg, #404040 0%, #808080 50%, #A8A8A8 100%)',
+                    boxShadow: 'inset -2px 0 4px rgba(0,0,0,0.3), 2px 0 4px rgba(255,255,255,0.1)'
+                  }}
+                />
+                <div className="absolute top-10 -right-8 w-8 h-14 rounded-r-full transition-colors duration-300"
+                  style={{
+                    background: potType === 'clay'
+                      ? 'linear-gradient(90deg, #DAA520 0%, #B8860B 50%, #8B7355 100%)'
+                      : 'linear-gradient(90deg, #A8A8A8 0%, #808080 50%, #404040 100%)',
+                    boxShadow: 'inset 2px 0 4px rgba(0,0,0,0.3), -2px 0 4px rgba(255,255,255,0.1)'
+                  }}
+                />
+                
+                {/* Surface highlight for 3D effect */}
+                <div className="absolute top-14 left-6 w-10 h-24 rounded-full bg-white/20 blur-sm" />
+                <div className="absolute top-14 right-6 w-6 h-16 rounded-full bg-black/10 blur-sm" />
               </div>
               
               {/* THERMAL COLOR SHIFT OVERLAY */}
@@ -699,35 +748,87 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
             </div>
 
              {/* STAND & FIRE */}
-             <svg viewBox="0 0 200 100" className="absolute bottom-0 w-full h-32 z-0">
+             <svg viewBox="0 0 200 120" className="absolute bottom-0 w-full h-36 z-0">
                <defs>
                  <radialGradient id="fireCore">
-                    <stop offset="0%" stopColor="#fff" />
-                    <stop offset="30%" stopColor="#fbbf24" />
-                    <stop offset="100%" stopColor="#f59e0b" />
+                    <stop offset="0%" stopColor="#ffffff" />
+                    <stop offset="20%" stopColor="#fff7ed" />
+                    <stop offset="40%" stopColor="#fbbf24" />
+                    <stop offset="70%" stopColor="#f97316" />
+                    <stop offset="100%" stopColor="#dc2626" />
                  </radialGradient>
+                 <radialGradient id="fireOuter">
+                    <stop offset="0%" stopColor="#f97316" stopOpacity="0.8" />
+                    <stop offset="50%" stopColor="#ea580c" stopOpacity="0.6" />
+                    <stop offset="100%" stopColor="#dc2626" stopOpacity="0" />
+                 </radialGradient>
+                 <filter id="fireGlow">
+                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                    <feMerge>
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                 </filter>
                </defs>
                
                {/* Stand legs */}
-               <path d="M60 20 L40 80 M140 20 L160 80" stroke="#334155" strokeWidth="6" strokeLinecap="round" />
+               <path d="M60 20 L40 90 M140 20 L160 90" stroke="#475569" strokeWidth="8" strokeLinecap="round" />
                
-               {/* Fire animation */}
-               <g transform="translate(100, 70)">
-                 {[...Array(3)].map((_, i) => (
+               {/* Fire base glow */}
+               <ellipse cx="100" cy="85" rx="40" ry="10" fill="url(#fireOuter)" opacity={heatInput > 5 ? 0.5 : 0} />
+               
+               {/* Main fire flames */}
+               <g transform="translate(100, 75)" filter="url(#fireGlow)">
+                 {[...Array(5)].map((_, i) => (
                     <path 
-                      key={i} 
-                      d="M-20,0 Q0,-40 20,0 Z" 
-                      fill="url(#fireCore)" 
-                      opacity={0.6}
+                      key={i}
+                      d={`M${-15 + i * 8},0 Q${-10 + i * 8},-${30 + Math.random() * 20} ${-5 + i * 8},-${50 + Math.random() * 30} Q${0 + i * 8},-${30 + Math.random() * 20} ${5 + i * 8},0`}
+                      fill="url(#fireCore)"
                       className="animate-pulse"
                       style={{ 
-                        transform: `scale(${0.5 + (heatInput / 100) * (1 + i * 0.2)})`,
-                        animationDelay: `${i * 0.2}s`,
-                        display: heatInput > 5 ? 'block' : 'none'
+                        transform: `scale(${0.3 + (heatInput / 100) * (1.2 + i * 0.15)})`,
+                        animationDelay: `${i * 0.15}s`,
+                        animationDuration: `${0.8 + Math.random() * 0.4}s`,
+                        display: heatInput > 5 ? 'block' : 'none',
+                        opacity: 0.8 - i * 0.1
                       }}
                     />
                  ))}
                </g>
+               
+               {/* Outer fire glow */}
+               <g transform="translate(100, 75)">
+                 {[...Array(3)].map((_, i) => (
+                    <path 
+                      key={`outer-${i}`}
+                      d={`M${-20 + i * 20},0 Q${-15 + i * 20},-${25 + Math.random() * 15} ${-10 + i * 20},-${40 + Math.random() * 20} Q${-5 + i * 20},-${25 + Math.random() * 15} ${0 + i * 20},0`}
+                      fill="url(#fireOuter)"
+                      className="animate-pulse"
+                      style={{ 
+                        transform: `scale(${0.4 + (heatInput / 100) * (1.3 + i * 0.2)})`,
+                        animationDelay: `${i * 0.2 + 0.1}s`,
+                        animationDuration: `${1 + Math.random() * 0.5}s`,
+                        display: heatInput > 10 ? 'block' : 'none'
+                      }}
+                    />
+                 ))}
+               </g>
+               
+               {/* Ember particles */}
+               {heatInput > 30 && [...Array(8)].map((_, i) => (
+                 <circle
+                   key={`ember-${i}`}
+                   cx={80 + Math.random() * 40}
+                   cy={85 - Math.random() * 30}
+                   r={1 + Math.random() * 2}
+                   fill="#fbbf24"
+                   className="animate-pulse"
+                   style={{
+                     animationDelay: `${i * 0.1}s`,
+                     opacity: 0.6 + Math.random() * 0.4
+                   }}
+                 />
+               ))}
              </svg>
           </div>
           
