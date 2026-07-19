@@ -175,14 +175,18 @@ const Quiz = () => {
     };
 
     return (
-      <div className="h-screen flex flex-col overflow-hidden pt-16 bg-muted/20">
+      <div
+        className="h-screen flex flex-col overflow-hidden pt-16 relative"
+        style={{ backgroundImage: "url('/cirebon 1.png')", backgroundSize: "cover", backgroundPosition: "center" }}
+      >
+        <div className="absolute inset-0 bg-black/50" />
         {loading && <LoadingScreen onDone={() => { setLoading(false); setScreen("intro"); }} duration={1500} />}
-        
-        <div className="flex-1 flex flex-col px-6 py-8 overflow-hidden">
-          <h1 className="font-display text-2xl text-foreground mb-2 text-center">
+
+        <div className="relative z-10 flex-1 flex flex-col px-6 py-8 overflow-hidden">
+          <h1 className="font-display text-2xl text-white mb-2 text-center drop-shadow">
             {isId ? "Pilih Unit" : "Select Unit"}
           </h1>
-          <p className="text-sm text-muted-foreground text-center mb-6">
+          <p className="text-sm text-white/80 text-center mb-6 drop-shadow">
             {isId ? "Pilih unit yang ingin kamu kerjakan." : "Choose the unit you want to work on."}
           </p>
 
@@ -201,7 +205,7 @@ const Quiz = () => {
                       setSelectedUnit(u); setCurrent(0); setAnswers({}); setFlagged(new Set()); setLoading(true);
                     }}
                     disabled={isCompleted}
-                    className={`w-full bg-white rounded-2xl border border-border/50 p-4 shadow-sm transition-all text-left group flex items-start gap-4 ${isCompleted ? "opacity-60 cursor-not-allowed" : "hover:shadow-md hover:border-primary/30"}`}
+                    className={`w-full bg-black/40 backdrop-blur-sm rounded-2xl border border-white/20 p-4 shadow-sm transition-all text-left group flex items-start gap-4 ${isCompleted ? "opacity-60 cursor-not-allowed" : "hover:shadow-md hover:border-white/40"}`}
                   >
                     <div className={`w-12 h-12 rounded-full font-bold text-lg flex items-center justify-center shrink-0 transition-all btn-3d ${progress?.completed ? "bg-primary text-white" : "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white"}`}>
                       {progress?.completed ? (
@@ -211,25 +215,25 @@ const Quiz = () => {
                       ) : u}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-[11px] font-bold uppercase tracking-wide text-primary mb-0.5">{meta.title}</div>
-                      <div className="text-sm font-semibold text-foreground leading-tight mb-1">{meta.subtitle}</div>
-                      <div className="text-[11px] text-muted-foreground line-clamp-2 mb-2">
+                      <div className="text-[11px] font-bold uppercase tracking-wide text-white mb-0.5">{meta.title}</div>
+                      <div className="text-sm font-semibold text-white leading-tight mb-1">{meta.subtitle}</div>
+                      <div className="text-[11px] text-white/80 line-clamp-2 mb-2">
                         {isId ? meta.themeId : meta.themeEn}
                       </div>
                       {/* Progress bar */}
                       {progress !== null ? (
                         <div className="mt-1">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-[10px] text-muted-foreground">
+                            <span className="text-[10px] text-white/70">
                               {progress.completed
                                 ? (isId ? `Selesai · ${progress.score ?? 0}/${progress.total ?? 0}` : `Done · ${progress.score ?? 0}/${progress.total ?? 0}`)
                                 : (isId ? `${progress.pct}% dikerjakan` : `${progress.pct}% answered`)}
                             </span>
-                            <span className={`text-[10px] font-semibold ${progress.completed ? "text-primary" : "text-muted-foreground"}`}>
+                            <span className="text-[10px] font-semibold text-white">
                               {progress.pct}%
                             </span>
                           </div>
-                          <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+                          <div className="w-full h-1.5 bg-white/30 rounded-full overflow-hidden">
                             <div
                               className={`h-full rounded-full transition-all duration-500 ${progress.completed ? "bg-primary" : "bg-primary/50"}`}
                               style={{ width: `${progress.pct}%` }}
@@ -238,17 +242,17 @@ const Quiz = () => {
                         </div>
                       ) : (
                         <div className="mt-1">
-                          <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+                          <div className="w-full h-1.5 bg-white/30 rounded-full overflow-hidden">
                             <div className="h-full w-0 bg-primary/30 rounded-full" />
                           </div>
-                          <span className="text-[10px] text-muted-foreground/50">{isId ? "Belum dimulai" : "Not started"}</span>
+                          <span className="text-[10px] text-white/60">{isId ? "Belum dimulai" : "Not started"}</span>
                         </div>
                       )}
                     </div>
                     {isCompleted ? (
-                      <span className="text-[10px] font-bold text-primary bg-primary/10 border border-primary/30 px-2 py-1 rounded-full shrink-0 mt-2">{isId ? "Selesai" : "Done"}</span>
+                      <span className="text-[10px] font-bold text-white bg-white/20 border border-white/30 px-2 py-1 rounded-full shrink-0 mt-2">{isId ? "Selesai" : "Done"}</span>
                     ) : (
-                      <svg className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0 mt-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-5 h-5 text-white/70 group-hover:text-white transition-colors shrink-0 mt-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     )}

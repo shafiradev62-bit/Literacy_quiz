@@ -95,22 +95,9 @@ export default function QuizIntroSlide({ onStart }: Props) {
 
         {/* Speech bubble in middle */}
         <div className="relative w-full max-w-md -mt-4">
-          {/* Cloud bumps on top */}
-          <div className="absolute -top-4 left-0 right-0 flex justify-center gap-3 pointer-events-none">
-            <div className="w-10 h-8 rounded-full bg-white/95 shadow-sm" />
-            <div className="w-14 h-9 rounded-full bg-white/95 shadow-sm" />
-            <div className="w-12 h-8 rounded-full bg-white/95 shadow-sm" />
-            <div className="w-16 h-10 rounded-full bg-white/95 shadow-sm" />
-            <div className="w-11 h-8 rounded-full bg-white/95 shadow-sm" />
-            <div className="w-13 h-9 rounded-full bg-white/95 shadow-sm" />
-            <div className="w-9 h-7 rounded-full bg-white/95 shadow-sm" />
-          </div>
-          {/* Cloud bumps on bottom sides */}
-          <div className="absolute -bottom-3 left-8 w-8 h-7 rounded-full bg-white/95" />
-          <div className="absolute -bottom-5 left-14 w-10 h-8 rounded-full bg-white/95" />
           {/* Main bubble body */}
           <div
-            className="relative bg-white/95 backdrop-blur-sm rounded-3xl px-6 py-4 shadow-xl border-2 border-white/60 w-full cursor-pointer select-none mt-4"
+            className="relative bg-white/95 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-xl border border-white/60 w-full cursor-pointer select-none mt-4"
             onClick={handleNext}
             style={{ minHeight: 80 }}
           >
@@ -133,11 +120,7 @@ export default function QuizIntroSlide({ onStart }: Props) {
             )}
           </div>
           {/* Tail pointing down toward character */}
-          <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center">
-            <div className="w-7 h-7 bg-white/95 rounded-full" />
-            <div className="w-4 h-4 bg-white/95 rounded-full mt-0.5" />
-            <div className="w-2 h-2 bg-white/95 rounded-full mt-0.5" />
-          </div>
+          <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-4 h-4 bg-white/95 border-r border-b border-white/60 rotate-45" />
         </div>
 
         {/* Bottom section: character + text + button, pinned to bottom */}
