@@ -93,15 +93,13 @@ export default function QuizOutroSlide({ onFinish }: Props) {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden"
-    >
-      {/* Cartoon background */}
+    <div className="fixed inset-0 z-50 flex flex-col overflow-hidden">
+      {/* Cirebon background */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/bg/school-cartoon-bg.png')" }}
+        style={{ backgroundImage: "url('/cirebon.png')" }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/40 to-white/70" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
       {/* Confetti */}
       {confetti.map((c) => (
         <div
@@ -118,24 +116,19 @@ export default function QuizOutroSlide({ onFinish }: Props) {
         />
       ))}
 
-      {/* Background blobs */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-16 right-16 w-48 h-48 rounded-full bg-yellow-200/30 animate-pulse" style={{ animationDuration: "3s" }} />
-        <div className="absolute bottom-16 left-16 w-40 h-40 rounded-full bg-green-200/30 animate-pulse" style={{ animationDuration: "4s" }} />
-      </div>
-
-      {/* Main card */}
-      <div className="relative z-10 flex flex-col items-center gap-5 px-6 max-w-md w-full">
-        {/* Trophy badge */}
-        <div className="text-5xl animate-bounce" style={{ animationDuration: "1.5s" }}>🏆</div>
-
-        <div className="bg-primary text-primary-foreground text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md">
-          {isId ? "Kuis Selesai!" : "Quiz Complete!"}
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center justify-between h-full px-6 pt-8 pb-4">
+        {/* Trophy + badge */}
+        <div className="flex flex-col items-center gap-2">
+          <div className="text-5xl animate-bounce" style={{ animationDuration: "1.5s" }}>🏆</div>
+          <div className="bg-primary text-primary-foreground text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md">
+            {isId ? "Kuis Selesai!" : "Quiz Complete!"}
+          </div>
         </div>
 
         {/* Speech bubble */}
         <div
-          className="relative bg-white rounded-2xl px-6 py-4 shadow-lg border border-border/40 w-full cursor-pointer select-none"
+          className="relative bg-white/95 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-lg border border-white/60 max-w-md w-full cursor-pointer select-none"
           onClick={handleNext}
           style={{ minHeight: 80 }}
         >
@@ -162,33 +155,37 @@ export default function QuizOutroSlide({ onFinish }: Props) {
           <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-5 h-5 bg-white border-r border-b border-border/40 rotate-45" />
         </div>
 
-        {/* Character */}
-        <img
-          src={SPRITES[spriteIdx]}
-          alt="character"
-          className="w-32 h-32 object-contain drop-shadow-lg"
-          draggable={false}
-        />
+        {/* Bottom: character + text + button */}
+        <div className="flex flex-col items-center w-full max-w-md">
+          {/* Character standing on ground */}
+          <div className="relative flex flex-col items-center">
+            <img
+              src={SPRITES[spriteIdx]}
+              alt="character"
+              className="relative z-10 w-32 h-40 object-contain object-bottom drop-shadow-[0_8px_14px_rgba(0,0,0,0.5)]"
+              draggable={false}
+            />
+            <div className="absolute bottom-0 w-20 h-3 rounded-[100%] bg-black/50 blur-[4px] z-0" />
+          </div>
 
-        {/* Closing text */}
-        <div className="text-center">
-          <h1 className="font-display text-xl text-foreground font-bold mb-1">
-            {isId ? "Terima Kasih Sudah Menjelajahi Cirebon dan Sains!" : "Thank You for Exploring Cirebon and Science!"}
-          </h1>
-          <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
-            {isId
-              ? "Semoga aktivitas ini membantumu menikmati belajar, berpikir kritis, dan menghargai kearifan lokal dalam kehidupan sehari-hari."
-              : "We hope this activity helps you enjoy learning, think critically, and appreciate local wisdom in everyday life."}
-          </p>
+          <div className="text-center mt-2">
+            <h1 className="font-display text-lg text-white font-bold mb-1 drop-shadow-md">
+              {isId ? "Terima Kasih Sudah Menjelajahi Cirebon dan Sains!" : "Thank You for Exploring Cirebon and Science!"}
+            </h1>
+            <p className="text-xs text-white/80 leading-relaxed max-w-sm">
+              {isId
+                ? "Semoga aktivitas ini membantumu menikmati belajar, berpikir kritis, dan menghargai kearifan lokal dalam kehidupan sehari-hari."
+                : "We hope this activity helps you enjoy learning, think critically, and appreciate local wisdom in everyday life."}
+            </p>
+          </div>
+
+          <button
+            onClick={onFinish}
+            className={`mt-3 px-8 py-3 bg-primary text-primary-foreground font-bold rounded-full btn-3d transition-all duration-300 text-sm active:scale-95 hover:bg-primary/90 ${showBtn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
+          >
+            {isId ? "Selesai" : "Finish"}
+          </button>
         </div>
-
-        {/* Finish button */}
-        <button
-          onClick={onFinish}
-          className={`px-8 py-3.5 bg-primary text-primary-foreground font-bold rounded-full btn-3d transition-all duration-300 text-sm active:scale-95 hover:bg-primary/90 ${showBtn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
-        >
-          {isId ? "Selesai ✓" : "Finish ✓"}
-        </button>
       </div>
 
       <style>{`

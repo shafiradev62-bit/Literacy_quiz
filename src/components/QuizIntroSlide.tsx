@@ -78,25 +78,23 @@ export default function QuizIntroSlide({ onStart }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center overflow-hidden">
-      {/* Cartoon school background */}
+    <div className="fixed inset-0 z-50 flex flex-col overflow-hidden">
+      {/* Cirebon background */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/bg/school-cartoon-bg2.png')" }}
+        style={{ backgroundImage: "url('/cirebon.png')" }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-sky-900/70 via-sky-900/20 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
 
-      {/* Ground plane so character stands on floor */}
-      <div className="absolute bottom-0 left-0 right-0 h-[22%] bg-gradient-to-t from-[#1a3d10] via-[#2d6e1f]/80 to-transparent pointer-events-none" />
-      <div className="absolute bottom-[10%] left-0 right-0 h-6 bg-black/20 blur-md pointer-events-none" />
-
-      <div className="relative z-10 flex flex-col items-center gap-4 px-6 max-w-md w-full pb-8 md:pb-10">
+      {/* Content wrapper */}
+      <div className="relative z-10 flex flex-col items-center justify-between h-full px-6 pt-6 pb-0">
+        {/* Top badge */}
         <div className="bg-amber-800/90 text-amber-50 text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md border border-amber-600/40">
           {isId ? "Kuis Etnosains Cirebon" : "Cirebon Ethnoscience Quiz"}
         </div>
 
-        {/* ── Cloud-style speech bubble ── */}
-        <div className="relative w-full">
+        {/* Speech bubble in middle */}
+        <div className="relative w-full max-w-md -mt-4">
           {/* Cloud bumps on top */}
           <div className="absolute -top-4 left-0 right-0 flex justify-center gap-3 pointer-events-none">
             <div className="w-10 h-8 rounded-full bg-white/95 shadow-sm" />
@@ -142,35 +140,38 @@ export default function QuizIntroSlide({ onStart }: Props) {
           </div>
         </div>
 
-        {/* Male character standing on ground */}
-        <div className="relative flex flex-col items-center mt-6">
-          <img
-            src={SPRITES[spriteIdx]}
-            alt="character"
-            className={`relative z-10 w-40 h-48 object-contain object-bottom drop-shadow-[0_12px_18px_rgba(0,0,0,0.45)] transition-transform duration-200 ${bounce ? "scale-105 -translate-y-1" : "scale-100"}`}
-            draggable={false}
-          />
-          {/* Contact shadow on ground */}
-          <div className="absolute bottom-1 w-28 h-4 rounded-[100%] bg-black/40 blur-[6px] z-0" />
-        </div>
+        {/* Bottom section: character + text + button, pinned to bottom */}
+        <div className="flex flex-col items-center w-full max-w-md pb-4">
+          {/* Character standing on ground */}
+          <div className="relative flex flex-col items-center">
+            <img
+              src={SPRITES[spriteIdx]}
+              alt="character"
+              className={`relative z-10 w-36 h-44 object-contain object-bottom drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)] transition-transform duration-200 ${bounce ? "scale-105 -translate-y-1" : "scale-100"}`}
+              draggable={false}
+            />
+            {/* Contact shadow on ground */}
+            <div className="absolute bottom-0 w-24 h-3 rounded-[100%] bg-black/50 blur-[5px] z-0" />
+          </div>
 
-        <div className="text-center">
-          <h1 className="font-display text-xl text-white font-bold mb-1 drop-shadow-md">
-            {isId ? "Jelajahi Sains Lewat Budaya Cirebon!" : "Explore Science Through Cirebon Culture!"}
-          </h1>
-          <p className="text-sm text-sky-50/90 leading-relaxed max-w-sm">
-            {isId
-              ? "Dalam aktivitas ini, kamu akan belajar sains dari budaya unik Cirebon — makanan, tradisi, kerajinan, dan alam."
-              : "In this activity, you'll learn science from the unique culture of Cirebon — food, traditions, crafts, and nature."}
-          </p>
-        </div>
+          <div className="text-center mt-2">
+            <h1 className="font-display text-lg text-white font-bold mb-1 drop-shadow-md">
+              {isId ? "Jelajahi Sains Lewat Budaya Cirebon!" : "Explore Science Through Cirebon Culture!"}
+            </h1>
+            <p className="text-xs text-white/80 leading-relaxed max-w-sm">
+              {isId
+                ? "Dalam aktivitas ini, kamu akan belajar sains dari budaya unik Cirebon — makanan, tradisi, kerajinan, dan alam."
+                : "In this activity, you'll learn science from the unique culture of Cirebon — food, traditions, crafts, and nature."}
+            </p>
+          </div>
 
-        <button
-          onClick={onStart}
-          className={`px-8 py-3.5 bg-primary text-primary-foreground font-bold rounded-full btn-3d transition-all duration-300 text-sm active:scale-95 hover:bg-primary/90 ${showBtn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
-        >
-          {isId ? "Mulai Kuis" : "Start Quiz"}
-        </button>
+          <button
+            onClick={onStart}
+            className={`mt-3 px-8 py-3 bg-primary text-primary-foreground font-bold rounded-full btn-3d transition-all duration-300 text-sm active:scale-95 hover:bg-primary/90 ${showBtn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
+          >
+            {isId ? "Mulai Kuis" : "Start Quiz"}
+          </button>
+        </div>
       </div>
     </div>
   );

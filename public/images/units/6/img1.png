@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <!-- Sky gradient -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#87CEEB"/>
+      <stop offset="100%" stop-color="#E0F7FA"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0288D1"/>
+      <stop offset="100%" stop-color="#01579B"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D7CCC8"/>
+      <stop offset="100%" stop-color="#A1887F"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="800" height="300" fill="url(#sky)"/>
+
+  <!-- Sun -->
+  <circle cx="680" cy="80" r="45" fill="#FFD54F" opacity="0.9"/>
+  <circle cx="680" cy="80" r="35" fill="#FFEB3B" opacity="0.8"/>
+
+  <!-- Clouds -->
+  <g fill="white" opacity="0.8">
+    <ellipse cx="150" cy="70" rx="60" ry="25"/>
+    <ellipse cx="120" cy="80" rx="40" ry="20"/>
+    <ellipse cx="180" cy="80" rx="40" ry="20"/>
+
+    <ellipse cx="450" cy="50" rx="50" ry="20"/>
+    <ellipse cx="420" cy="58" rx="35" ry="18"/>
+    <ellipse cx="480" cy="58" rx="35" ry="18"/>
+  </g>
+
+  <!-- Background trees (far) -->
+  <g fill="#2E7D32" opacity="0.5">
+    <polygon points="60,280 90,180 120,280"/>
+    <polygon points="100,280 135,160 170,280"/>
+    <polygon points="160,280 200,175 240,280"/>
+    <polygon points="550,280 585,185 620,280"/>
+    <polygon points="600,280 640,170 680,280"/>
+    <polygon points="660,280 700,180 740,280"/>
+  </g>
+
+  <!-- Water body -->
+  <rect y="300" width="800" height="150" fill="url(#water)"/>
+
+  <!-- Waves on water -->
+  <path d="M0,310 Q50,305 100,310 Q150,315 200,310 Q250,305 300,310 Q350,315 400,310 Q450,305 500,310 Q550,315 600,310 Q650,305 700,310 Q750,315 800,310" stroke="white" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <path d="M0,330 Q50,325 100,330 Q150,335 200,330 Q250,325 300,330 Q350,335 400,330 Q450,325 500,330 Q550,335 600,330 Q650,325 700,330 Q750,335 800,330" stroke="white" stroke-width="1" fill="none" opacity="0.3"/>
+
+  <!-- Mangrove trees (main scene) -->
+  <!-- Tree 1 - left -->
+  <g>
+    <!-- Trunk -->
+    <rect x="95" y="230" width="10" height="80" fill="#4E342E" rx="3"/>
+    <!-- Roots -->
+    <path d="M100,310 Q70,315 50,310" stroke="#4E342E" stroke-width="4" fill="none"/>
+    <path d="M100,310 Q90,318 80,315" stroke="#4E342E" stroke-width="3" fill="none"/>
+    <path d="M100,310 Q110,318 120,315" stroke="#4E342E" stroke-width="3" fill="none"/>
+    <!-- Canopy -->
+    <polygon points="100,160 55,235 145,235" fill="#388E3C"/>
+    <polygon points="100,175 60,230 140,230" fill="#43A047"/>
+    <polygon points="100,185 65,228 135,228" fill="#66BB6A"/>
+  </g>
+
+  <!-- Tree 2 - center-left -->
+  <g>
+    <!-- Trunk -->
+    <rect x="195" y="210" width="12" height="100" fill="#5D4037" rx="4"/>
+    <!-- Roots -->
+    <path d="M201,310 Q170,318 145,312" stroke="#5D4037" stroke-width="5" fill="none"/>
+    <path d="M201,310 Q190,320 175,316" stroke="#5D4037" stroke-width="4" fill="none"/>
+    <path d="M201,310 Q215,320 230,315" stroke="#5D4037" stroke-width="4" fill="none"/>
+    <path d="M201,310 Q210,318 220,310" stroke="#5D4037" stroke-width="3" fill="none"/>
+    <!-- Canopy -->
+    <polygon points="201,130 140,215 262,215" fill="#2E7D32"/>
+    <polygon points="201,150 148,212 254,212" fill="#388E3C"/>
+    <polygon points="201,165 155,210 247,210" fill="#43A047"/>
+    <polygon points="201,178 162,208 240,208" fill="#66BB6A"/>
+  </g>
+
+  <!-- Tree 3 - center -->
+  <g>
+    <!-- Trunk -->
+    <rect x="320" y="200" width="14" height="115" fill="#4E342E" rx="5"/>
+    <!-- Roots -->
+    <path d="M327,315 Q290,325 260,318" stroke="#4E342E" stroke-width="6" fill="none"/>
+    <path d="M327,315 Q310,328 290,322" stroke="#4E342E" stroke-width="4" fill="none"/>
+    <path d="M327,315 Q345,328 365,322" stroke="#4E342E" stroke-width="4" fill="none"/>
+    <path d="M327,315 Q340,325 355,315" stroke="#4E342E" stroke-width="3" fill="none"/>
+    <!-- Canopy -->
+    <polygon points="327,110 245,205 409,205" fill="#1B5E20"/>
+    <polygon points="327,130 252,203 402,203" fill="#2E7D32"/>
+    <polygon points="327,148 260,200 394,200" fill="#388E3C"/>
+    <polygon points="327,163 268,198 386,198" fill="#43A047"/>
+    <polygon points="327,178 276,195 378,195" fill="#66BB6A"/>
+  </g>
+
+  <!-- Tree 4 - center-right -->
+  <g>
+    <!-- Trunk -->
+    <rect x="450" y="220" width="11" height="95" fill="#5D4037" rx="4"/>
+    <!-- Roots -->
+    <path d="M455,315 Q425,322 405,315" stroke="#5D4037" stroke-width="5" fill="none"/>
+    <path d="M455,315 Q445,325 430,320" stroke="#5D4037" stroke-width="4" fill="none"/>
+    <path d="M455,315 Q468,325 483,319" stroke="#5D4037" stroke-width="4" fill="none"/>
+    <!-- Canopy -->
+    <polygon points="455,150 390,225 520,225" fill="#2E7D32"/>
+    <polygon points="455,168 398,222 512,222" fill="#388E3C"/>
+    <polygon points="455,183 406,220 504,220" fill="#43A047"/>
+    <polygon points="455,196 414,217 496,217" fill="#66BB6A"/>
+  </g>
+
+  <!-- Tree 5 - right -->
+  <g>
+    <!-- Trunk -->
+    <rect x="570" y="235" width="10" height="80" fill="#4E342E" rx="3"/>
+    <!-- Roots -->
+    <path d="M575,315 Q548,320 530,315" stroke="#4E342E" stroke-width="4" fill="none"/>
+    <path d="M575,315 Q560,323 545,318" stroke="#4E342E" stroke-width="3" fill="none"/>
+    <path d="M575,315 Q585,323 600,318" stroke="#4E342E" stroke-width="3" fill="none"/>
+    <!-- Canopy -->
+    <polygon points="575,165 525,240 625,240" fill="#388E3C"/>
+    <polygon points="575,182 532,237 618,237" fill="#43A047"/>
+    <polygon points="575,196 540,235 610,235" fill="#66BB6A"/>
+  </g>
+
+  <!-- Birds in sky -->
+  <g stroke="#455A64" stroke-width="1.5" fill="none">
+    <path d="M250,120 Q255,115 260,120 Q265,115 270,120"/>
+    <path d="M350,95 Q355,90 360,95 Q365,90 370,95"/>
+    <path d="M500,115 Q505,110 510,115 Q515,110 520,115"/>
+  </g>
+
+  <!-- Small fish in water -->
+  <g opacity="0.6">
+    <g transform="translate(200,350)">
+      <ellipse cx="0" cy="0" rx="12" ry="5" fill="#4FC3F7"/>
+      <polygon points="12,0 18,-4 18,4" fill="#4FC3F7"/>
+    </g>
+    <g transform="translate(230,365)">
+      <ellipse cx="0" cy="0" rx="10" ry="4" fill="#29B6F6"/>
+      <polygon points="10,0 15,-3 15,3" fill="#29B6F6"/>
+    </g>
+    <g transform="translate(420,355)">
+      <ellipse cx="0" cy="0" rx="11" ry="4.5" fill="#4FC3F7"/>
+      <polygon points="11,0 17,-3.5 17,3.5" fill="#4FC3F7"/>
+    </g>
+    <g transform="translate(450,370)">
+      <ellipse cx="0" cy="0" rx="9" ry="3.5" fill="#29B6F6"/>
+      <polygon points="9,0 14,-3 14,3" fill="#29B6F6"/>
+    </g>
+    <g transform="translate(620,358)">
+      <ellipse cx="0" cy="0" rx="10" ry="4" fill="#4FC3F7"/>
+      <polygon points="10,0 15,-3 15,3" fill="#4FC3F7"/>
+    </g>
+  </g>
+
+  <!-- Crab near roots -->
+  <g transform="translate(140,305)">
+    <ellipse cx="0" cy="0" rx="7" ry="5" fill="#E65100"/>
+    <ellipse cx="0" cy="-3" rx="5" ry="3" fill="#EF6C00"/>
+    <circle cx="-4" cy="-5" r="2" fill="#212121"/>
+    <circle cx="4" cy="-5" r="2" fill="#212121"/>
+    <path d="M-7,-2 Q-14,0 -12,5" stroke="#E65100" stroke-width="2" fill="none"/>
+    <path d="M7,-2 Q14,0 12,5" stroke="#E65100" stroke-width="2" fill="none"/>
+  </g>
+
+  <!-- Reflection/shadow on water -->
+  <ellipse cx="327" cy="335" rx="80" ry="8" fill="#1B5E20" opacity="0.15"/>
+  <ellipse cx="201" cy="340" rx="50" ry="6" fill="#2E7D32" opacity="0.12"/>
+
+  <!-- Label -->
+  <rect x="580" y="10" width="200" height="30" rx="6" fill="white" opacity="0.85"/>
+  <text x="680" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#1B5E20" font-family="sans-serif">Ekosistem Mangrove</text>
+</svg>

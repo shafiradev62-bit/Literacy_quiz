@@ -60,28 +60,30 @@ export default function LoadingScreen({ onDone, duration = 30000 }: LoadingScree
   }, [duration]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center overflow-hidden">
+    <div className="fixed inset-0 z-50 flex flex-col overflow-hidden">
+      {/* Cirebon background */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/bg/workshop-cartoon-bg.png')" }}
+        style={{ backgroundImage: "url('/cirebon.png')" }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-stone-900/40 to-amber-900/20" />
-      <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-t from-[#3d2b1f] via-[#5c4033]/90 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
-      <div className="relative z-10 flex flex-col items-center gap-5 select-none pb-10 px-6">
+      {/* Content pinned to bottom */}
+      <div className="relative z-10 flex flex-col items-center justify-end h-full gap-3 select-none pb-6 px-6">
         <div className="relative bg-white/95 backdrop-blur-sm border border-white/50 rounded-2xl px-5 py-3 shadow-lg max-w-xs text-center">
           <p className="text-[14px] text-foreground font-medium leading-snug">{bubbles[bubbleIdx]}</p>
           <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-4 h-4 bg-white/95 border-r border-b border-white/50 rotate-45" />
         </div>
 
+        {/* Character standing on ground */}
         <div className="relative flex flex-col items-center">
           <img
             src={SPRITES[spriteIdx]}
             alt="character"
-            className="relative z-10 w-36 h-44 object-contain object-bottom drop-shadow-[0_12px_16px_rgba(0,0,0,0.4)]"
+            className="relative z-10 w-32 h-40 object-contain object-bottom drop-shadow-[0_8px_14px_rgba(0,0,0,0.5)]"
             draggable={false}
           />
-          <div className="absolute bottom-1 w-24 h-3.5 rounded-[100%] bg-black/40 blur-[5px] z-0" />
+          <div className="absolute bottom-0 w-20 h-3 rounded-[100%] bg-black/50 blur-[4px] z-0" />
         </div>
 
         <div className="flex gap-1.5">
@@ -92,7 +94,7 @@ export default function LoadingScreen({ onDone, duration = 30000 }: LoadingScree
 
         <button
           onClick={onDone}
-          className="mt-1 text-[12px] text-amber-50/80 hover:text-white transition-colors underline underline-offset-2 rounded-full"
+          className="text-[12px] text-white/70 hover:text-white transition-colors underline underline-offset-2"
         >
           {isId ? "Lewati" : "Skip"}
         </button>
