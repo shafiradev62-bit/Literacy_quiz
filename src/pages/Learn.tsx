@@ -22,14 +22,14 @@ const Learn = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col pt-16">
-      <div className="bg-white border-b border-border/60 px-6 py-4 shrink-0">
+    <div className="h-screen flex flex-col pt-16 relative" style={{ backgroundImage: "url('/doodle.png')", backgroundRepeat: "repeat" }}>
+      <div className="bg-white/70 backdrop-blur-sm border-b border-border/60 px-6 py-4 shrink-0">
         <span className="text-xs font-bold tracking-wide uppercase text-foreground">
           {isId ? "Materi Bacaan" : "Reading Material"}
         </span>
       </div>
 
-      <div className="bg-muted/30 px-6 py-3 border-b border-border/50 shrink-0">
+      <div className="bg-white/50 backdrop-blur-sm px-6 py-3 border-b border-border/50 shrink-0">
         <div className="flex gap-2 flex-wrap">
           {([1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const).map((u) => (
             <button
@@ -48,7 +48,7 @@ const Learn = () => {
       </div>
 
       <div className="flex-1 flex overflow-hidden">
-        <div className="flex-1 overflow-y-auto exam-scrollbar px-8 py-8 border-r border-border/30">
+        <div className="flex-1 overflow-y-auto exam-scrollbar px-8 py-8 border-r border-border/30 bg-white/50">
           <div className="pr-4 space-y-5 text-[14px] leading-[1.75] text-foreground/80">
 
             {/* UNIT 1 */}
@@ -365,7 +365,7 @@ const Learn = () => {
         </div>
 
         {/* Right panel: tables */}
-        <div className="w-[380px] shrink-0 overflow-y-auto exam-scrollbar px-6 py-8 bg-muted/20">
+        <div className="w-[380px] shrink-0 overflow-y-auto exam-scrollbar px-6 py-8 bg-white/40">
           <div>
             <h2 className="text-[13px] font-bold uppercase tracking-wide text-foreground mb-4">
               {selectedUnit === 1 ? (isId ? "Perbandingan Kemasan" : "Packaging Comparison")
@@ -380,10 +380,10 @@ const Learn = () => {
                : (isId ? "Sistem Pangan Tahu Gejrot" : "Tahu Gejrot Food System")}
             </h2>
 
-            <div className="bg-white rounded-xl border border-border/50 shadow-sm overflow-hidden">
+            <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-border/50 shadow-sm overflow-hidden">
               <table className="w-full text-[12px]">
                 <thead>
-                  <tr className="bg-muted/50">
+                  <tr className="bg-white/50">
                     {selectedUnit === 1 && <>
                       <th className="text-left py-3 px-3 font-semibold border-b">{isId ? "Jenis" : "Type"}</th>
                       <th className="text-left py-3 px-3 font-semibold border-b">{isId ? "Waktu Terurai" : "Decomposition"}</th>

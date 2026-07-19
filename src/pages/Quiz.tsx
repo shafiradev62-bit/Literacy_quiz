@@ -269,8 +269,8 @@ const Quiz = () => {
   // ── PER-UNIT INTRO SCREEN ──
   if (screen === "intro") {
     return (
-      <div className="h-screen flex flex-col overflow-hidden pt-16">
-        <div className="bg-white border-b border-border/60 px-6 py-3 shrink-0 flex items-center justify-between">
+      <div className="h-screen flex flex-col overflow-hidden pt-16 relative" style={{ backgroundImage: "url('/doodle.png')", backgroundRepeat: "repeat" }}>
+        <div className="bg-white/70 backdrop-blur-sm border-b border-border/60 px-6 py-3 shrink-0 flex items-center justify-between">
           <button onClick={() => { setScreen("select"); setLoading(false); }} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/></svg>
             {isId ? "Kembali" : "Back"}
@@ -279,8 +279,8 @@ const Quiz = () => {
           <div />
         </div>
 
-        <div className="flex-1 flex overflow-hidden justify-center bg-slate-50/50">
-          <div className="flex w-full max-w-5xl bg-white shadow-sm overflow-hidden border-x border-border/30">
+        <div className="flex-1 flex overflow-hidden justify-center bg-white/60">
+          <div className="flex w-full max-w-5xl bg-white/85 shadow-sm overflow-hidden border-x border-border/30">
             {/* Left: Theme + Stimulus preview */}
             <div className="flex-1 overflow-y-auto exam-scrollbar px-10 py-10 border-r border-border/30">
               <div className="max-w-2xl">
@@ -311,14 +311,14 @@ const Quiz = () => {
             </div>
 
             {/* Right: Unit info + start */}
-            <div className="w-80 shrink-0 flex flex-col justify-between px-8 py-10 bg-muted/10">
+            <div className="w-80 shrink-0 flex flex-col justify-between px-8 py-10 bg-white/70">
               <div>
                 <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground font-bold text-2xl flex items-center justify-center mb-5 mx-auto btn-3d">
                   {selectedUnit}
                 </div>
                 <h2 className="font-display text-xl text-foreground mb-2 text-center">{meta.title}</h2>
                 <p className="text-[13px] text-muted-foreground mb-8 text-center leading-tight">{meta.subtitle}</p>
-                <div className="space-y-4 text-sm text-foreground/70 bg-white/50 p-4 rounded-xl border border-border/40">
+                <div className="space-y-4 text-sm text-foreground/70 bg-white/70 p-4 rounded-xl border border-border/40">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-primary/10 rounded-lg">
                       <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
@@ -368,19 +368,19 @@ const Quiz = () => {
 
   // Per-unit color themes: [leftBg, rightBg, accent]
   const unitColors: Record<number, { left: string; right: string; border: string }> = {
-    1:  { left: "bg-amber-50",   right: "bg-white",        border: "border-amber-200" },
-    2:  { left: "bg-orange-50",  right: "bg-orange-50/30", border: "border-orange-200" },
-    3:  { left: "bg-stone-50",   right: "bg-amber-50/40",  border: "border-stone-200" },
-    4:  { left: "bg-yellow-50",  right: "bg-yellow-50/30", border: "border-yellow-200" },
-    5:  { left: "bg-green-50",   right: "bg-emerald-50/40",border: "border-green-200" },
-    6:  { left: "bg-teal-50",    right: "bg-cyan-50/40",   border: "border-teal-200" },
-    7:  { left: "bg-blue-50",    right: "bg-indigo-50/40", border: "border-blue-200" },
+    1:  { left: "bg-white/85",   right: "bg-white/85",   border: "border-amber-200" },
+    2:  { left: "bg-white/85",   right: "bg-white/85",   border: "border-orange-200" },
+    3:  { left: "bg-white/85",   right: "bg-white/85",   border: "border-stone-200" },
+    4:  { left: "bg-white/85",   right: "bg-white/85",   border: "border-yellow-200" },
+    5:  { left: "bg-white/85",   right: "bg-white/85",   border: "border-green-200" },
+    6:  { left: "bg-white/85",   right: "bg-white/85",   border: "border-teal-200" },
+    7:  { left: "bg-white/85",   right: "bg-white/85",   border: "border-blue-200" },
   };
-  const colors = unitColors[selectedUnit] ?? { left: "bg-white", right: "bg-muted/10", border: "border-border" };
+  const colors = unitColors[selectedUnit] ?? { left: "bg-white/85", right: "bg-white/85", border: "border-border" };
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden pt-16">
-      <div className="bg-white border-b border-border/60 px-4 py-2 shrink-0 flex items-center gap-3">
+    <div className="h-screen flex flex-col overflow-hidden pt-16 relative" style={{ backgroundImage: "url('/doodle.png')", backgroundRepeat: "repeat" }}>
+      <div className="bg-white/70 backdrop-blur-sm border-b border-border/60 px-4 py-2 shrink-0 flex items-center gap-3">
         <button onClick={() => setScreen("intro")} className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1">
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/></svg>
           {meta?.title}
