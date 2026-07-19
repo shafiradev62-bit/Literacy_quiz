@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "test:playwright": "npx playwright test",
+    "test:playwright:ui": "npx playwright test --ui",
+    "test:playwright:headed": "npx playwright test --headed",
+    "test:playwright:report": "npx playwright show-report",
+    "test:playwright:basic": "npx playwright test tests/basic-functionality.spec.ts",
+    "test:playwright:journey": "npx playwright test tests/complete-user-journey.spec.ts"
+  }
+}
