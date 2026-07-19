@@ -997,30 +997,6 @@ const KerupukMelaratSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => v
             {/* Heat glow */}
             <ellipse cx="160" cy="158" rx="80" ry="40" fill="url(#flameGlow)" opacity={0.4 + fryTemp / 400} />
 
-            {/* Flames (realistic tongues) — behind wok */}
-            <g>
-              {[
-                { x: 52, h: 34 }, { x: 74, h: 46 }, { x: 98, h: 30 },
-                { x: 160, h: 58 }, { x: 222, h: 30 }, { x: 246, h: 46 }, { x: 268, h: 34 },
-                { x: 120, h: 40 }, { x: 200, h: 40 },
-              ].map((f, i) => {
-                const ph = Math.max(12, (fryTemp / 220) * f.h * 1.3);
-                return (
-                  <g key={i} transform={`translate(${f.x}, 170)`}>
-                    <path d={`M0,0 C-9,-6 -11,-18 -5,-${ph} C-3,-${ph + 5} 3,-${ph + 5} 5,-${ph} C11,-18 9,-6 0,0 Z`}
-                      fill="url(#flameR)" opacity="0.95"
-                      style={{ animation: `fire-flicker ${0.35 + (i % 3) * 0.1}s ease-in-out infinite alternate`, animationDelay: `${i * 0.06}s`, transformOrigin: "0px 0px" }} />
-                    <path d={`M0,0 C-5,-4 -6,-12 -3,-${ph * 0.7} C-1.5,-${ph * 0.7 + 3} 1.5,-${ph * 0.7 + 3} 3,-${ph * 0.7} C6,-12 5,-4 0,0 Z`}
-                      fill="url(#flameO)" opacity="0.9"
-                      style={{ animation: `fire-flicker ${0.42 + (i % 3) * 0.1}s ease-in-out infinite alternate`, animationDelay: `${i * 0.09}s`, transformOrigin: "0px 0px" }} />
-                    <path d={`M0,0 C-2.5,-3 -3,-7 -1.5,-${ph * 0.42} C-0.5,-${ph * 0.42 + 2} 0.5,-${ph * 0.42 + 2} 1.5,-${ph * 0.42} C3,-7 2.5,-3 0,0 Z`}
-                      fill="url(#flameY)" opacity="0.95"
-                      style={{ animation: `fire-flicker ${0.5 + (i % 3) * 0.1}s ease-in-out infinite alternate`, animationDelay: `${i * 0.11}s`, transformOrigin: "0px 0px" }} />
-                  </g>
-                );
-              })}
-            </g>
-
             {/* Stove base */}
             <ellipse cx="160" cy="184" rx="94" ry="9" fill="#0b1220" />
             <rect x="66" y="160" width="188" height="24" rx="5" fill="#334155" />
@@ -1047,6 +1023,39 @@ const KerupukMelaratSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => v
               <ellipse cx="135" cy="84" rx="16" ry="7" fill="#f5f5f4" stroke="#a8a29e" strokeWidth="1" />
               <ellipse cx="175" cy="88" rx="14" ry="6" fill="#e7e5e4" stroke="#a8a29e" strokeWidth="1" />
               <ellipse cx="155" cy="94" rx="12" ry="5" fill="#fafaf9" stroke="#d6d3d1" strokeWidth="1" />
+            </g>
+            {/* Flames (realistic tongues) — IN FRONT of the wok, wrapping its lower body */}
+            <g>
+              {/* Outer red tongues */}
+              {[...Array(9)].map((_, i) => {
+                const x = 92 + i * 17;
+                return (
+                  <path key={`fr-${i}`}
+                    d={`M${x},160 q-9,-26 ${8 - (i % 2) * 4},-44 q9,22 ${4 + (i % 2) * 2},44 Z`}
+                    fill="url(#flameR)" opacity="0.85"
+                    style={{ animation: `fire-flicker ${0.35 + (i % 3) * 0.1}s ease-in-out infinite alternate`, animationDelay: `${i * 0.06}s`, transformOrigin: "0px 0px" }} />
+                );
+              })}
+              {/* Mid orange tongues */}
+              {[...Array(8)].map((_, i) => {
+                const x = 104 + i * 17;
+                return (
+                  <path key={`fo-${i}`}
+                    d={`M${x},162 q-7,-22 ${6 - (i % 2) * 3},-38 q7,18 ${3 + (i % 2) * 2},38 Z`}
+                    fill="url(#flameO)" opacity="0.9"
+                    style={{ animation: `fire-flicker ${0.42 + (i % 3) * 0.1}s ease-in-out infinite alternate`, animationDelay: `${i * 0.09}s`, transformOrigin: "0px 0px" }} />
+                );
+              })}
+              {/* Inner yellow cores */}
+              {[...Array(7)].map((_, i) => {
+                const x = 118 + i * 17;
+                return (
+                  <path key={`fy-${i}`}
+                    d={`M${x},163 q-5,-17 ${4 - (i % 2) * 2},-30 q5,14 ${2 + (i % 2) * 2},30 Z`}
+                    fill="url(#flameY)" opacity="0.95"
+                    style={{ animation: `fire-flicker ${0.5 + (i % 3) * 0.1}s ease-in-out infinite alternate`, animationDelay: `${i * 0.11}s`, transformOrigin: "0px 0px" }} />
+                );
+              })}
             </g>
             {/* Heat shimmer lines */}
             {[0, 1, 2].map((i) => (
