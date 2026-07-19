@@ -198,116 +198,149 @@ const NasiJamblangSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
           </span>
         </div>
 
-        <div ref={animRef} className="relative h-48 bg-white rounded-xl overflow-hidden border border-border/30">
-          {/* Sky */}
-          <div className="absolute top-0 left-0 right-0 h-12 flex items-center justify-center">
-            <div className="flex gap-1">
-              {[1,2,3,4,5,6].map(i => (
-                <div key={i} className="w-2 h-2 rounded-full bg-amber-300 animate-pulse" style={{ animationDelay: `${i * 0.3}s`, opacity: 0.6 + i * 0.06 }} />
-              ))}
-            </div>
-          </div>
+        <div ref={animRef} className="relative h-52 bg-white rounded-xl overflow-hidden border border-border/30">
+          {/* ── 2D ARTIST QUALITY NASI JAMBLANG SCENE ── */}
+          <svg viewBox="0 0 320 200" className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="nj-sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#FFF8E7"/>
+                <stop offset="100%" stopColor="#FFF0C8"/>
+              </linearGradient>
+              <linearGradient id="nj-ground" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#8B6914"/>
+                <stop offset="100%" stopColor="#5C3D0C"/>
+              </linearGradient>
+              <radialGradient id="nj-plate" cx="50%" cy="40%" r="60%">
+                <stop offset="0%" stopColor="#FEFCE8"/>
+                <stop offset="100%" stopColor="#FEF08A"/>
+              </radialGradient>
+              <filter id="nj-shadow">
+                <feDropShadow dx="1" dy="2" stdDeviation="2" floodOpacity="0.18"/>
+              </filter>
+            </defs>
 
-          {/* Sun */}
-          <div className="absolute top-3 right-6 w-10 h-10 rounded-full bg-gradient-to-br from-yellow-200 to-amber-400 shadow-lg shadow-amber-200 animate-pulse" style={{ animationDuration: "3s" }} />
+            {/* Sky background */}
+            <rect width="320" height="200" fill="url(#nj-sky)"/>
 
-          {/* Ground */}
-          <div className="absolute bottom-0 left-0 right-0 h-20 bg-white">
-            <div className="absolute top-0 left-0 right-0 h-3 bg-gradient-to-r from-transparent via-amber-300/50 to-transparent" />
-          </div>
+            {/* Sun with rays */}
+            <circle cx="272" cy="32" r="20" fill="#FFC107" filter="url(#nj-shadow)"/>
+            {[0,45,90,135,180,225,270,315].map((a,i) => (
+              <line key={i}
+                x1={272 + Math.cos(a*Math.PI/180)*23}
+                y1={32 + Math.sin(a*Math.PI/180)*23}
+                x2={272 + Math.cos(a*Math.PI/180)*30}
+                y2={32 + Math.sin(a*Math.PI/180)*30}
+                stroke="#FFD54F" strokeWidth={i%2===0?"2.5":"1.8"} strokeLinecap="round"/>
+            ))}
 
-          {/* Rice/food item */}
-          <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center">
-            {/* Plate */}
-            <div className="w-20 h-4 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full shadow-md" />
+            {/* Wooden table surface */}
+            <rect x="0" y="130" width="320" height="70" fill="url(#nj-ground)"/>
+            {[0,30,60,90,120,150,180,210,240,270,300].map(x => (
+              <line key={x} x1={x} y1="130" x2={x+20} y2="200" stroke="#4A2800" strokeWidth="0.8" opacity="0.3"/>
+            ))}
+            <rect x="0" y="128" width="320" height="5" fill="#A07830" opacity="0.8"/>
+
+            {/* Banana leaf placemat */}
+            <ellipse cx="160" cy="140" rx="85" ry="20" fill="#4CAF50" opacity="0.85"/>
+            <ellipse cx="160" cy="140" rx="85" ry="20" fill="none" stroke="#2E7D32" strokeWidth="1.5"/>
+            <line x1="82" y1="140" x2="238" y2="140" stroke="#1B5E20" strokeWidth="1.2" opacity="0.5"/>
+
+            {/* Rice plate (nasi) */}
+            <ellipse cx="145" cy="132" rx="40" ry="12" fill="#E8E0D0" stroke="#C8B090" strokeWidth="1.5" filter="url(#nj-shadow)"/>
             {/* Rice mound */}
-            <div className="w-16 h-8 bg-gradient-to-b from-white to-amber-50 rounded-t-full shadow-sm -mt-1" />
-            {/* Packaging wrapper */}
+            <ellipse cx="145" cy="126" rx="34" ry="14" fill="url(#nj-plate)" stroke="#D4C090" strokeWidth="1"/>
+            {/* Individual rice grains */}
+            {[
+              [138,120],[145,118],[152,120],[140,124],[148,122],[156,124],
+              [135,126],[142,124],[150,123],[158,125],[136,128],[143,126],[151,125],[160,127],
+              [138,130],[146,129],[154,128],[162,130],[140,132],[148,131],[156,130],[165,132],
+            ].map(([cx,cy],i) => (
+              <ellipse key={i} cx={cx} cy={cy} rx="3.2" ry="1.6"
+                fill={i%3===0?"#FFF9E6":i%3===1?"#FFF3CC":"#FFFDE7"}
+                stroke="#D4B896" strokeWidth="0.3"
+                transform={`rotate(${(i*37)%180} ${cx} ${cy})`}/>
+            ))}
+
+            {/* Side dishes (lauk) */}
+            {/* Fried tofu */}
+            <rect x="195" y="120" width="24" height="20" rx="4" fill="#D4A017" stroke="#B8860B" strokeWidth="1.2" filter="url(#nj-shadow)"/>
+            <rect x="198" y="123" width="8" height="8" rx="2" fill="#E8B820" opacity="0.6"/>
+            <rect x="208" y="127" width="7" height="6" rx="2" fill="#C8900A" opacity="0.5"/>
+
+            {/* Sambal (red sauce) */}
+            <ellipse cx="228" cy="134" rx="16" ry="8" fill="#C0392B" stroke="#922B21" strokeWidth="1" filter="url(#nj-shadow)"/>
+            <ellipse cx="224" cy="133" rx="5" ry="3" fill="#E74C3C" opacity="0.5"/>
+
+            {/* Tempe goreng */}
+            <rect x="85" y="121" width="28" height="16" rx="3" fill="#8B6914" stroke="#6B4F14" strokeWidth="1.2" filter="url(#nj-shadow)"/>
+            {[90,96,102,108].map(x => (
+              <circle key={x} cx={x} cy="129" r="2.5" fill="#6B4A10" opacity="0.5"/>
+            ))}
+
+            {/* Teak leaf wrapping (main feature) */}
             {packType === "teak" && (
-              <>
-                <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-24 h-12 flex items-center justify-center">
-                  <div className="rot-leaf w-28 h-10 bg-gradient-to-br from-emerald-700 via-emerald-600 to-emerald-800 rounded-2xl shadow-lg flex items-center justify-center animate-[sway_3s_ease-in-out_infinite]" style={{ transformOrigin: "bottom center" }}>
-                    <svg width="40" height="8" viewBox="0 0 40 8" className="opacity-40">
-                      {[...Array(5)].map((_, i) => <line key={i} x1={i * 10} y1="0" x2={i * 10 + 5} y2="8" stroke="#166534" strokeWidth="0.8" />)}
-                    </svg>
-                  </div>
-                </div>
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[9px] font-bold text-emerald-700 whitespace-nowrap flex items-center gap-0.5">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" fill="#22c55e"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" stroke="#16a34a" strokeWidth="2" strokeLinecap="round"/></svg>
-                  {isId ? "Daun Jati Alami" : "Natural Teak Leaf"}
-                </div>
-                {/* Pores / texture dots */}
-                {[...Array(8)].map((_, i) => (
-                  <div key={i} className="absolute w-1 h-1 rounded-full bg-emerald-900/30"
-                    style={{ top: `${8 + (i % 4) * 3}px`, left: `${50 + (i % 2 === 0 ? -1 : 1) * (10 + i * 4)}px` }} />
-                ))}
-              </>
+              <g>
+                {/* Large teak leaf over food */}
+                <path d="M90,108 Q160,75 230,108 Q200,140 160,145 Q120,140 90,108 Z"
+                  fill="#388E3C" stroke="#1B5E20" strokeWidth="1.5" opacity="0.88" filter="url(#nj-shadow)"/>
+                <path d="M90,108 Q160,75 230,108 Q200,140 160,145 Q120,140 90,108 Z"
+                  fill="url(#nj-leafshine)" opacity="0.3"/>
+                {/* Leaf veins */}
+                <line x1="160" y1="80" x2="160" y2="144" stroke="#1B5E20" strokeWidth="1.2" opacity="0.4"/>
+                {[-40,-25,-10,5,20,35].map((a,i) => {
+                  const rad = a * Math.PI / 180;
+                  return <line key={i} x1="160" y1="112" x2={160+Math.cos(rad)*55} y2={112+Math.sin(rad)*30} stroke="#1B5E20" strokeWidth="0.7" opacity="0.3"/>;
+                })}
+                <text x="160" y="168" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#2E7D32" fontFamily="sans-serif">
+                  {isId ? "Dibungkus Daun Jati" : "Teak Leaf Wrap"}
+                </text>
+                {/* Leaf shine */}
+                <defs><linearGradient id="nj-leafshine" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="#A5D6A7" stopOpacity="0.6"/><stop offset="100%" stopColor="#1B5E20" stopOpacity="0"/></linearGradient></defs>
+              </g>
             )}
             {packType === "plastic" && (
-              <>
-                <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-24 h-14 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 rounded-lg shadow-lg border-2 border-blue-400 flex items-center justify-center opacity-90">
-                  <div className="w-16 h-1 bg-blue-400/60 rounded mb-1" />
-                  <div className="w-12 h-1 bg-blue-400/40 rounded" />
-                </div>
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[9px] font-bold text-blue-600 whitespace-nowrap flex items-center gap-0.5">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" fill="#3b82f6"/><line x1="3" y1="6" x2="21" y2="6" stroke="#1d4ed8" strokeWidth="2"/><path d="M16 10a4 4 0 0 1-8 0" stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round"/></svg>
-                  {isId ? "Plastik - 500 tahun terurai" : "Plastic - 500 yrs to decompose"}
-                </div>
-                {/* Shine */}
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-4 h-8 bg-white/30 rounded-r-full" />
-              </>
+              <g>
+                <path d="M88,102 Q160,68 232,102 Q235,145 160,152 Q85,145 88,102 Z"
+                  fill="#90CAF9" stroke="#1565C0" strokeWidth="1.5" opacity="0.6" filter="url(#nj-shadow)"/>
+                <path d="M88,102 Q160,68 232,102 Q235,145 160,152 Q85,145 88,102 Z"
+                  fill="none" stroke="white" strokeWidth="0.8" opacity="0.4"/>
+                {/* Plastic shine */}
+                <path d="M110,90 Q130,82 150,88 Q130,95 110,90 Z" fill="white" opacity="0.3"/>
+                <text x="160" y="168" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#1565C0" fontFamily="sans-serif">
+                  {isId ? "Plastik — 500 Thn Terurai" : "Plastic — 500 Yrs to Decompose"}
+                </text>
+              </g>
             )}
             {packType === "paper" && (
-              <>
-                <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-24 h-12 bg-gradient-to-br from-amber-100 to-amber-200 rounded-lg shadow-md border border-amber-300 flex items-center justify-center">
-                  <div className="w-16 h-1 bg-amber-400/50 rounded mb-1" />
-                  <div className="w-10 h-1 bg-amber-400/30 rounded" />
-                </div>
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[9px] font-bold text-amber-600 whitespace-nowrap flex items-center gap-0.5">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#f1f5f9"/><polyline points="14,2 14,8 20,8" fill="#e2e8f0"/><line x1="8" y1="13" x2="16" y2="13" stroke="#cbd5e1" strokeWidth="1.5"/><line x1="8" y1="17" x2="13" y2="17" stroke="#cbd5e1" strokeWidth="1.5"/></svg>
-                  {isId ? "Kertas - 150 hari terurai" : "Paper - 150 days to decompose"}
-                </div>
-              </>
+              <g>
+                <path d="M92,105 Q160,74 228,105 Q225,143 160,148 Q95,143 92,105 Z"
+                  fill="#FFF8E1" stroke="#F9A825" strokeWidth="1.5" opacity="0.85" filter="url(#nj-shadow)"/>
+                {/* Paper texture lines */}
+                {[108,120,132,144,156,168,180,192,204,216].map(x => (
+                  <line key={x} x1={x} y1="105" x2={x+2} y2="148" stroke="#F9A825" strokeWidth="0.5" opacity="0.3"/>
+                ))}
+                <text x="160" y="168" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#E65100" fontFamily="sans-serif">
+                  {isId ? "Kertas — 150 Hari Terurai" : "Paper — 150 Days to Decompose"}
+                </text>
+              </g>
             )}
-          </div>
 
-          {/* Decay particles */}
-          {packType === "plastic" && (
-            <div className="absolute top-24 right-8 flex gap-1">
-              {[1,2,3].map(i => (
-                <div key={i} className="w-3 h-3 rounded-full bg-blue-400/40 animate-ping" style={{ animationDelay: `${i * 0.8}s` }} />
-              ))}
-              <span className="text-[9px] text-blue-400 font-bold ml-1 mt-0.5 flex items-center"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" fill="#f59e0b"/><line x1="12" y1="9" x2="12" y2="13" stroke="white" strokeWidth="2" strokeLinecap="round"/><circle cx="12" cy="17" r="1" fill="white"/></svg></span>
-            </div>
-          )}
-          {packType === "teak" && (
-            <div className="absolute top-24 left-8 flex gap-1 items-center">
-              {[1,2].map(i => (
-                <div key={i} className="w-2 h-2 rounded-full bg-emerald-400/60 animate-bounce" style={{ animationDelay: `${i * 0.6}s` }} />
-              ))}
-              <span className="text-[9px] text-emerald-500 font-bold flex items-center"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M12 3l-1.5 4.5L7 9l4.5 1.5L12 15l1.5-4.5L18 9l-4.5-1.5L12 3z" fill="#22c55e"/><path d="M5.6 11.5L2 15l3.5 1.5" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round"/><path d="M18.4 11.5L22 15l-3.5 1.5" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round"/><path d="M9 17l-3 3.5" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round"/><path d="M15 17l3 3.5" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round"/></svg></span>
-            </div>
-          )}
+            {/* Thermometer left */}
+            <g transform="translate(14,30)">
+              <rect x="0" y="0" width="10" height="60" rx="5" fill="#F5F5F5" stroke="#9E9E9E" strokeWidth="1"/>
+              <rect x="2" y={60 - Math.round(((temp-15)/30)*54)} width="6" height={Math.round(((temp-15)/30)*54)} rx="3"
+                fill={temp>35?"#E53935":temp>28?"#FF7043":"#42A5F5"}/>
+              <circle cx="5" cy="63" r="7" fill={temp>35?"#E53935":temp>28?"#FF7043":"#42A5F5"} stroke="#9E9E9E" strokeWidth="1"/>
+              <text x="5" y="78" textAnchor="middle" fontSize="7" fontWeight="bold"
+                fill={temp>35?"#B71C1C":temp>28?"#BF360C":"#1565C0"} fontFamily="sans-serif">{temp}°C</text>
+            </g>
 
-          {/* Moisture/air arrows for teak */}
-          {packType === "teak" && (
-            <div className="absolute bottom-16 right-10 flex flex-col gap-1">
-              <svg width="16" height="20" viewBox="0 0 16 20">
-                <path d="M8 0 L8 14 M4 10 L8 14 L12 10" stroke="#94a3b8" strokeWidth="1.5" fill="none" className="animate-pulse" />
-              </svg>
-              <span className="text-[8px] text-slate-400">air</span>
-            </div>
-          )}
-
-          {/* Thermometer */}
-          <div className="absolute bottom-16 left-4 flex flex-col items-center">
-            <div className="relative w-4 h-14 bg-gradient-to-b from-slate-100 to-slate-200 rounded-full border border-slate-300 overflow-hidden">
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-red-400 to-red-300 transition-all duration-500" style={{ height: `${Math.min(100, ((temp - 15) / 45) * 100)}%` }} />
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0.5 bg-red-500" style={{ height: `${Math.min(90, ((temp - 15) / 45) * 90)}%` }} />
-              <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-red-400 rounded-full border border-red-500" />
-            </div>
-            <span className="text-[9px] text-slate-500 font-medium mt-0.5">{temp}°C</span>
-          </div>
+            {/* Label banner bottom */}
+            <rect x="30" y="182" width="260" height="14" rx="7" fill="#FFF9C4" stroke="#F9A825" strokeWidth="1" opacity="0.9"/>
+            <text x="160" y="192" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#E65100" fontFamily="sans-serif">
+              {isId ? `Penyimpanan: ${storageDays} hari` : `Storage: ${storageDays} days`}
+            </text>
+          </svg>
         </div>
 
         {/* Packaging selector */}
@@ -425,77 +458,148 @@ const TerasiSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
         </div>
 
         <div ref={animRef} className="relative h-52 bg-white rounded-xl overflow-hidden border border-border/30">
-          {/* Background sun/heat glow */}
-          <div className="absolute top-2 right-4 w-8 h-8 rounded-full bg-gradient-to-br from-yellow-300 to-orange-400 shadow-lg shadow-orange-200 animate-pulse" style={{ animationDuration: `${2 + temp / 20}s` }} />
-          <div className="text-[9px] text-orange-400 absolute top-12 right-3 font-bold">{temp}°C</div>
+          {/* ── 2D ARTIST TERASI FERMENTATION SCENE ── */}
+          <svg viewBox="0 0 320 200" className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="tr-bg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#FFF8E1"/>
+                <stop offset="100%" stopColor="#FFE0B2"/>
+              </linearGradient>
+              <linearGradient id="tr-jar-body" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#F5F5F0"/>
+                <stop offset="100%" stopColor="#E8E4D8"/>
+              </linearGradient>
+              <radialGradient id="tr-content" cx="50%" cy="80%" r="60%">
+                <stop offset="0%" stopColor={hygieneVal>60?"#D4891A":"#8B1A1A"}/>
+                <stop offset="50%" stopColor={hygieneVal>60?"#A0522D":"#6B0000"}/>
+                <stop offset="100%" stopColor={hygieneVal>60?"#6B3310":"#4A0000"}/>
+              </radialGradient>
+              <linearGradient id="tr-lid" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#9E9E9E"/>
+                <stop offset="100%" stopColor="#757575"/>
+              </linearGradient>
+              <filter id="tr-shadow">
+                <feDropShadow dx="2" dy="3" stdDeviation="3" floodOpacity="0.2"/>
+              </filter>
+            </defs>
 
-          {/* Fermentation Jar */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
-            {/* Jar lid */}
-            <div className="w-20 h-3 bg-gradient-to-b from-stone-300 to-stone-400 rounded-t-xl mx-auto shadow-sm border border-stone-500/20" />
-            {/* Jar body */}
-            <div className="w-24 h-28 bg-gradient-to-b from-slate-100 via-slate-50 to-white rounded-b-2xl shadow-lg border border-slate-300/50 relative overflow-hidden">
-              {/* Content fill level */}
-              <div
-                className="absolute bottom-0 left-0 right-0 transition-all duration-700 rounded-b-xl"
-                style={{
-                  height: `${20 + calc.fermentation * 0.7}%`,
-                  background: hygieneVal > 60 ? "linear-gradient(to top, #92400e 0%, #b45309 60%, #d97706 100%)" : "linear-gradient(to top, #450a0a 0%, #7f1d1d 60%, #991b1b 100%)"
-                }}
-              />
-              {/* Bubble animation */}
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="bubble absolute w-2 h-2 rounded-full animate-bounce opacity-60"
-                  style={{
-                    bottom: `${20 + calc.fermentation * 0.6}%`,
-                    background: hygieneVal > 60 ? "#f59e0b" : "#ef4444",
-                    animationDuration: `${1.5 + i * 0.3}s`,
-                    display: calc.fermentation > 20 ? "block" : "none"
-                  }}
-                />
+            {/* Background scene: coastal processing area */}
+            <rect width="320" height="200" fill="url(#tr-bg)"/>
+            {/* Floor */}
+            <rect x="0" y="155" width="320" height="45" fill="#BCAAA4" opacity="0.5"/>
+            <rect x="0" y="153" width="320" height="5" fill="#A1887F" opacity="0.6"/>
+
+            {/* Sun + heat indication */}
+            <circle cx="280" cy="30" r="22" fill="#FFC107"/>
+            {[0,45,90,135,180,225,270,315].map((a,i) => (
+              <line key={i}
+                x1={280+Math.cos(a*Math.PI/180)*25} y1={30+Math.sin(a*Math.PI/180)*25}
+                x2={280+Math.cos(a*Math.PI/180)*32} y2={30+Math.sin(a*Math.PI/180)*32}
+                stroke="#FFD54F" strokeWidth="2.5" strokeLinecap="round"/>
+            ))}
+            <text x="280" y="62" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#E65100" fontFamily="sans-serif">{temp}°C</text>
+
+            {/* ── MAIN JAR (earthenware style) ── */}
+            <g transform="translate(108,30)" filter="url(#tr-shadow)">
+              {/* Jar lid */}
+              <ellipse cx="52" cy="12" rx="42" ry="10" fill="url(#tr-lid)" stroke="#616161" strokeWidth="1.5"/>
+              <ellipse cx="52" cy="10" rx="42" ry="8" fill="#BDBDBD" stroke="#9E9E9E" strokeWidth="1"/>
+              {/* Lid knob */}
+              <ellipse cx="52" cy="6" rx="10" ry="5" fill="#9E9E9E" stroke="#757575" strokeWidth="1"/>
+
+              {/* Jar body outline — classic amphora shape */}
+              <path d="M15,18 Q8,30 10,65 Q10,108 30,118 Q52,124 74,118 Q94,108 94,65 Q96,30 89,18 Z"
+                fill="url(#tr-jar-body)" stroke="#A1887F" strokeWidth="2"/>
+              {/* Jar body texture */}
+              <path d="M15,18 Q8,30 10,65 Q10,108 30,118 Q52,124 74,118 Q94,108 94,65 Q96,30 89,18 Z"
+                fill="none" stroke="#D7CCC8" strokeWidth="0.8" opacity="0.6"/>
+              {/* Horizontal rings on jar */}
+              {[35,55,75,95].map(y => (
+                <path key={y} d={`M${15+(y-18)*0.15},${y} Q52,${y-3} ${89-(y-18)*0.15},${y}`}
+                  fill="none" stroke="#BCAAA4" strokeWidth="1" opacity="0.5"/>
               ))}
-              {/* Bacteria symbols */}
+
+              {/* Fermentation content fill */}
+              <clipPath id="tr-jar-clip">
+                <path d="M15,18 Q8,30 10,65 Q10,108 30,118 Q52,124 74,118 Q94,108 94,65 Q96,30 89,18 Z"/>
+              </clipPath>
+              <rect x="10" y={120 - Math.round(40 + calc.fermentation * 0.6)} width="84" height={40 + Math.round(calc.fermentation * 0.6)}
+                fill="url(#tr-content)" clipPath="url(#tr-jar-clip)" opacity="0.9"/>
+
+              {/* Surface shimmer on content */}
+              <ellipse cx="52" cy={120 - Math.round(40 + calc.fermentation * 0.6)}
+                rx="38" ry="5"
+                fill={hygieneVal>60?"#D4891A":"#8B1A1A"} opacity="0.5"
+                clipPath="url(#tr-jar-clip)"/>
+
+              {/* Bubbles when fermenting */}
+              {calc.fermentation > 20 && [20,35,50,65,78].map((bx,i) => (
+                <circle key={i}
+                  cx={bx} cy={115 - Math.round(calc.fermentation * 0.5) - i*8}
+                  r={2+i%3}
+                  fill={hygieneVal>60?"#FFA726":"#EF5350"}
+                  opacity={0.5+i*0.05}
+                  className="ferm-bubble"
+                  style={{animation:`bounce ${1+i*0.3}s ease-in-out infinite alternate`}}/>
+              ))}
+
+              {/* Danger bacteria if low hygiene */}
               {hygieneVal < 40 && (
-                <>
-                  <div className="absolute top-4 left-3 text-[12px] animate-pulse">🦠</div>
-                  <div className="absolute top-8 right-4 text-[10px] animate-pulse" style={{ animationDelay: "0.5s" }}>🦠</div>
-                  <div className="absolute bottom-8 left-6 text-[11px] animate-pulse" style={{ animationDelay: "1s" }}>🦠</div>
-                </>
+                <g clipPath="url(#tr-jar-clip)">
+                  {[22,45,68].map((bx,i) => (
+                    <g key={i} transform={`translate(${bx},${100-i*12})`} opacity="0.7">
+                      <circle cx="0" cy="0" r="5" fill="#EF5350"/>
+                      <circle cx="-4" cy="-3" r="2" fill="#EF5350"/>
+                      <circle cx="4" cy="-3" r="2" fill="#EF5350"/>
+                      <circle cx="0" cy="-6" r="2" fill="#EF5350"/>
+                    </g>
+                  ))}
+                </g>
               )}
-              {hygieneVal >= 60 && (
-                <>
-                  <div className="absolute top-3 left-4 text-[11px]">🥇</div>
-                  <div className="absolute top-6 right-3 text-[10px]">✨</div>
-                </>
-              )}
-              {/* Salt crystals */}
-              {saltVal > 40 && (
-                <>
-                  <div className="absolute bottom-2 left-3 text-[8px]">·</div>
-                  <div className="absolute bottom-3 right-4 text-[8px]">·</div>
-                </>
-              )}
-            </div>
-            {/* Jar shadow */}
-            <div className="w-24 h-3 bg-black/5 rounded-full mx-auto -mt-1" />
-          </div>
 
-          {/* Labels */}
-          <div className="absolute bottom-4 left-3 text-[9px] font-bold text-amber-700">
-            {isId ? "Garam: " : "Salt: "}{saltVal}%
-          </div>
-          <div className="absolute bottom-4 right-3 text-[9px] font-bold text-amber-700">
-            {isId ? "Kebersihan: " : "Hygiene: "}{hygieneVal}%
-          </div>
-
-          {/* Steam */}
-          {calc.fermentation > 50 && (
-            <div className="absolute top-16 left-1/2 -translate-x-1/2 flex gap-2">
-              {[1,2,3].map(i => (
-                <div key={i} className="w-1.5 h-6 bg-white/40 rounded-full animate-ping" style={{ animationDelay: `${i * 0.5}s`, animationDuration: "1.5s" }} />
+              {/* Steam when hot fermentation */}
+              {calc.fermentation > 50 && [38,52,66].map((sx,i) => (
+                <path key={i} d={`M${sx},12 Q${sx-4+i*4},4 ${sx+2},${-4}`}
+                  fill="none" stroke="#CFD8DC" strokeWidth="2.5" strokeLinecap="round"
+                  opacity="0.6"
+                  style={{animation:`steam-rise ${2+i*0.5}s ease-in-out infinite`}}/>
               ))}
-            </div>
-          )}
+
+              {/* Quality badge on jar */}
+              {hygieneVal >= 60 && (
+                <g transform="translate(72,8)">
+                  <circle cx="0" cy="0" r="12" fill="#43A047" stroke="#2E7D32" strokeWidth="1.5"/>
+                  <path d="M-5,0 L-2,4 L6,-4" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round"/>
+                </g>
+              )}
+              {hygieneVal < 40 && (
+                <g transform="translate(72,8)">
+                  <polygon points="0,-12 12,8 -12,8" fill="#E53935" stroke="#B71C1C" strokeWidth="1.5"/>
+                  <text x="0" y="4" textAnchor="middle" fontSize="10" fontWeight="bold" fill="white" fontFamily="sans-serif">!</text>
+                </g>
+              )}
+            </g>
+
+            {/* Salt crystals scattered */}
+            {saltVal > 40 && [70,90,200,215,230].map((sx,i) => (
+              <g key={i} transform={`translate(${sx},158)`}>
+                <rect x="-3" y="-3" width="6" height="6" fill="white" stroke="#B0BEC5" strokeWidth="0.8" rx="1"
+                  transform={`rotate(${i*25})`} opacity="0.85"/>
+                <rect x="-1.5" y="-1.5" width="3" height="3" fill="white" opacity="0.5"
+                  transform={`rotate(${i*25+15})`}/>
+              </g>
+            ))}
+
+            {/* Labels */}
+            <rect x="10" y="165" width="90" height="16" rx="8" fill="#FFE0B2" stroke="#FF8F00" strokeWidth="1" opacity="0.9"/>
+            <text x="55" y="176" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#E65100" fontFamily="sans-serif">
+              {isId ? `Garam: ${saltVal}%` : `Salt: ${saltVal}%`}
+            </text>
+            <rect x="220" y="165" width="90" height="16" rx="8" fill="#E8F5E9" stroke="#43A047" strokeWidth="1" opacity="0.9"/>
+            <text x="265" y="176" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#2E7D32" fontFamily="sans-serif">
+              {isId ? `Kebersihan: ${hygieneVal}%` : `Hygiene: ${hygieneVal}%`}
+            </text>
+          </svg>
         </div>
 
         {/* Legend */}
@@ -1661,108 +1765,114 @@ const NadranSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
         </div>
 
         <div ref={animRef} className="relative h-44 bg-gradient-to-b from-sky-300 via-sky-200 to-blue-400 rounded-xl overflow-hidden border border-border/30">
-          {/* Sun */}
-          <div className="absolute top-2 right-3 w-7 h-7 rounded-full bg-gradient-to-br from-yellow-200 to-amber-300 shadow-lg animate-pulse" />
-
-          {/* Clouds */}
-          <div className="absolute top-2 left-4 opacity-60 animate-bounce" style={{ animationDuration: "4s" }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="white" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
-            </svg>
-          </div>
-          <div className="absolute top-4 left-20 opacity-40 animate-bounce" style={{ animationDuration: "5s" }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
-            </svg>
-          </div>
-
-          {/* Fishing boats */}
-          {fishingIntensity > 30 && (
-            <div className="absolute top-6 flex gap-4">
-              {[1,2,3].slice(0, Math.ceil(fishingIntensity / 33)).map(i => (
-                <div key={i} className="boat transition-transform duration-700"
-                  style={{ animation: `boat-sway ${2 + i * 0.3}s ease-in-out infinite alternate` }}>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1 .6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
-                    <path d="M19.38 20A11.6 11.6 0 0 0 21 14l-9-4-9 4c0 2.9.94 5.34 2.81 7.76"/>
-                    <path d="M12 10V4"/>
-                    <path d="M12 4l7 4"/>
-                    <path d="M12 4L5 8"/>
-                  </svg>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Ocean water */}
-          <div className="absolute top-14 left-0 right-0 bottom-0 bg-gradient-to-b from-blue-300/80 to-blue-500/90 overflow-hidden">
-            {/* Wave lines */}
-            {[1,2,3].map(i => (
-              <div key={i} className="absolute w-full h-1 bg-blue-200/30 rounded-full"
-                style={{ top: `${10 + i * 20}%`, animation: `wave-move 3s ease-in-out infinite alternate`, animationDelay: `${i * 0.5}s` }} />
+          {/* ── 2D ARTIST NADRAN MARINE SCENE ── */}
+          <svg viewBox="0 0 320 175" className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="nd-sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#87CEEB"/>
+                <stop offset="100%" stopColor="#4FC3F7"/>
+              </linearGradient>
+              <linearGradient id="nd-sea" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={calc.waterQuality > 50 ? "#29B6F6" : "#546E7A"}/>
+                <stop offset="100%" stopColor={calc.waterQuality > 50 ? "#0277BD" : "#263238"}/>
+              </linearGradient>
+              <filter id="nd-sh"><feDropShadow dx="1" dy="2" stdDeviation="1.5" floodOpacity="0.2"/></filter>
+            </defs>
+            <rect width="320" height="175" fill="url(#nd-sky)"/>
+            <circle cx="275" cy="28" r="18" fill="#FFC107"/>
+            {[0,45,90,135,180,225,270,315].map((a,i) => (
+              <line key={i} x1={275+Math.cos(a*Math.PI/180)*21} y1={28+Math.sin(a*Math.PI/180)*21}
+                x2={275+Math.cos(a*Math.PI/180)*27} y2={28+Math.sin(a*Math.PI/180)*27}
+                stroke="#FFD54F" strokeWidth="2" strokeLinecap="round"/>
             ))}
-
-            {/* Fish population visualization */}
-            <div className="absolute bottom-4 left-0 right-0 flex items-end justify-center gap-1 px-4">
-              {[...Array(20)].map((_, i) => (
-                <div key={i} className="sim-fish animate-bounce transition-opacity"
-                  style={{
-                    opacity: i < calc.fishPopulation / 5 ? 1 : 0.15,
-                    animationDuration: `${2 + (i % 4) * 0.5}s`,
-                    animationDelay: `${(i % 5) * 0.3}s`,
-                    transform: i % 2 === 0 ? "scaleX(1)" : "scaleX(-1)"
-                  }}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#fbbf24" stroke="#d97706" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="#d97706"/></svg>
-                </div>
-              ))}
-            </div>
-
-            {/* Coral / reef */}
-            {calc.waterQuality > 50 && (
-              <div className="absolute bottom-0 left-4">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f97316" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22V8M5 12H2a10 10 0 0 0 20 0h-3M9 6l3-4 3 4M7 10l5 4 5-4"/>
-                </svg>
-              </div>
+            <g opacity="0.85">
+              <ellipse cx="60" cy="22" rx="38" ry="14" fill="white"/>
+              <ellipse cx="40" cy="26" rx="24" ry="12" fill="white"/>
+              <ellipse cx="82" cy="25" rx="26" ry="11" fill="white"/>
+              <ellipse cx="190" cy="18" rx="30" ry="12" fill="white" opacity="0.7"/>
+              <ellipse cx="168" cy="22" rx="20" ry="10" fill="white" opacity="0.7"/>
+              <ellipse cx="212" cy="21" rx="22" ry="10" fill="white" opacity="0.7"/>
+            </g>
+            <path d="M0,78 Q40,72 80,76 Q120,80 160,74 Q200,68 240,72 Q280,76 320,70 L320,80 Z" fill="#4CAF50" opacity="0.6"/>
+            {[30,60,95,130].map((x,i) => (
+              <g key={i} transform={`translate(${x},70)`}>
+                <rect x="-1.5" y="-14" width="3" height="14" fill="#2E7D32"/>
+                <ellipse cx="0" cy="-16" rx={7+i%3} ry={8+i%2} fill="#388E3C" opacity="0.85"/>
+                <ellipse cx="-4" cy="-12" rx={4+i%2} ry={5+i%2} fill="#43A047"/>
+              </g>
+            ))}
+            <path d="M0,76 Q80,70 160,76 Q240,82 320,74 L320,175 L0,175 Z" fill="url(#nd-sea)"/>
+            {[0,1,2,3].map(i => (
+              <path key={i}
+                d={`M${-20+i*5},${93+i*18} Q${60+i*5},${88+i*18} ${120+i*5},${93+i*18} Q${180+i*5},${98+i*18} ${240+i*5},${93+i*18} Q${300+i*5},${88+i*18} ${340+i*5},${93+i*18}`}
+                fill="none" stroke="white" strokeWidth={1.5-i*0.2} opacity={0.3-i*0.05}
+                style={{animation:`wave-move ${3+i*0.5}s ease-in-out infinite alternate`}}/>
+            ))}
+            {fishingIntensity <= 70 && (
+              <g transform="translate(135,78)" filter="url(#nd-sh)" style={{animation:"boat-sway 3s ease-in-out infinite alternate"}}>
+                <path d="M-28,10 Q-28,18 0,22 Q28,18 28,10 L20,-2 Q0,-6 -20,-2 Z" fill="#8D6E63" stroke="#5D4037" strokeWidth="1.5"/>
+                <rect x="-15" y="-2" width="30" height="10" rx="2" fill="#FFCC02" stroke="#F9A825" strokeWidth="1"/>
+                {[-12,-4,4,12].map((fx,fi) => (
+                  <g key={fi}>
+                    <line x1={fx} y1="-2" x2={fx} y2="-14" stroke="#555" strokeWidth="1"/>
+                    <polygon points={`${fx+1},-14 ${fx+9},-10 ${fx+1},-6`} fill={["#EF5350","#42A5F5","#66BB6A","#FFA726"][fi]}/>
+                  </g>
+                ))}
+                <circle cx="-8" cy="2" r="3" fill="#FF80AB" opacity="0.8"/>
+                <circle cx="0" cy="0" r="3.5" fill="#FFB74D" opacity="0.8"/>
+                <circle cx="8" cy="2" r="3" fill="#81D4FA" opacity="0.8"/>
+                <line x1="0" y1="-2" x2="0" y2="-28" stroke="#5D4037" strokeWidth="2"/>
+                <polygon points="1,-28 18,-20 1,-12" fill="#EF5350"/>
+              </g>
             )}
-            {calc.waterQuality > 70 && (
-              <div className="absolute bottom-0 right-8">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="#dc2626" stroke="#991b1b" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                  <line x1="12" y1="9" x2="12" y2="13" stroke="#fff" strokeWidth="2"/>
-                  <line x1="12" y1="17" x2="12.01" y2="17" stroke="#fff" strokeWidth="2"/>
-                </svg>
-              </div>
+            {fishingIntensity > 30 && [65, 200, 245].slice(0, Math.ceil(fishingIntensity/34)).map((bx,bi) => (
+              <g key={bi} transform={`translate(${bx},83)`} filter="url(#nd-sh)"
+                style={{animation:`boat-sway ${2.5+bi*0.4}s ease-in-out infinite alternate`}}>
+                <path d="M-18,7 Q0,14 18,7 L12,-4 Q0,-8 -12,-4 Z" fill="#5D4037" stroke="#3E2723" strokeWidth="1.2"/>
+                <line x1="0" y1="-4" x2="0" y2="-22" stroke="#6D4C41" strokeWidth="1.8"/>
+                <polygon points="1,-22 16,-10 1,-4" fill="#ECEFF1" stroke="#90A4AE" strokeWidth="0.8"/>
+              </g>
+            ))}
+            {Array.from({length:Math.round(calc.fishPopulation/8)}, (_,i) => {
+              const fx = 15 + (i * 63) % 290;
+              const fy = 108 + (i * 17) % 50;
+              const flip = i%2===0;
+              const color = i%3===0?"#FFA726":i%3===1?"#29B6F6":"#66BB6A";
+              return (
+                <g key={i} transform={`translate(${fx},${fy}) ${flip?"":"scale(-1,1) translate(-0,0)"}`}
+                  style={{animation:`boat-sway ${1.5+(i%4)*0.5}s ease-in-out infinite alternate`, opacity: calc.waterQuality>30?1:0.3}}>
+                  <ellipse cx="0" cy="0" rx="8" ry="4" fill={color}/>
+                  <path d="M8,0 L13,-4 L13,4 Z" fill={color} opacity="0.8"/>
+                  <circle cx="-4" cy="-1" r="1.5" fill="#1A237E"/>
+                  <circle cx="-4.3" cy="-1.3" r="0.6" fill="white"/>
+                </g>
+              );
+            })}
+            {calc.waterQuality < 40 && (
+              <g opacity="0.6">
+                <ellipse cx="160" cy="125" rx="30" ry="8" fill="#546E7A"/>
+                <ellipse cx="200" cy="140" rx="22" ry="6" fill="#37474F"/>
+              </g>
             )}
-
-            {/* Waste indicator */}
-            {(100 - calc.waterQuality) > 40 && (
-              <div className="absolute top-2 right-4 animate-pulse flex items-center gap-0.5">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              </div>
-            )}
-
-            {/* Conservation indicator */}
-            {calc.marineBiodiversity > 60 && (
-              <div className="absolute top-2 left-4 flex items-center gap-0.5">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="#f97316" stroke="#c2410c" strokeWidth="1"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3" fill="#fff"/></svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1e3a5f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><path d="M22 12c-1.5 1-3.5 1.5-5.5 1.5-3 0-5.5-1-7.5-2.5"/><circle cx="12" cy="12" r="2"/></svg>
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="#a855f7" stroke="#7e22ce" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="5" r="2"/><path d="M12 7v14M7 9l5 2 5-2M7 15l5-2 5 2"/></svg>
-              </div>
-            )}
-          </div>
-
-          {/* Labels */}
-          <div className="absolute bottom-10 left-3 text-[9px] font-bold text-white bg-black/30 rounded px-1.5 py-0.5 flex items-center gap-1">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="#fbbf24" stroke="#d97706" strokeWidth="1.5"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3" fill="#fff"/></svg>
-            {isId ? "Populasi: " : "Fish: "}{Math.round(calc.fishPopulation)}%
-          </div>
-          <div className="absolute bottom-10 right-3 text-[9px] font-bold text-white bg-black/30 rounded px-1.5 py-0.5 flex items-center gap-1">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#bfdbfe" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12c1.5-1.5 3-2 5-2s3.5.5 5 2 3 2 5 2 3.5-.5 5-2"/><path d="M2 17c1.5-1.5 3-2 5-2s3.5.5 5 2 3 2 5 2 3.5-.5 5-2"/></svg>
-            {isId ? "Ikan Tangkap: " : "Fishing: "}{fishingIntensity}%
-          </div>
+            {calc.waterQuality > 60 && [40,80,240,270].map((cx,ci) => (
+              <g key={ci} transform={`translate(${cx},158)`} opacity="0.8">
+                <ellipse cx="0" cy="0" rx="6" ry="10" fill={["#EF5350","#FF8A65","#FFA726","#AB47BC"][ci]} opacity="0.7"/>
+                <ellipse cx="-5" cy="3" rx="4" ry="7" fill={["#E53935","#F4511E","#FB8C00","#9C27B0"][ci]} opacity="0.5"/>
+                <ellipse cx="5" cy="3" rx="4" ry="7" fill={["#FFCDD2","#FFCCBC","#FFE0B2","#E1BEE7"][ci]} opacity="0.5"/>
+              </g>
+            ))}
+            <rect x="5" y="152" width="76" height="16" rx="8" fill="rgba(0,0,0,0.4)" opacity="0.85"/>
+            <text x="43" y="163" textAnchor="middle" fontSize="8" fontWeight="bold" fill="white" fontFamily="sans-serif">
+              {isId ? `Ikan: ${Math.round(calc.fishPopulation)}%` : `Fish: ${Math.round(calc.fishPopulation)}%`}
+            </text>
+            <rect x="239" y="152" width="76" height="16" rx="8" fill="rgba(0,0,0,0.4)" opacity="0.85"/>
+            <text x="277" y="163" textAnchor="middle" fontSize="8" fontWeight="bold" fill="white" fontFamily="sans-serif">
+              {isId ? `Tangkap: ${fishingIntensity}%` : `Fishing: ${fishingIntensity}%`}
+            </text>
+          </svg>
         </div>
+
+
       </SimCard>
 
       {/* Controls */}

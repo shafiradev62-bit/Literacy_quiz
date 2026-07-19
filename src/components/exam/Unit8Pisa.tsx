@@ -35,23 +35,28 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
     if (currentStep === 0) return true;
     if (currentStep === 1) {
       const count = getWordCount(q1Answer);
-      return count >= 15;
+      return count >= 8;
     }
     if (currentStep === 2) {
       const count = getWordCount(q2Explain);
-      return !!q2Choice && count >= 15;
+      return !!q2Choice && count >= 8;
     }
     if (currentStep === 3) return !!q3Choice;
     if (currentStep === 4) {
       const count = getWordCount(q4Answer);
-      return count >= 15;
+      return count >= 8;
     }
     if (currentStep === 5) {
       const count = getWordCount(q5Answer);
-      return count >= 15;
+      return count >= 8;
     }
     return false;
   };
+
+  // Live-update simulation when sliders change
+  React.useEffect(() => {
+    runSimulation();
+  }, [harvestRate, replanting, wasteUse]);
 
   // AUTO-SYNC / AUTO-SAVE
   React.useEffect(() => {
@@ -222,8 +227,9 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
                 </div>
                 <p className="text-[13px] font-medium text-foreground/90 leading-relaxed">{isId?"Dalam menyelidiki produksi rotan yang berkelanjutan, mengapa siswa mengukur dua kali untuk setiap indikator dibandingkan hanya menggunakan satu pengukuran untuk setiap indikator?":"In investigating sustainable rattan production, why do students measure two of each indicator instead of using only one measurement for each indicator?"}</p>
                 <textarea value={q1Answer} onChange={e=>setQ1Answer(e.target.value)} className="w-full h-32 p-3 bg-muted/10 border border-border rounded-lg text-[13px] focus:ring-1 focus:ring-primary outline-none transition-all resize-none" placeholder={isId?"Ketik jawabanmu di sini...":"Type your answer here..."}/>
-                <p className={`text-[10px] font-bold text-right ${getWordCount(q1Answer) >= 15 ? "text-green-600" : "text-amber-600"}`}>
-                  {getWordCount(q1Answer)} {isId ? "kata (Minimal 15)" : "words (Min. 15)"}
+                <p className={`text-[10px] font-bold text-right ${getWordCount(q1Answer) >= 8 ? "text-green-600" : "text-amber-600"}`}>
+                  {getWordCount(q1Answer)} {isId ? "kata (Minimal 8)" : "words (Min. 8)"}
+                  {getWordCount(q1Answer) < 8 && (isId ? " — isi dulu agar bisa lanjut" : " — write more to continue")}
                 </p>
               </div>
             )}
@@ -280,8 +286,8 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
                 </div>
                 <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">{isId?"Jelaskan jawabanmu":"Explain your answer"}</p>
                 <textarea value={q2Explain} onChange={e=>setQ2Explain(e.target.value)} className="w-full h-28 p-3 bg-muted/10 border border-border rounded-lg text-[13px] focus:ring-1 focus:ring-primary outline-none transition-all resize-none" placeholder={isId?"Ketik penjelasanmu di sini...":"Type your explanation here..."}/>
-                <p className={`text-[10px] font-bold text-right ${getWordCount(q2Explain) >= 15 ? "text-green-600" : "text-amber-600"}`}>
-                  {getWordCount(q2Explain)} {isId ? "kata (Minimal 15)" : "words (Min. 15)"}
+                <p className={`text-[10px] font-bold text-right ${getWordCount(q2Explain) >= 8 ? "text-green-600" : "text-amber-600"}`}>
+                  {getWordCount(q2Explain)} {isId ? "kata (Minimal 8)" : "words (Min. 8)"}
                 </p>
               </div>
             )}
@@ -465,6 +471,18 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
                 <span className="w-1.5 h-1.5 rounded-full bg-primary/40"/>
                 <h3 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{isId?"Simulasi Industri Kerajinan Rotan":"Rattan Craft Industry Simulation"}</h3>
               </div>
+            </div>
+
+            {/* Photos: bahan baku + hasil anyaman */}
+            <div className="grid grid-cols-2 gap-3">
+              <figure className="rounded-xl overflow-hidden border border-border/50 bg-muted/20">
+                <img src="/images/units/8/img1.jpg" alt={isId ? "Bahan baku rotan" : "Rattan raw material"} className="w-full h-28 object-cover" />
+                <figcaption className="px-2 py-1.5 text-[10px] font-semibold text-muted-foreground">{isId ? "Bahan baku rotan" : "Rattan raw material"}</figcaption>
+              </figure>
+              <figure className="rounded-xl overflow-hidden border border-border/50 bg-muted/20">
+                <img src="/images/units/8/img2.jpg" alt={isId ? "Hasil anyaman rotan" : "Rattan woven product"} className="w-full h-28 object-cover" />
+                <figcaption className="px-2 py-1.5 text-[10px] font-semibold text-muted-foreground">{isId ? "Hasil anyaman rotan" : "Rattan woven product"}</figcaption>
+              </figure>
             </div>
 
             {/* ── DRAG-DROP PREVIEW: Rattan Production Chain ── */}

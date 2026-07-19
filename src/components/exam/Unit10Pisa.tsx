@@ -140,12 +140,29 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
     return item ? (isId ? item.id : item.en) : "";
   };
 
-  // Drag handlers
-  const handleDrop = (target: string) => {
-    if (draggedItem) {
-      setQ1Answers(prev => ({...prev, [draggedItem]: target}));
-      setDraggedItem(null);
-    }
+  // Helper: which item sits in a zone (storage is itemKey -> zoneId)
+  const getItemInZone = (zoneId: string) =>
+    Object.entries(q1Answers).find(([, zone]) => zone === zoneId)?.[0] ?? null;
+
+  // Drag handlers — use dataTransfer for reliable cross-browser drop
+  const handleDrop = (target: string, e?: React.DragEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    const itemKey = e?.dataTransfer?.getData("text/plain") || draggedItem;
+    if (!itemKey) return;
+    setQ1Answers(prev => {
+      const next = { ...prev };
+      // Clear any previous occupant of this zone
+      for (const [k, z] of Object.entries(next)) {
+        if (z === target) delete next[k];
+      }
+      // Remove this item from any other zone it was in
+      if (next[itemKey]) delete next[itemKey];
+      next[itemKey] = target;
+      return next;
+    });
+    setDraggedItem(null);
+    setDragOverZone(null);
   };
 
   const runSimulation = () => {
@@ -631,11 +648,14 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
                       {label: isId?"Tangki Pengolahan":"Treatment Tank", sub: isId?"Air diolah":"Water treated", id:"treat"},
                     ].map((item, i) => item.label === "→"
                       ? <span key={i} className="text-muted-foreground font-bold text-lg">→</span>
-                      : <div key={i}
+                      : (() => {
+                          const placedKey = getItemInZone(item.id);
+                          return (
+                        <div key={i}
                              className={`relative px-3 py-2 rounded-lg border text-center min-w-[120px] transition-all duration-200 ${
                                dragOverZone === item.id
                                  ? "border-primary border-2 bg-primary/10 shadow-md scale-105"
-                                 : q1Answers[item.id]
+                                 : placedKey
                                  ? "border-2 border-emerald-500 bg-emerald-50 ring-2 ring-emerald-200 shadow-sm"
                                  : draggedItem
                                  ? "border-dashed border-2 border-primary/40 bg-primary/5"
@@ -643,27 +663,29 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
                              }`}
                              onDragOver={(e) => { e.preventDefault(); setDragOverZone(item.id); }}
                              onDragLeave={() => setDragOverZone(null)}
-                             onDrop={() => { handleDrop(item.id); setDragOverZone(null); }}>
-                          {dragOverZone === item.id && !q1Answers[item.id] && (
+                             onDrop={(e) => handleDrop(item.id, e)}>
+                          {dragOverZone === item.id && !placedKey && (
                             <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full animate-in fade-in zoom-in duration-200">{isId ? "Lepaskan di sini!" : "Drop here!"}</span>
                           )}
-                          {q1Answers[item.id] && (
+                          {placedKey && (
                             <div className="absolute -top-2 -right-2 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center shadow-md animate-in fade-in zoom-in duration-200">
                               <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg>
                             </div>
                           )}
-                          <p className={`text-[11px] font-bold ${q1Answers[item.id] ? "text-emerald-700" : "text-foreground"}`}>{item.label}</p>
+                          <p className={`text-[11px] font-bold ${placedKey ? "text-emerald-700" : "text-foreground"}`}>{item.label}</p>
                           <p className="text-[10px] text-muted-foreground">{item.sub}</p>
-                          {q1Answers[item.id] && (
+                          {placedKey && (
                             <p className="text-[9px] text-emerald-700 mt-1 font-semibold flex items-center justify-center gap-1">
                               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
-                              {getDroppedItemName(q1Answers[item.id])}
+                              {getDroppedItemName(placedKey)}
                             </p>
                           )}
-                          {!q1Answers[item.id] && draggedItem && (
+                          {!placedKey && draggedItem && (
                             <p className="text-[9px] text-primary/60 mt-1">{isId ? "Seret ke sini" : "Drag here"}</p>
                           )}
                         </div>
+                          );
+                        })()
                     )}
                   </div>
                 </div>
@@ -698,12 +720,17 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
                       {key:"sauce",   en:"Palm sugar–vinegar sauce",       id:"Kuah gula merah dan cuka",       color:"bg-amber-100 border-amber-400 text-amber-800"},
                       {key:"waste",   en:"Wastewater treatment",           id:"Pengolahan limbah",              color:"bg-blue-100 border-blue-400 text-blue-800"},
                     ].map(item => {
-                      const isPlaced = Object.values(q1Answers).includes(item.key);
+                      const isPlaced = item.key in q1Answers;
                       return (
                         <div key={item.key}
                              draggable={!isPlaced}
-                             onDragStart={() => !isPlaced && setDraggedItem(item.key)}
-                             onDragEnd={() => setDraggedItem(null)}
+                             onDragStart={(e) => {
+                               if (isPlaced) return;
+                               e.dataTransfer.setData("text/plain", item.key);
+                               e.dataTransfer.effectAllowed = "move";
+                               setDraggedItem(item.key);
+                             }}
+                             onDragEnd={() => setTimeout(() => setDraggedItem(null), 100)}
                              className={`px-4 py-2.5 rounded-lg border-2 font-semibold text-[12px] transition-all select-none ${isPlaced ? "opacity-30 cursor-not-allowed line-through" : `${item.color} cursor-grab active:cursor-grabbing hover:scale-105 shadow-sm`} ${draggedItem === item.key ? "opacity-50 scale-95" : ""}`}>
                           {isId ? item.id : item.en}
                         </div>

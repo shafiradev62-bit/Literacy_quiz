@@ -79,49 +79,71 @@ export default function QuizIntroSlide({ onStart }: Props) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center overflow-hidden">
-      {/* Handcraft workshop background */}
+      {/* Cartoon school background */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/bg/handcraft-workshop.jpg')" }}
+        style={{ backgroundImage: "url('/images/bg/school-cartoon.svg')" }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-stone-900/85 via-stone-900/45 to-amber-900/25" />
+      <div className="absolute inset-0 bg-gradient-to-t from-sky-900/70 via-sky-900/20 to-transparent" />
 
       {/* Ground plane so character stands on floor */}
-      <div className="absolute bottom-0 left-0 right-0 h-[28%] bg-gradient-to-t from-[#3d2b1f] via-[#5c4033]/95 to-transparent pointer-events-none" />
-      <div className="absolute bottom-[12%] left-0 right-0 h-8 bg-black/25 blur-md pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-[22%] bg-gradient-to-t from-[#1a3d10] via-[#2d6e1f]/80 to-transparent pointer-events-none" />
+      <div className="absolute bottom-[10%] left-0 right-0 h-6 bg-black/20 blur-md pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center gap-4 px-6 max-w-md w-full pb-8 md:pb-10">
         <div className="bg-amber-800/90 text-amber-50 text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md border border-amber-600/40">
           {isId ? "Kuis Etnosains Cirebon" : "Cirebon Ethnoscience Quiz"}
         </div>
 
-        <div
-          className="relative bg-white/95 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-xl border border-white/40 w-full cursor-pointer select-none"
-          onClick={handleNext}
-          style={{ minHeight: 80 }}
-        >
-          <div className="flex gap-1.5 mb-3">
-            {dialogue.map((_, i) => (
-              <div
-                key={i}
-                className={`h-1.5 rounded-full transition-all duration-300 ${i === lineIdx ? "bg-primary w-5" : i < lineIdx ? "bg-primary/40 w-3" : "bg-muted w-3"}`}
-              />
-            ))}
+        {/* ── Cloud-style speech bubble ── */}
+        <div className="relative w-full">
+          {/* Cloud bumps on top */}
+          <div className="absolute -top-4 left-0 right-0 flex justify-center gap-3 pointer-events-none">
+            <div className="w-10 h-8 rounded-full bg-white/95 shadow-sm" />
+            <div className="w-14 h-9 rounded-full bg-white/95 shadow-sm" />
+            <div className="w-12 h-8 rounded-full bg-white/95 shadow-sm" />
+            <div className="w-16 h-10 rounded-full bg-white/95 shadow-sm" />
+            <div className="w-11 h-8 rounded-full bg-white/95 shadow-sm" />
+            <div className="w-13 h-9 rounded-full bg-white/95 shadow-sm" />
+            <div className="w-9 h-7 rounded-full bg-white/95 shadow-sm" />
           </div>
-          <p className="text-[15px] text-foreground font-medium leading-snug min-h-[2.5rem]">
-            {displayed}
-            {typing && <span className="inline-block w-0.5 h-4 bg-primary ml-0.5 animate-pulse align-middle" />}
-          </p>
-          {!typing && lineIdx < dialogue.length - 1 && (
-            <p className="text-[11px] text-muted-foreground mt-2 text-right animate-pulse">
-              {isId ? "Ketuk untuk lanjut →" : "Tap to continue →"}
+          {/* Cloud bumps on bottom sides */}
+          <div className="absolute -bottom-3 left-8 w-8 h-7 rounded-full bg-white/95" />
+          <div className="absolute -bottom-5 left-14 w-10 h-8 rounded-full bg-white/95" />
+          {/* Main bubble body */}
+          <div
+            className="relative bg-white/95 backdrop-blur-sm rounded-3xl px-6 py-4 shadow-xl border-2 border-white/60 w-full cursor-pointer select-none mt-4"
+            onClick={handleNext}
+            style={{ minHeight: 80 }}
+          >
+            <div className="flex gap-1.5 mb-3">
+              {dialogue.map((_, i) => (
+                <div
+                  key={i}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${i === lineIdx ? "bg-primary w-5" : i < lineIdx ? "bg-primary/40 w-3" : "bg-muted w-3"}`}
+                />
+              ))}
+            </div>
+            <p className="text-[15px] text-foreground font-medium leading-snug min-h-[2.5rem]">
+              {displayed}
+              {typing && <span className="inline-block w-0.5 h-4 bg-primary ml-0.5 animate-pulse align-middle" />}
             </p>
-          )}
-          <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-5 h-5 bg-white/95 border-r border-b border-white/40 rotate-45" />
+            {!typing && lineIdx < dialogue.length - 1 && (
+              <p className="text-[11px] text-muted-foreground mt-2 text-right animate-pulse">
+                {isId ? "Ketuk untuk lanjut →" : "Tap to continue →"}
+              </p>
+            )}
+          </div>
+          {/* Tail pointing down toward character */}
+          <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center">
+            <div className="w-7 h-7 bg-white/95 rounded-full" />
+            <div className="w-4 h-4 bg-white/95 rounded-full mt-0.5" />
+            <div className="w-2 h-2 bg-white/95 rounded-full mt-0.5" />
+          </div>
         </div>
 
         {/* Male character standing on ground */}
-        <div className="relative flex flex-col items-center mt-2">
+        <div className="relative flex flex-col items-center mt-6">
           <img
             src={SPRITES[spriteIdx]}
             alt="character"
@@ -136,7 +158,7 @@ export default function QuizIntroSlide({ onStart }: Props) {
           <h1 className="font-display text-xl text-white font-bold mb-1 drop-shadow-md">
             {isId ? "Jelajahi Sains Lewat Budaya Cirebon!" : "Explore Science Through Cirebon Culture!"}
           </h1>
-          <p className="text-sm text-amber-50/90 leading-relaxed max-w-sm">
+          <p className="text-sm text-sky-50/90 leading-relaxed max-w-sm">
             {isId
               ? "Dalam aktivitas ini, kamu akan belajar sains dari budaya unik Cirebon — makanan, tradisi, kerajinan, dan alam."
               : "In this activity, you'll learn science from the unique culture of Cirebon — food, traditions, crafts, and nature."}

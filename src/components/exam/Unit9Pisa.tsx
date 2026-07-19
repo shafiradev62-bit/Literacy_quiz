@@ -30,12 +30,13 @@ const SIM_TABLE: Record<DyeType, Record<WaterLevel, Record<TreatmentLevel, SimRe
 const STEP_LABELS_EN = ["Introduction","Question 1","Question 2","Question 3","Question 4","Question 5"];
 const STEP_LABELS_ID = ["Pendahuluan","Soal 1","Soal 2","Soal 3","Soal 4","Soal 5"];
 
+// Q1 yes/no grid items
 const q1Items = [
-  {key:"synth_no_treat", en:"Using synthetic dyes with no wastewater treatment.",       id:"Menggunakan pewarna sintetis tanpa pengolahan limbah."},
-  {key:"less_water",     en:"Using less water in the process.",                          id:"Menggunakan lebih sedikit air dalam proses."},
-  {key:"untreated_river",en:"Releasing untreated dye wastewater into a river.",          id:"Membuang limbah pewarna tanpa pengolahan ke sungai."},
-  {key:"full_treat",     en:"Applying full wastewater treatment before disposal.",       id:"Menerapkan pengolahan limbah penuh sebelum dibuang."},
-];
+  { key: "synth_high", en: "Using synthetic dye with high water use and no treatment", id: "Menggunakan pewarna sintetis dengan penggunaan air tinggi dan tanpa pengolahan" },
+  { key: "nat_high",   en: "Using natural dye with high water use and no treatment",   id: "Menggunakan pewarna alami dengan penggunaan air tinggi dan tanpa pengolahan" },
+  { key: "nat_low",    en: "Using natural dye with low water use and full treatment",   id: "Menggunakan pewarna alami dengan penggunaan air rendah dan pengolahan penuh" },
+  { key: "synth_full", en: "Using synthetic dye with medium water use and full treatment", id: "Menggunakan pewarna sintetis dengan penggunaan air sedang dan pengolahan penuh" },
+] as const;
 
 const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
   const { lang } = useLanguage();
@@ -72,22 +73,16 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
 
   const isStepValid = () => {
     if (currentStep === 0) return true;
-    if (currentStep === 1) return Object.keys(q1Answers).length >= 4;
-    if (currentStep === 2) {
-      const count = getWordCount(q2Answer);
-      return count >= 15 ;
-    }
-    if (currentStep === 3) return !!q3Choice;
-    if (currentStep === 4) {
-      const count = getWordCount(q4Answer);
-      return count >= 15;
-    }
-    if (currentStep === 5) {
-      const count = getWordCount(q5Answer);
-      return count >= 15;
-    }
+    if (currentStep === 1) return Object.keys(q1Answers).length >= 4; // Q1: yes/no grid
+    if (currentStep === 2) return getWordCount(q2Answer) >= 8;        // Q2: open
+    if (currentStep === 3) return !!q3Choice;                          // Q3: MCQ
+    if (currentStep === 4) return getWordCount(q4Answer) >= 15;       // Q4: open
+    if (currentStep === 5) return getWordCount(q5Answer) >= 8;        // Q5: open
     return false;
   };
+
+  const computeScore = () =>
+    [Object.keys(q1Answers).length >= 4, q2Answer.trim().length > 0, !!q3Choice, q4Answer.trim().length > 0, q5Answer.trim().length > 0].filter(Boolean).length;
 
   // AUTO-SYNC / AUTO-SAVE
   const deviceId = getDeviceId();
@@ -110,7 +105,7 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
         if (d.q3Choice !== undefined) setQ3Choice(d.q3Choice);
         if (d.q4Answer !== undefined) setQ4Answer(d.q4Answer);
         if (d.q5Answer !== undefined) setQ5Answer(d.q5Answer);
-        if (d.currentStep !== undefined) setCurrentStep(d.currentStep);
+        if (d.currentStep !== undefined) setCurrentStep(Math.min(2, d.currentStep));
         if (d.dyeType !== undefined) setDyeType(d.dyeType);
         if (d.waterUse !== undefined) setWaterUse(d.waterUse);
         if (d.treatment !== undefined) setTreatment(d.treatment);
@@ -207,31 +202,13 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
           <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground border border-border/60 px-2 py-1 rounded whitespace-nowrap">{stepLabels[currentStep]}</span>
           <div className="w-px h-6 bg-border/60 mx-1 hidden md:block" />
           <button onClick={() => {
-            // Validate before submission
-            const wordCount2 = q2Answer.trim() ? q2Answer.trim().split(/\s+/).length : 0;
-            const wordCount4 = q4Answer.trim() ? q4Answer.trim().split(/\s+/).length : 0;
-            const wordCount5 = q5Answer.trim() ? q5Answer.trim().split(/\s+/).length : 0;
-            
-            if (wordCount2 > 0 && wordCount2 < 15) {
-              alert(isId ? "Soal 2 memerlukan minimal 15 kata." : "Question 2 requires at least 15 words.");
-              return;
-            }
-            if (wordCount4 > 0 && wordCount4 < 15) {
-              alert(isId ? "Soal 4 memerlukan minimal 15 kata." : "Question 4 requires at least 15 words.");
-              return;
-            }
-            if (wordCount5 > 0 && wordCount5 < 15) {
-              alert(isId ? "Soal 5 memerlukan minimal 15 kata." : "Question 5 requires at least 15 words.");
-              return;
-            }
-            
-            const score = [
-              Object.keys(q1Answers).length >= 4,
-              q2Answer.trim().length > 0,
-              q3Choice.trim().length > 0,
-              q4Answer.trim().length > 0,
-              q5Answer.trim().length > 0
-            ].filter(Boolean).length;
+            const wc2 = getWordCount(q2Answer);
+            const wc4 = getWordCount(q4Answer);
+            const wc5 = getWordCount(q5Answer);
+            if (wc2 > 0 && wc2 < 8) { alert(isId ? "Soal 2 memerlukan minimal 8 kata." : "Question 2 requires at least 8 words."); return; }
+            if (wc4 > 0 && wc4 < 15) { alert(isId ? "Soal 4 memerlukan minimal 15 kata." : "Question 4 requires at least 15 words."); return; }
+            if (wc5 > 0 && wc5 < 8) { alert(isId ? "Soal 5 memerlukan minimal 8 kata." : "Question 5 requires at least 8 words."); return; }
+            const score = computeScore();
             saveCompletedSession(9, { q1Answers, q2Answer, q3Choice, q4Answer, q5Answer, history }, score, 5);
             onExit?.();
           }} className="px-3 py-1.5 bg-emerald-600 text-white text-[10px] font-bold rounded border border-emerald-700 hover:bg-emerald-700 transition-colors uppercase tracking-wider">
@@ -265,6 +242,12 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
                   <p>{isId
                     ? "Jika limbah cair dibuang tanpa pengolahan yang tepat, dapat mengurangi kualitas air dan merusak ekosistem perairan. Dalam penyelidikan ini, siswa memeriksa tiga faktor penting: jenis pewarna, penggunaan air, dan pengolahan limbah."
                     : "If wastewater is released without proper treatment, it can reduce water quality and harm aquatic ecosystems. In this investigation, students examine three important factors: dye type, water use, and waste treatment."}</p>
+                  <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 space-y-2">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-primary">{isId ? "Stimulus" : "Stimulus"}</p>
+                    <p className="text-[12px] text-foreground/80 leading-relaxed">{isId
+                      ? "Sebuah workshop batik di Trusmi membuang limbah pewarna ke sungai terdekat. Volume limbah meningkat saat musim produksi tinggi. Siswa diminta menyelidiki bagaimana jenis pewarna, penggunaan air, dan pengolahan limbah memengaruhi kualitas air serta kelayakan produksi."
+                      : "A batik workshop in Trusmi releases dye wastewater into a nearby river. Wastewater volume rises during peak production. Students investigate how dye type, water use, and waste treatment affect water quality and production feasibility."}</p>
+                  </div>
                   <div className="rounded-xl overflow-hidden border border-border/40 bg-black/5">
                     <video
                       src="/videos/unit9-batik.mp4"
@@ -492,13 +475,7 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
                 <button
                   onClick={() => {
                     if (!isStepValid()) return;
-                    const score = [
-                      Object.keys(q1Answers).length >= 4,
-                      q2Answer.trim().length > 0,
-                      q3Choice.trim().length > 0,
-                      q4Answer.trim().length > 0,
-                      q5Answer.trim().length > 0
-                    ].filter(Boolean).length;
+                    const score = computeScore();
                     saveCompletedSession(9, { q1Answers, q2Answer, q3Choice, q4Answer, q5Answer, history }, score, 5);
                     onExit?.();
                   }}
@@ -528,7 +505,7 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
                 </button>
               ) : (
                 <button onClick={() => {
-                  const score = [Object.keys(q1Answers).length >= 4, q2Answer.trim().length > 0, q3Choice.trim().length > 0, q4Answer.trim().length > 0, q5Answer.trim().length > 0].filter(Boolean).length;
+                  const score = computeScore();
                   saveCompletedSession(9, { q1Answers, q2Answer, q3Choice, q4Answer, q5Answer, history }, score, 5);
                   onExit?.();
                 }} className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13px] transition-all shadow-md">
