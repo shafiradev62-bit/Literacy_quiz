@@ -92,7 +92,7 @@ export default function LoadingScreen({ onDone, duration = 30000 }: LoadingScree
 
         <button
           onClick={onDone}
-          className="mt-1 text-[12px] text-amber-50/80 hover:text-white transition-colors underline underline-offset-2"
+          className="mt-1 text-[12px] text-amber-50/80 hover:text-white transition-colors underline underline-offset-2 rounded-full"
         >
           {isId ? "Lewati" : "Skip"}
         </button>

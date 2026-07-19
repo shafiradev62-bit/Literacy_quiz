@@ -35,7 +35,7 @@ const Results = () => {
       <div className="h-screen flex items-center justify-center pt-16">
         <div className="text-center">
           <p className="text-muted-foreground text-sm mb-4">{t("No results found.", "Hasil tidak ditemukan.")}</p>
-          <Link to="/quiz" className="text-sm font-medium text-primary hover:opacity-80">{t("Take the assessment", "Ikuti penilaian")}</Link>
+          <Link to="/quiz" className="text-sm font-medium text-primary hover:opacity-80 rounded-full">{t("Take the assessment", "Ikuti penilaian")}</Link>
         </div>
       </div>
     );
@@ -214,14 +214,14 @@ const Results = () => {
           <div className="flex gap-2">
             <button
               onClick={downloadCSV}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-600 text-white text-[12px] font-semibold rounded-lg transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-600 text-white text-[12px] font-semibold rounded-full transition-colors btn-3d"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
               CSV
             </button>
             <button
               onClick={downloadJSON}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-border/60 text-black text-[12px] font-semibold rounded-lg hover:bg-muted/30 transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-border/60 text-black text-[12px] font-semibold rounded-full hover:bg-muted/30 transition-colors btn-3d"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
               JSON
@@ -230,10 +230,10 @@ const Results = () => {
         </div>
 
         <div className="flex gap-3">
-          <button onClick={() => navigate("/quiz")} className="px-5 py-2.5 bg-indigo-600 text-white text-[13px] font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+          <button onClick={() => navigate("/quiz")} className="px-5 py-2.5 bg-indigo-600 text-white text-[13px] font-medium rounded-full btn-3d hover:bg-indigo-700 transition-colors">
             {t("Retake", "Ulangi")}
           </button>
-          <Link to="/dashboard" className="px-5 py-2.5 bg-white border border-border/60 text-black text-[13px] font-medium rounded-lg hover:bg-muted/30 transition-colors">
+          <Link to="/dashboard" className="px-5 py-2.5 bg-white border border-border/60 text-black text-[13px] font-medium rounded-full btn-3d hover:bg-muted/30 transition-colors">
             {t("View History", "Lihat Riwayat")}
           </Link>
         </div>

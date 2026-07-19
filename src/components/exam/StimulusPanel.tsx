@@ -19,9 +19,9 @@ const StimulusPanel = ({ unit = 2, imageUrl, videoUrl, images = [], videos = [] 
   const dynamicStimulus = getUnitStimulus(unit);
   const isDynamic = dynamicStimulus && (dynamicStimulus.titleEn || dynamicStimulus.introductionEn);
 
-  // Combine old and new media props
-  const allImages = [imageUrl, ...images].filter(Boolean) as string[];
-  const allVideos = [videoUrl, ...videos].filter(Boolean) as string[];
+  // Combine media props without duplicates
+  const allImages = Array.from(new Set([imageUrl, ...images].filter(Boolean) as string[]));
+  const allVideos = Array.from(new Set([videoUrl, ...videos].filter(Boolean) as string[]));
   const hasMedia = allImages.length > 0 || allVideos.length > 0;
 
   const unitStyles = {
@@ -40,10 +40,10 @@ const StimulusPanel = ({ unit = 2, imageUrl, videoUrl, images = [], videos = [] 
   return (
     <div className={`h-full flex flex-col overflow-hidden ${unitStyles} transition-colors duration-500`}>
       <div className="shrink-0 flex border-b border-border/50 bg-muted/30 px-4 pt-3 gap-1">
-        <button onClick={() => setTab("en")} className={`px-3 py-1.5 text-[11px] font-medium rounded-t-md transition-all ${tab === "en" ? "bg-white border border-b-white border-border/50 text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
+        <button onClick={() => setTab("en")} className={`px-3 py-1.5 text-[11px] font-medium rounded-t-lg transition-all ${tab === "en" ? "bg-white border border-b-white border-border/50 text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
           Bahasa Inggris (English)
         </button>
-        <button onClick={() => setTab("id")} className={`px-3 py-1.5 text-[11px] font-medium rounded-t-md transition-all ${tab === "id" ? "bg-white border border-b-white border-border/50 text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
+        <button onClick={() => setTab("id")} className={`px-3 py-1.5 text-[11px] font-medium rounded-t-lg transition-all ${tab === "id" ? "bg-white border border-b-white border-border/50 text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
           Bahasa Indonesia (Indonesian)
         </button>
       </div>
@@ -98,7 +98,7 @@ const StimulusPanel = ({ unit = 2, imageUrl, videoUrl, images = [], videos = [] 
               <div className="flex flex-col items-center gap-2 py-6">
                 <button
                   onClick={() => { setSelectedMedia(allVideos[0]); setMediaType("video"); }}
-                  className="flex items-center gap-3 px-6 py-4 bg-primary text-primary-foreground rounded-xl hover:opacity-90 transition-all text-lg font-medium shadow-lg"
+                  className="flex items-center gap-3 px-6 py-4 bg-primary text-primary-foreground rounded-full hover:opacity-90 transition-all text-lg font-medium btn-3d"
                 >
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>

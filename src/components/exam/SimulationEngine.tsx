@@ -361,7 +361,7 @@ const NasiJamblangSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
         <p className="text-[12px] font-bold uppercase tracking-widest text-muted-foreground mb-3">{isId ? "Kontrol Simulasi" : "Simulation Controls"}</p>
         <SliderRow label={isId ? "Lama Penyimpanan" : "Storage Duration"} value={storageDays} min={1} max={30} unit={isId ? " hari" : " days"} color="#6366f1" onChange={setStorageDays} />
         <SliderRow label={isId ? "Suhu Penyimpanan" : "Storage Temperature"} value={temp} min={15} max={45} unit="°C" color="#ef4444" onChange={setTemp} />
-        <button onClick={handleRun} className="w-full mt-2 py-2.5 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md">
+        <button onClick={handleRun} className="w-full mt-2 py-2.5 bg-primary text-white text-[13px] font-bold rounded-full hover:bg-primary/90 transition-all btn-3d">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="2" y="14" width="20" height="8" rx="2" fill="white"/><rect x="4" y="18" width="4" height="4" rx="1" fill="#6366f1"/><rect x="10" y="15" width="4" height="7" rx="1" fill="#6366f1"/><rect x="16" y="11" width="4" height="11" rx="1" fill="#6366f1"/><path d="M5 12l4-4 4 2 6-6" stroke="#4338ca" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Simpan Data" : "Record Data"}
         </button>
       </SimCard>
@@ -617,7 +617,7 @@ const TerasiSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
         <SliderRow label={isId ? "Waktu Pengeringan" : "Drying Time"} value={dryingDays} min={1} max={7} unit={isId ? " hari" : " days"} color="#f59e0b" onChange={setDryingDays} />
         <SliderRow label={isId ? "Tingkat Kebersihan" : "Hygiene Level"} value={hygieneVal} min={0} max={100} color="#10b981" onChange={setHygieneVal} />
         <SliderRow label={isId ? "Suhu Fermentasi" : "Fermentation Temp"} value={temp} min={20} max={45} unit="°C" color="#ef4444" onChange={setTemp} note="°C" />
-        <button onClick={handleRun} className="w-full mt-1 py-2.5 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md">
+        <button onClick={handleRun} className="w-full mt-1 py-2.5 bg-primary text-white text-[13px] font-bold rounded-full hover:bg-primary/90 transition-all btn-3d">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="2" y="14" width="20" height="8" rx="2" fill="white"/><rect x="4" y="18" width="4" height="4" rx="1" fill="#6366f1"/><rect x="10" y="15" width="4" height="7" rx="1" fill="#6366f1"/><rect x="16" y="11" width="4" height="11" rx="1" fill="#6366f1"/><path d="M5 12l4-4 4 2 6-6" stroke="#4338ca" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Simpan Data" : "Record Data"}
         </button>
       </SimCard>
@@ -724,10 +724,10 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
           </div>
 
           <div className="flex gap-3 pt-4 border-t border-slate-100">
-            <button onClick={handleRecord} className="flex-1 py-5 bg-slate-900 text-white font-bold rounded-3xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all text-xs tracking-widest uppercase">
+            <button onClick={handleRecord} className="flex-1 py-5 bg-slate-900 text-white font-bold rounded-full btn-3d hover:scale-[1.02] active:scale-[0.98] transition-all text-xs tracking-widest uppercase">
                {isId ? "CATAT DATA" : "RECORD DATA"}
             </button>
-            <button onClick={handleClear} className="px-6 py-5 bg-slate-100 text-slate-400 font-bold rounded-3xl hover:bg-slate-200 transition-all text-xs tracking-widest uppercase">
+            <button onClick={handleClear} className="px-6 py-5 bg-slate-100 text-slate-400 font-bold rounded-full btn-3d hover:bg-slate-200 transition-all text-xs tracking-widest uppercase">
                {isId ? "HAPUS" : "CLEAR"}
             </button>
           </div>
@@ -1013,11 +1013,11 @@ const KerupukMelaratSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => v
         {/* Medium selector */}
         <div className="flex gap-2 mt-3">
           <button onClick={() => setFryMedium("sand")}
-            className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all ${fryMedium === "sand" ? "border-amber-500 bg-amber-50 text-amber-700" : "border-border/40 bg-white text-muted-foreground"}`}>
+            className={`flex-1 py-2 text-[11px] font-bold rounded-full border-2 transition-all btn-3d ${fryMedium === "sand" ? "border-amber-500 bg-amber-50 text-amber-700" : "border-border/40 bg-white text-muted-foreground"}`}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1"><circle cx="12" cy="5" r="3" fill="#fbbf24"/><path d="M3 21h18" stroke="#d97706" strokeWidth="2"/><path d="M3 21 Q12,17 21,21" fill="#fbbf24"/></svg>{isId ? "Pasir Panas" : "Hot Sand"}
           </button>
           <button onClick={() => setFryMedium("oil")}
-            className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all ${fryMedium === "oil" ? "border-yellow-500 bg-yellow-50 text-yellow-700" : "border-border/40 bg-white text-muted-foreground"}`}>
+            className={`flex-1 py-2 text-[11px] font-bold rounded-full border-2 transition-all btn-3d ${fryMedium === "oil" ? "border-yellow-500 bg-yellow-50 text-yellow-700" : "border-border/40 bg-white text-muted-foreground"}`}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="5" y="4" width="14" height="16" rx="3" fill="#78716c"/><rect x="5" y="4" width="14" height="4" rx="2" fill="#57534e"/><ellipse cx="12" cy="8" rx="5" ry="1.5" fill="#a8a29e"/></svg>{isId ? "Minyak Goreng" : "Cooking Oil"}
           </button>
         </div>
@@ -1037,7 +1037,7 @@ const KerupukMelaratSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => v
             <div className={`w-5 h-5 rounded-full bg-white shadow-md absolute top-0.5 transition-all ${isReused ? "left-6" : "left-0.5"}`} />
           </button>
         </div>
-        <button onClick={handleRun} className="w-full py-2.5 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md">
+        <button onClick={handleRun} className="w-full py-2.5 bg-primary text-white text-[13px] font-bold rounded-full hover:bg-primary/90 transition-all btn-3d">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="2" y="14" width="20" height="8" rx="2" fill="white"/><rect x="4" y="18" width="4" height="4" rx="1" fill="#6366f1"/><rect x="10" y="15" width="4" height="7" rx="1" fill="#6366f1"/><rect x="16" y="11" width="4" height="11" rx="1" fill="#6366f1"/><path d="M5 12l4-4 4 2 6-6" stroke="#4338ca" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Simpan Data" : "Record Data"}
         </button>
       </SimCard>
@@ -1412,11 +1412,11 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
         {/* Packaging selector */}
         <div className="flex gap-2 mt-3">
           <button onClick={() => setPackaging("banana")}
-            className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all ${packaging === "banana" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : "border-border/40 bg-white text-muted-foreground"}`}>
+            className={`flex-1 py-2 text-[11px] font-bold rounded-full border-2 transition-all btn-3d ${packaging === "banana" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : "border-border/40 bg-white text-muted-foreground"}`}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1"><path d="M5 20 Q3 14 6 9 Q9 5 15 4 Q19 3.5 20 5 Q20 7 17 8 Q12 9 8 14 Q6 17 6 20 Z" fill="#fde047"/><path d="M6 19 Q4 14 7 10 Q10 6 15 5" stroke="#eab308" strokeWidth="1" strokeLinecap="round" fill="none"/></svg>{isId ? "Daun Pisang" : "Banana Leaf"}
           </button>
           <button onClick={() => setPackaging("plastic")}
-            className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all ${packaging === "plastic" ? "border-blue-500 bg-blue-50 text-blue-700" : "border-border/40 bg-white text-muted-foreground"}`}>
+            className={`flex-1 py-2 text-[11px] font-bold rounded-full border-2 transition-all btn-3d ${packaging === "plastic" ? "border-blue-500 bg-blue-50 text-blue-700" : "border-border/40 bg-white text-muted-foreground"}`}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" fill="#3b82f6"/><line x1="3" y1="6" x2="21" y2="6" stroke="#1d4ed8" strokeWidth="2"/><path d="M16 10a4 4 0 0 1-8 0" stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Plastik" : "Plastic"}
           </button>
         </div>
@@ -1432,13 +1432,13 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
           <div className="flex gap-2">
             {(["good", "medium", "poor"] as const).map(s => (
               <button key={s} onClick={() => setStarterQuality(s)}
-                className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all ${starterQuality === s ? (s === "good" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : s === "medium" ? "border-amber-500 bg-amber-50 text-amber-700" : "border-red-500 bg-red-50 text-red-700") : "border-border/40 bg-white text-muted-foreground"}`}>
+                className={`flex-1 py-2 text-[11px] font-bold rounded-full border-2 transition-all btn-3d ${starterQuality === s ? (s === "good" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : s === "medium" ? "border-amber-500 bg-amber-50 text-amber-700" : "border-red-500 bg-red-50 text-red-700") : "border-border/40 bg-white text-muted-foreground"}`}>
                 {s === "good" ? (<svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1"><circle cx="12" cy="12" r="9" fill="#fbbf24" stroke="#d97706" strokeWidth="1.5"/><text x="12" y="16" textAnchor="middle" fontSize="9" fontWeight="bold" fill="#92400e">1</text></svg>) : s === "medium" ? (<svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1"><circle cx="12" cy="12" r="9" fill="#d1d5db" stroke="#9ca3af" strokeWidth="1.5"/><text x="12" y="16" textAnchor="middle" fontSize="9" fontWeight="bold" fill="#6b7280">2</text></svg>) : (<svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline mr-1"><circle cx="12" cy="12" r="9" fill="#cd7c32" stroke="#92400e" strokeWidth="1.5"/><text x="12" y="16" textAnchor="middle" fontSize="9" fontWeight="bold" fill="#78350f">3</text></svg>)} {s.charAt(0).toUpperCase() + s.slice(1)}
               </button>
             ))}
           </div>
         </div>
-        <button onClick={handleRun} className="w-full mt-1 py-2.5 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md">
+        <button onClick={handleRun} className="w-full mt-1 py-2.5 bg-primary text-white text-[13px] font-bold rounded-full hover:bg-primary/90 transition-all btn-3d">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline mr-1"><rect x="2" y="14" width="20" height="8" rx="2" fill="white"/><rect x="4" y="18" width="4" height="4" rx="1" fill="#6366f1"/><rect x="10" y="15" width="4" height="7" rx="1" fill="#6366f1"/><rect x="16" y="11" width="4" height="11" rx="1" fill="#6366f1"/><path d="M5 12l4-4 4 2 6-6" stroke="#4338ca" strokeWidth="2" strokeLinecap="round"/></svg>{isId ? "Simpan Data" : "Record Data"}
         </button>
       </SimCard>
@@ -1664,7 +1664,7 @@ const MangroveSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void })
           <div className="flex gap-2">
             {([["natural", isId?"Alami":"Natural"], ["housing", isId?"Pemukiman":"Housing"], ["ponds", isId?"Tambak":"Ponds"]] as const).map(([val, label]) => (
               <button key={val} onClick={() => setCoastalUse(val)}
-                className={`flex-1 py-2 text-[11px] font-bold rounded-xl border-2 transition-all flex items-center justify-center gap-1 ${coastalUse === val ? (val === "natural" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : val === "housing" ? "border-slate-500 bg-slate-50 text-slate-700" : "border-blue-500 bg-blue-50 text-blue-700") : "border-border/40 bg-white text-muted-foreground"}`}>
+                className={`flex-1 py-2 text-[11px] font-bold rounded-full border-2 transition-all btn-3d flex items-center justify-center gap-1 ${coastalUse === val ? (val === "natural" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : val === "housing" ? "border-slate-500 bg-slate-50 text-slate-700" : "border-blue-500 bg-blue-50 text-blue-700") : "border-border/40 bg-white text-muted-foreground"}`}>
                 {val === "natural" && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>}
                 {val === "housing" && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>}
                 {val === "ponds" && <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3" fill="white"/></svg>}
@@ -1673,7 +1673,7 @@ const MangroveSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void })
             ))}
           </div>
         </div>
-        <button onClick={handleRun} className="w-full mt-1 py-3 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md uppercase tracking-[0.2em]">
+        <button onClick={handleRun} className="w-full mt-1 py-3 bg-primary text-white text-[13px] font-bold rounded-full hover:bg-primary/90 transition-all btn-3d uppercase tracking-[0.2em]">
           {isId ? "Simpan Data" : "Record Data"}
         </button>
       </SimCard>
@@ -1882,7 +1882,7 @@ const NadranSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
         <SliderRow label={isId ? "Kesadaran Masyarakat" : "Community Awareness"} value={communityAwareness} min={0} max={100} color="#10b981" onChange={setCommunityAwareness} note="%" />
         <SliderRow label={isId ? "Pengelolaan Limbah" : "Waste Management"} value={wasteManagement} min={0} max={100} color="#8b5cf6" onChange={setWasteManagement} note="%" />
         <SliderRow label={isId ? "Upaya Konservasi" : "Conservation Efforts"} value={conservationEfforts} min={0} max={100} color="#f59e0b" onChange={setConservationEfforts} note="%" />
-        <button onClick={handleRun} className="w-full mt-1 py-3 bg-primary text-white text-[13px] font-bold rounded-xl hover:bg-primary/90 transition-all shadow-md uppercase tracking-[0.2em]">
+        <button onClick={handleRun} className="w-full mt-1 py-3 bg-primary text-white text-[13px] font-bold rounded-full hover:bg-primary/90 transition-all btn-3d uppercase tracking-[0.2em]">
           {isId ? "Simpan Data" : "Record Data"}
         </button>
       </SimCard>

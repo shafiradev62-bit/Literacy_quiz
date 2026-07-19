@@ -28,7 +28,7 @@ return (
             </p>
             <Link
               to="/learn"
-              className="inline-block px-5 py-2.5 bg-primary text-primary-foreground text-xs font-medium rounded-sm transition-all duration-200 hover:opacity-90"
+              className="inline-block px-6 py-2.5 bg-primary text-primary-foreground text-xs font-medium rounded-full btn-3d transition-all duration-200"
             >
               {t("Start Learning", "Mulai Belajar")}
             </Link>

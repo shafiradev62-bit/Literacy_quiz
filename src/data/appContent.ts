@@ -25,7 +25,7 @@ export interface UnitMeta {
   images?: string[];
 }
 
-/** Only images from folder `gambar unit` — no duplicates / no legacy extras */
+/** Unit gallery images used by StimulusPanel / Pisa units */
 export const unitGallery: Record<number, string[]> = {
   1: [
     "/images/units/1/img1.jpeg",
@@ -42,6 +42,12 @@ export const unitGallery: Record<number, string[]> = {
     "/images/units/3/img3.jpeg",
     "/images/units/3/img4.jpeg",
   ],
+  4: ["/images/units/4/img1.png"],
+  5: ["/images/units/5/img1.png"],
+  6: ["/images/units/6/img1.png"],
+  7: ["/images/units/7/img1.jpg"],
+  8: ["/images/units/8/img1.jpg", "/images/units/8/img2.jpg"],
+  9: ["/images/units/9/img1.jpg"],
   10: [
     "/images/units/10/img1.jpeg",
     "/images/units/10/img2.jpeg",
@@ -84,6 +90,7 @@ export const defaultUnitMeta: Record<number, UnitMeta> = {
     subtitle: "Kerupuk Melarat (Sand-Frying Technique)",
     themeEn: "Kerupuk Melarat is fried using heated sand instead of cooking oil. This traditional technique reduces the need for large amounts of oil and allows the sand to be reused multiple times. The method demonstrates efficient resource utilization in local food processing systems, reducing waste and promoting sustainability in traditional food production.",
     themeId: "Kerupuk Melarat digoreng menggunakan pasir panas, bukan minyak. Teknik tradisional ini mengurangi kebutuhan minyak dalam jumlah besar dan memungkinkan pasir digunakan kembali berkalikali. Metode ini menunjukkan pemanfaatan sumber daya yang efisien dalam sistem pengolahan pangan lokal, mengurangi limbah, dan mendukung keberlanjutan produksi pangan tradisional.",
+    imageUrl: "/images/units/4/img1.png",
     videoUrl: "/videos/unit4-kerupuk-melarat.mp4",
   },
   5: {
@@ -92,6 +99,7 @@ export const defaultUnitMeta: Record<number, UnitMeta> = {
     subtitle: "Tape Ketan Bakung (Fermented Glutinous Rice with Leaf Packaging)",
     themeEn: "Tape Ketan Bakung is made from glutinous rice through a traditional fermentation process, which reflects the use of biological processes (microorganisms) in food production. The product is wrapped in natural leaves (commonly banana or similar leaves), which are biodegradable and reduce plastic waste. This practice demonstrates sustainable food processing and eco-friendly packaging, as well as efficient use of agricultural resources. Additionally, fermentation extends shelf life, reducing food waste and supporting sustainability in local food systems.",
     themeId: "Tape Ketan Bakung dibuat dari beras ketan melalui proses fermentasi tradisional yang melibatkan mikroorganisme dalam produksi pangan. Produk ini dibungkus dengan daun alami (biasanya daun pisang atau daun sejenis) yang dapat terurai secara hayati dan mengurangi limbah plastik. Praktik ini mencerminkan pengolahan pangan berkelanjutan dan kemasan ramah lingkungan, serta pemanfaatan sumber daya pertanian secara efisien. Selain itu, fermentasi juga memperpanjang masa simpan, mengurangi limbah pangan, dan mendukung keberlanjutan sistem pangan lokal.",
+    imageUrl: "/images/units/5/img1.png",
     videoUrl: "/videos/unit5-tape-ketan.mp4",
   },
   6: {
@@ -100,6 +108,7 @@ export const defaultUnitMeta: Record<number, UnitMeta> = {
     subtitle: "Mangrove Ecosystem (Coastal Protection)",
     themeEn: "Mangrove forests serve as coastal protection against erosion, carbon sinks, and habitats for diverse species. They also support fisheries and maintain coastal ecosystem balance. Mangrove conservation is therefore essential for biodiversity protection, climate change mitigation, and sustainable coastal ecosystems.",
     themeId: "Hutan mangrove berfungsi sebagai perlindungan pesisir dari erosi, penyerap karbon (carbon sink), serta habitat bagi berbagai spesies. Mangrove juga mendukung perikanan dan menjaga keseimbangan ekosistem pesisir. Oleh karena itu, konservasi mangrove sangat penting untuk perlindungan keanekaragaman hayati, mitigasi perubahan iklim, dan keberlanjutan ekosistem pesisir.",
+    imageUrl: "/images/units/6/img1.png",
     videoUrl: "/videos/unit6-mangrove.mp4",
   },
   7: {
@@ -108,6 +117,7 @@ export const defaultUnitMeta: Record<number, UnitMeta> = {
     subtitle: "Nadran (Sea Thanksgiving Ritual)",
     themeEn: "Nadran is a traditional ritual expressing gratitude for marine resources. The practice reflects the cultural relationship between coastal communities and the sea and may foster awareness about sustainable fishing practices and marine ecosystem conservation.",
     themeId: "Nadran merupakan ritual tradisional sebagai ungkapan rasa syukur atas sumber daya laut. Praktik ini mencerminkan hubungan budaya antara masyarakat pesisir dan laut, serta dapat meningkatkan kesadaran terhadap praktik perikanan berkelanjutan dan konservasi ekosistem laut.",
+    imageUrl: "/images/units/7/img1.jpg",
     videoUrl: "/videos/unit7-nadran.mp4",
   },
   8: {
@@ -116,6 +126,7 @@ export const defaultUnitMeta: Record<number, UnitMeta> = {
     subtitle: "Rattan Craft Industry (Rotan Plered)",
     themeEn: "Rattan is a non-timber forest product harvested from forest ecosystems. Sustainable rattan harvesting supports local livelihoods while maintaining forest biodiversity and ecological balance when managed responsibly.",
     themeId: "Rotan merupakan hasil hutan bukan kayu yang dipanen dari ekosistem hutan. Pemanenan rotan secara berkelanjutan dapat mendukung mata pencaharian masyarakat lokal sekaligus menjaga keanekaragaman hayati hutan dan keseimbangan ekologi jika dikelola dengan baik.",
+    imageUrl: "/images/units/8/img1.jpg",
     videoUrl: "/videos/unit8-rattan.mp4",
   },
   9: {
@@ -124,6 +135,7 @@ export const defaultUnitMeta: Record<number, UnitMeta> = {
     subtitle: "Batik Trusmi (Traditional Batik Industry)",
     themeEn: "Batik production involves dyeing processes that use water and chemical or natural dyes. Without proper treatment, wastewater can pollute aquatic ecosystems. The adoption of natural dyes and environmentally friendly production technologies can reduce environmental pollution and support sustainable craft industries.",
     themeId: "Produksi batik melibatkan proses pewarnaan yang menggunakan air serta zat pewarna kimia atau alami. Tanpa pengolahan yang tepat, limbah cair dapat mencemari ekosistem perairan. Penggunaan pewarna alami dan teknologi produksi ramah lingkungan dapat mengurangi pencemaran serta mendukung industri kerajinan yang berkelanjutan.",
+    imageUrl: "/images/units/9/img1.jpg",
     videoUrl: "/videos/unit9-batik.mp4",
   },
   10: {

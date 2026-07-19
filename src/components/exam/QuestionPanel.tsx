@@ -255,14 +255,14 @@ const QuestionPanel = ({
                 key={i}
                 onClick={() => canNavigate && onGoTo(i)}
                 disabled={!canNavigate}
-                className={`relative w-8 h-8 text-xs font-semibold rounded-md transition-all duration-200 shadow-sm ${
+                className={`relative w-8 h-8 text-xs font-semibold rounded-full transition-all duration-200 ${
                   isCurrent
-                    ? "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-md"
+                    ? "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground btn-3d"
                     : isItemFlagged
                     ? "bg-primary/10 text-primary border border-primary/30"
                     : !canNavigate
                     ? "bg-muted/30 text-muted-foreground/30 border border-border/30 cursor-not-allowed"
-                    : "bg-white text-muted-foreground hover:bg-secondary border border-border/50"
+                    : "bg-white text-muted-foreground hover:bg-secondary border border-border/50 shadow-sm"
                 }`}
               >
                 {i + 1}
@@ -504,9 +504,9 @@ const QuestionPanel = ({
                     <button
                       key={option}
                       onClick={() => handleMCQ(option)}
-                      className={`group w-full text-left px-5 py-4 text-[14px] rounded-2xl transition-all duration-300 border flex items-center gap-4 ${
+                      className={`group w-full text-left px-5 py-4 text-[14px] rounded-full transition-all duration-300 border flex items-center gap-4 ${
                         isSelected
-                          ? "bg-primary text-white border-primary shadow-lg scale-[1.02] z-10"
+                          ? "bg-primary text-white border-primary btn-3d scale-[1.02] z-10"
                           : `${optionBg} border-slate-200/60 text-foreground/80 hover:border-primary/40 hover:shadow-md hover:scale-[1.01]`
                       }`}
                     >
@@ -544,14 +544,14 @@ const QuestionPanel = ({
                     <button
                       key={option}
                       onClick={() => handleCheckbox(option)}
-                      className={`group w-full text-left px-5 py-4 text-[14px] rounded-2xl transition-all duration-300 border flex items-center gap-4 ${
+                      className={`group w-full text-left px-5 py-4 text-[14px] rounded-full transition-all duration-300 border flex items-center gap-4 ${
                         isSelected
-                          ? "bg-primary text-white border-primary shadow-lg scale-[1.02] z-10"
+                          ? "bg-primary text-white border-primary btn-3d scale-[1.02] z-10"
                           : `${optionBg} border-slate-200/60 text-foreground/80 hover:border-primary/40 hover:shadow-md hover:scale-[1.01]`
                       }`}
                     >
                       <span
-                        className={`flex-shrink-0 w-7 h-7 ${checkboxShouldBeSingle ? "rounded-full" : "rounded-xl"} border-2 flex items-center justify-center transition-all duration-300 ${
+                        className={`flex-shrink-0 w-7 h-7 ${checkboxShouldBeSingle ? "rounded-full" : "rounded-lg"} border-2 flex items-center justify-center transition-all duration-300 ${
                           isSelected
                             ? "bg-white border-white rotate-[360deg] scale-110"
                             : "bg-white/50 border-slate-300 group-hover:border-primary/50"
@@ -626,7 +626,7 @@ const QuestionPanel = ({
           <button
             onClick={onPrev}
             disabled={isFirst}
-            className="flex items-center gap-2 px-5 py-3 rounded-xl border-2 border-border font-bold text-[13px] text-foreground bg-white hover:bg-muted transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"
+            className="flex items-center gap-2 px-5 py-3 rounded-full border-2 border-border font-bold text-[13px] text-foreground bg-white hover:bg-muted transition-all disabled:opacity-30 disabled:cursor-not-allowed btn-3d"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
@@ -647,7 +647,7 @@ const QuestionPanel = ({
             <button
               onClick={handleSubmit}
               disabled={!isAnswerValid}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13px] transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md"
+              className="flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13px] transition-all disabled:opacity-40 disabled:cursor-not-allowed btn-3d"
             >
               {isId ? "Kirim Penilaian" : "Submit Assessment"}
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -658,7 +658,7 @@ const QuestionPanel = ({
             <button
               onClick={handleNext}
               disabled={!isAnswerValid}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-[13px] transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md"
+              className="flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-[13px] transition-all disabled:opacity-40 disabled:cursor-not-allowed btn-3d"
             >
               {isId ? "Soal Berikutnya" : "Next Question"}
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -780,7 +780,7 @@ function Unit5Simulation({ isId }: { isId: boolean }) {
           </div>
         </div>
 
-        <button onClick={runU5} className="px-5 py-2 bg-gray-900 text-white text-[13px] font-semibold rounded-full hover:opacity-90">
+        <button onClick={runU5} className="px-5 py-2 bg-gray-900 text-white text-[13px] font-semibold rounded-full hover:opacity-90 btn-3d">
           {isId ? "Jalankan" : "Run"}
         </button>
         </div>
@@ -969,7 +969,7 @@ function Unit6Simulation({ isId }: { isId: boolean }) {
           />
           <div className="flex justify-between text-[10px] text-muted-foreground mt-1"><span>0%</span><span>50%</span><span>100%</span></div>
         </div>
-        <button onClick={runU6} className="px-5 py-2 bg-gray-900 text-white text-[13px] font-semibold rounded-full hover:opacity-90">
+        <button onClick={runU6} className="px-5 py-2 bg-gray-900 text-white text-[13px] font-semibold rounded-full hover:opacity-90 btn-3d">
           {isId ? "Jalankan" : "Run"}
         </button>
         </div>
@@ -1168,7 +1168,7 @@ function Unit7Simulation({ isId }: { isId: boolean }) {
             style={{ background: `linear-gradient(to right, #111827 ${conservation}%, #e5e7eb ${conservation}%)` }}
           />
         </div>
-        <button onClick={runU7} className="px-5 py-2 bg-gray-900 text-white text-[13px] font-semibold rounded-full hover:opacity-90">
+        <button onClick={runU7} className="px-5 py-2 bg-gray-900 text-white text-[13px] font-semibold rounded-full hover:opacity-90 btn-3d">
           {isId ? "Jalankan" : "Run"}
         </button>
       </div>

@@ -100,7 +100,7 @@ export default function InteractiveUnit() {
           <div className="mx-auto bg-white rounded-xl border border-border/50 p-8 shadow-sm text-left max-w-3xl">
             <h1 className="font-display text-2xl text-foreground mb-6">{isId ? "Pendahuluan" : "Introduction"}</h1>
             <div className="whitespace-pre-line text-sm leading-relaxed text-foreground/80 mb-6">{introText}</div>
-            <button onClick={() => setPage(1)} className="px-6 py-3 bg-primary text-primary-foreground text-sm font-medium rounded-lg transition-opacity hover:opacity-90">
+            <button onClick={() => setPage(1)} className="px-6 py-3 bg-primary text-primary-foreground text-sm font-medium rounded-full btn-3d transition-opacity hover:opacity-90">
               {isId ? "Mulai Unit" : "Start Unit"}
             </button>
           </div>
@@ -117,8 +117,8 @@ export default function InteractiveUnit() {
             <h2 className="font-display text-xl mb-4">{isId ? "Selesai" : "Finish"}</h2>
             <p className="text-sm text-muted-foreground mb-6">{isId ? "Klik selesai untuk melihat skor Anda." : "Click finish to see your score."}</p>
             <div className="flex gap-3">
-              <button onClick={() => setPage(5)} className="px-4 py-2 border border-border rounded-lg text-sm hover:bg-muted/50">{isId ? "Kembali" : "Back"}</button>
-              <button onClick={handleFinish} className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm hover:opacity-90">{isId ? "Selesai" : "Finish"}</button>
+              <button onClick={() => setPage(5)} className="px-4 py-2 border border-border rounded-full text-sm hover:bg-muted/50 btn-3d">{isId ? "Kembali" : "Back"}</button>
+              <button onClick={handleFinish} className="px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm hover:opacity-90 btn-3d">{isId ? "Selesai" : "Finish"}</button>
             </div>
           </div>
         </div>
@@ -158,7 +158,7 @@ export default function InteractiveUnit() {
           {currentQuestion.type === "single" && (
             <div className="space-y-2">
               {currentQuestion.options.map((opt, idx) => (
-                <button key={idx} onClick={() => setResponses((r) => ({ ...r, [currentQuestion.id]: String(idx) }))} className={`w-full text-left p-3 rounded-lg border transition-all ${responses[currentQuestion.id] === String(idx) ? "border-primary/30 bg-primary/5" : "border-border/50 hover:border-primary/20"}`}>
+                <button key={idx} onClick={() => setResponses((r) => ({ ...r, [currentQuestion.id]: String(idx) }))} className={`w-full text-left p-3 rounded-full border transition-all ${responses[currentQuestion.id] === String(idx) ? "border-primary/30 bg-primary/5 btn-3d" : "border-border/50 hover:border-primary/20"}`}>
                   <div className="flex items-center gap-3">
                     <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${responses[currentQuestion.id] === String(idx) ? "border-primary bg-primary" : "border-muted-foreground/30"}`}>
                       {responses[currentQuestion.id] === String(idx) && <span className="w-2 h-2 bg-white rounded-full" />}
@@ -187,11 +187,11 @@ export default function InteractiveUnit() {
           )}
 
           <div className="flex gap-3 mt-5">
-            <button onClick={() => setPage((p) => Math.max(1, p - 1))} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg">{isId ? "← Kembali" : "← Back"}</button>
+            <button onClick={() => setPage((p) => Math.max(1, p - 1))} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-full btn-3d">{isId ? "← Kembali" : "← Back"}</button>
             <button
               onClick={() => setPage((p) => Math.min(6, p + 1))}
               disabled={!isCurrentValid()}
-              className="px-4 py-2 text-sm rounded-lg hover:opacity-90 bg-primary text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed"
+              className="px-4 py-2 text-sm rounded-full hover:opacity-90 bg-primary text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed btn-3d"
             >
               {isId ? "Berikutnya →" : "Next →"}
             </button>

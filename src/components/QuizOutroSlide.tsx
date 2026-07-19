@@ -180,7 +180,7 @@ export default function QuizOutroSlide({ onFinish }: Props) {
         {/* Finish button */}
         <button
           onClick={onFinish}
-          className={`px-8 py-3.5 bg-primary text-primary-foreground font-bold rounded-2xl shadow-lg shadow-primary/30 transition-all duration-300 text-sm active:scale-95 hover:bg-primary/90 ${showBtn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
+          className={`px-8 py-3.5 bg-primary text-primary-foreground font-bold rounded-full btn-3d transition-all duration-300 text-sm active:scale-95 hover:bg-primary/90 ${showBtn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
         >
           {isId ? "Selesai ✓" : "Finish ✓"}
         </button>

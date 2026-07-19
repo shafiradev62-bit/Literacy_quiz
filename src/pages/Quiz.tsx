@@ -81,20 +81,33 @@ const Quiz = () => {
     return s;
   };
 
-  function handleSubmit() {
-    const finalScore = calculateScore();
+  function advanceAfterUnit(justCompleted: number) {
     localStorage.removeItem("exam_active");
-    completeSession(finalScore, questions.length);
-    // Check if all units are completed
     const allSessions = getAllLocalSessions();
     const completedUnits = new Set(allSessions.filter(s => s.completed).map(s => s.unit));
-    completedUnits.add(selectedUnit); // include current
-    const allDone = [1,2,3,4,5,6,7,8,9,10].every(u => completedUnits.has(u));
+    completedUnits.add(justCompleted);
+    const allDone = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].every(u => completedUnits.has(u));
     if (allDone) {
       setScreen("outro");
+      return;
+    }
+    // Continue to next unfinished unit instead of dumping back to unit select
+    const next = ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const).find(u => !completedUnits.has(u));
+    if (next) {
+      setSelectedUnit(next);
+      setCurrent(0);
+      setAnswers({});
+      setFlagged(new Set());
+      setScreen("intro");
     } else {
       setScreen("select");
     }
+  }
+
+  function handleSubmit() {
+    const finalScore = calculateScore();
+    completeSession(finalScore, questions.length);
+    advanceAfterUnit(selectedUnit);
   }
 
   const answeredCount = Object.keys(answers).filter((k) => {
@@ -188,9 +201,9 @@ const Quiz = () => {
                       setSelectedUnit(u); setCurrent(0); setAnswers({}); setFlagged(new Set()); setLoading(true);
                     }}
                     disabled={isCompleted}
-                    className={`w-full bg-white rounded-xl border border-border/50 p-4 shadow-sm transition-all text-left group flex items-start gap-4 ${isCompleted ? "opacity-60 cursor-not-allowed" : "hover:shadow-md hover:border-primary/30"}`}
+                    className={`w-full bg-white rounded-2xl border border-border/50 p-4 shadow-sm transition-all text-left group flex items-start gap-4 ${isCompleted ? "opacity-60 cursor-not-allowed" : "hover:shadow-md hover:border-primary/30"}`}
                   >
-                    <div className={`w-12 h-12 rounded-lg font-bold text-lg flex items-center justify-center shrink-0 transition-all ${progress?.completed ? "bg-primary text-white" : "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white"}`}>
+                    <div className={`w-12 h-12 rounded-full font-bold text-lg flex items-center justify-center shrink-0 transition-all btn-3d ${progress?.completed ? "bg-primary text-white" : "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white"}`}>
                       {progress?.completed ? (
                         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
@@ -233,7 +246,7 @@ const Quiz = () => {
                       )}
                     </div>
                     {isCompleted ? (
-                      <span className="text-[10px] font-bold text-primary bg-primary/10 border border-primary/30 px-2 py-1 rounded-lg shrink-0 mt-2">{isId ? "Selesai" : "Done"}</span>
+                      <span className="text-[10px] font-bold text-primary bg-primary/10 border border-primary/30 px-2 py-1 rounded-full shrink-0 mt-2">{isId ? "Selesai" : "Done"}</span>
                     ) : (
                       <svg className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0 mt-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -296,7 +309,7 @@ const Quiz = () => {
             {/* Right: Unit info + start */}
             <div className="w-80 shrink-0 flex flex-col justify-between px-8 py-10 bg-muted/10">
               <div>
-                <div className="w-14 h-14 rounded-2xl bg-primary text-primary-foreground font-bold text-2xl flex items-center justify-center mb-5 mx-auto shadow-md">
+                <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground font-bold text-2xl flex items-center justify-center mb-5 mx-auto btn-3d">
                   {selectedUnit}
                 </div>
                 <h2 className="font-display text-xl text-foreground mb-2 text-center">{meta.title}</h2>
@@ -312,7 +325,7 @@ const Quiz = () => {
               </div>
               <button
                 onClick={() => setScreen("exam")}
-                className="w-full py-4 bg-primary text-primary-foreground font-semibold rounded-2xl hover:bg-primary/95 transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 active:scale-[0.98]"
+                className="w-full py-4 bg-primary text-primary-foreground font-semibold rounded-full hover:bg-primary/95 transition-all flex items-center justify-center gap-2 btn-3d active:scale-[0.98]"
               >
                 {isId ? "Mulai Soal" : "Start Questions"}
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7"/></svg>
@@ -328,14 +341,7 @@ const Quiz = () => {
   if (selectedUnit === 8) {
     return (
       <div className="h-screen overflow-hidden">
-        <Unit8Pisa onExit={() => {
-          const allSessions = getAllLocalSessions();
-          const completedUnits = new Set(allSessions.filter(s => s.completed).map(s => s.unit));
-          completedUnits.add(8);
-          const allDone = [1,2,3,4,5,6,7,8,9,10].every(u => completedUnits.has(u));
-          if (allDone) setScreen("outro");
-          else setScreen("select");
-        }} studentId={studentProfile?.id} />
+        <Unit8Pisa onExit={() => advanceAfterUnit(8)} studentId={studentProfile?.id} />
       </div>
     );
   }
@@ -343,14 +349,7 @@ const Quiz = () => {
   if (selectedUnit === 9) {
     return (
       <div className="h-screen overflow-hidden">
-        <Unit9Pisa onExit={() => {
-          const allSessions = getAllLocalSessions();
-          const completedUnits = new Set(allSessions.filter(s => s.completed).map(s => s.unit));
-          completedUnits.add(9);
-          const allDone = [1,2,3,4,5,6,7,8,9,10].every(u => completedUnits.has(u));
-          if (allDone) setScreen("outro");
-          else setScreen("select");
-        }} studentId={studentProfile?.id} />
+        <Unit9Pisa onExit={() => advanceAfterUnit(9)} studentId={studentProfile?.id} />
       </div>
     );
   }
@@ -358,14 +357,7 @@ const Quiz = () => {
   if (selectedUnit === 10) {
     return (
       <div className="h-screen overflow-hidden">
-        <Unit10Pisa onExit={() => {
-          const allSessions = getAllLocalSessions();
-          const completedUnits = new Set(allSessions.filter(s => s.completed).map(s => s.unit));
-          completedUnits.add(10);
-          const allDone = [1,2,3,4,5,6,7,8,9,10].every(u => completedUnits.has(u));
-          if (allDone) setScreen("outro");
-          else setScreen("select");
-        }} studentId={studentProfile?.id} />
+        <Unit10Pisa onExit={() => advanceAfterUnit(10)} studentId={studentProfile?.id} />
       </div>
     );
   }

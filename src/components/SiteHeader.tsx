@@ -10,7 +10,8 @@ const SiteHeader = () => {
   const links = [
     { to: "/learn", label: t("Learn", "Belajar") },
     { to: "/quiz", label: "Quiz" },
-    { to: "/dashboard", label: t("Results", "Hasil") },
+    // Students see personal results only — admin dashboard stays at /dashboard (not in nav)
+    { to: "/results", label: t("Results", "Hasil") },
   ];
 
   const handleNavClick = (e: React.MouseEvent, to: string) => {
@@ -55,7 +56,7 @@ const SiteHeader = () => {
 
           <button
             onClick={toggle}
-            className="text-[10px] font-medium tracking-wider uppercase px-2 py-1 rounded-sm bg-secondary text-secondary-foreground transition-colors duration-200 hover:bg-accent"
+            className="text-[10px] font-medium tracking-wider uppercase px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground transition-all duration-200 hover:bg-accent btn-3d"
           >
             {lang === "en" ? "ID" : "EN"}
           </button>

@@ -150,85 +150,13 @@ export const examQuestionsUnit2: ExamQuestion[] = [
 ];
 
 // ── UNIT 3 ──────────────────────────────────────────────────────────────────
+// Keep only E1 (Q2–Q5 removed per temuan bug)
 export const examQuestionsUnit3: ExamQuestion[] = [
   {
     id: 1,
     type: "open",
     question: "You are asked to investigate the most energy-efficient way to cook Empal Gentong.\n\nUse the simulation to determine:\nWhich combination of pot type, pot thickness, and heat input produces the highest energy efficiency?\n\nRecord your data and write your answer based on the results.",
     questionIdn: "Kamu diminta untuk menyelidiki cara memasak Empal Gentong yang paling efisien secara energi.\n\nGunakan simulasi untuk menentukan:\nKombinasi jenis wadah, ketebalan wadah, dan besar panas yang menghasilkan efisiensi energi tertinggi.\n\nCatat data dan tuliskan jawaban berdasarkan hasil simulasi.",
-  },
-  {
-    id: 2,
-    type: "mcq",
-    question: "A chef uses:\n• A metal pot\n• Thin pot thickness\n• High heat input\n\nWhat is the most likely outcome?",
-    questionIdn: "Seorang koki menggunakan:\n• Panci logam\n• Ketebalan tipis\n• Panas tinggi\n\nApa hasil yang paling mungkin terjadi?",
-    options: [
-      "High heat retention and low energy use",
-      "Low heat retention and high energy use",
-      "No difference compared to clay pot",
-      "Only cooking time is affected",
-    ],
-    optionsIdn: [
-      "Retensi panas tinggi dan energi rendah",
-      "Retensi panas rendah dan energi tinggi",
-      "Tidak ada perbedaan dengan tanah liat",
-      "Hanya waktu memasak yang berubah",
-    ],
-    correct: "Low heat retention and high energy use",
-  },
-  {
-    id: 3,
-    type: "checkbox",
-    question: "When the thickness of a clay pot increases, heat retention also increases.\nWhich TWO statements best explain this phenomenon?",
-    questionIdn: "Ketika ketebalan wadah tanah liat meningkat, retensi panas juga meningkat.\nManakah DUA pernyataan yang paling tepat menjelaskan fenomena ini?",
-    options: [
-      "Thicker walls store more heat energy",
-      "Heat loss to the environment is reduced",
-      "Clay becomes more conductive when thicker",
-      "More heat escapes through the surface",
-      "Thermal mass of the pot increases",
-    ],
-    optionsIdn: [
-      "Dinding yang lebih tebal menyimpan lebih banyak energi panas",
-      "Kehilangan panas ke lingkungan berkurang",
-      "Tanah liat menjadi lebih konduktif saat lebih tebal",
-      "Lebih banyak panas keluar melalui permukaan",
-      "Massa termal wadah meningkat",
-    ],
-    correct: [
-      "Thicker walls store more heat energy",
-      "Heat loss to the environment is reduced",
-    ],
-  },
-  {
-    id: 4,
-    type: "checkbox",
-    question: "Based on the simulation, which TWO conditions can still result in low energy efficiency even when using a clay pot?",
-    questionIdn: "PILIH 2. Berdasarkan simulasi, kondisi mana yang tetap dapat menyebabkan efisiensi energi rendah meskipun menggunakan wadah tanah liat?",
-    options: [
-      "Very high heat input",
-      "Very thin pot wall",
-      "Moderate heat input",
-      "Excessive water volume",
-      "Proper thickness and moderate heat",
-    ],
-    optionsIdn: [
-      "Panas sangat tinggi",
-      "Dinding wadah sangat tipis",
-      "Panas sedang",
-      "Volume air terlalu banyak",
-      "Ketebalan optimal dan panas sedang",
-    ],
-    correct: [
-      "Very high heat input",
-      "Very thin pot wall",
-    ],
-  },
-  {
-    id: 5,
-    type: "open",
-    question: "If you were a policymaker promoting sustainable cooking practices:\nWould you recommend using clay pots instead of metal pots?\n\nExplain your reasoning based on:\n• energy efficiency\n• environmental impact\n• sustainability",
-    questionIdn: "Jika kamu seorang pembuat kebijakan yang ingin mendorong praktik memasak berkelanjutan:\nApakah kamu akan merekomendasikan penggunaan wadah tanah liat dibandingkan panci logam?\n\nJelaskan alasanmu berdasarkan:\n• efisiensi energi\n• dampak lingkungan\n• keberlanjutan",
   },
 ];
 
@@ -520,13 +448,8 @@ export const examQuestionsUnit6: ExamQuestion[] = [
 ];
 
 // ── UNIT 7 ──────────────────────────────────────────────────────────────────
+// Nomor 1 dihapus (temuan bug: "nomor 1 ga usah") — keep PG2–E5
 export const examQuestionsUnit7: ExamQuestion[] = [
-  {
-    id: 1,
-    type: "open",
-    question: "Researchers want to understand how social and environmental factors influence marine sustainability in coastal Cirebon.\n\nMatch each factor with its most direct effect.\n\nFactors:\n1. High fishing intensity\n2. High community awareness\n3. Good waste management\n4. Strong conservation efforts\n\nEffects:\nA. Reduces fish population\nB. Reduces overfishing behavior\nC. Improves water quality\nD. Increases marine biodiversity\n\nInstructions:\nWrite the correct matches between each factor and its effect (for example: 1–A, 2–B, etc.).",
-    questionIdn: "Para peneliti ingin memahami bagaimana faktor sosial dan lingkungan memengaruhi keberlanjutan laut di wilayah pesisir Cirebon.\n\nPasangkan setiap faktor berikut dengan dampak utamanya yang paling tepat.\n\nFaktor:\n1. Intensitas penangkapan ikan tinggi\n2. Kesadaran masyarakat tinggi\n3. Pengelolaan limbah yang baik\n4. Upaya konservasi yang kuat\n\nDampak:\nA. Mengurangi populasi ikan\nB. Mengurangi perilaku penangkapan berlebih (overfishing)\nC. Meningkatkan kualitas air\nD. Meningkatkan keanekaragaman hayati laut\n\nPetunjuk:\nTuliskan pasangan yang sesuai antara faktor dan dampaknya (misalnya: 1-A, 2-B, dan seterusnya).",
-  },
   {
     id: 2,
     type: "mcq",

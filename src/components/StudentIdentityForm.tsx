@@ -170,13 +170,13 @@ export default function StudentIdentityForm({ onDone }: Props) {
               <p className="text-[12px] font-semibold text-foreground">{savedProfile.name}</p>
               <p className="text-[11px] text-muted-foreground">{savedProfile.class} · {savedProfile.school}</p>
             </div>
-            <button onClick={handleLogin} className="w-full py-2.5 bg-primary text-white font-medium rounded-lg hover:opacity-90 transition-all text-[13px]">
+            <button onClick={handleLogin} className="w-full py-2.5 bg-primary text-white font-medium rounded-full btn-3d transition-all text-[13px]">
               {isId ? "Lanjutkan (Continue)" : "Continue (Lanjutkan)"}
             </button>
-            <button onClick={() => setIsLogin(false)} className="w-full py-2.5 bg-white border border-border/60 text-foreground/70 font-medium rounded-lg hover:bg-muted/30 transition-all text-[13px]">
+            <button onClick={() => setIsLogin(false)} className="w-full py-2.5 bg-white border border-border/60 text-foreground/70 font-medium rounded-full btn-3d transition-all text-[13px]">
               {isId ? "Daftar Akun Baru (Register New Account)" : "Register New Account (Daftar Akun Baru)"}
             </button>
-            <button onClick={handleResetProgress} className="w-full py-2.5 bg-red-50 border border-red-200 text-red-600 font-medium rounded-lg hover:bg-red-100 transition-all text-[13px]">
+            <button onClick={handleResetProgress} className="w-full py-2.5 bg-red-50 border border-red-200 text-red-600 font-medium rounded-full btn-3d transition-all text-[13px]">
               {isId ? "Reset Progres (Reset Progress)" : "Reset Progress"}
             </button>
           </div>
@@ -190,7 +190,7 @@ export default function StudentIdentityForm({ onDone }: Props) {
                 {isId ? "Jenis Kelamin" : "Gender"} <span className="text-red-500">*</span>
               </label>
               <div className="flex gap-3">
-                <label className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-[12px] rounded-lg border cursor-pointer transition-all ${form.gender === "Laki-laki" ? "bg-primary/10 border-primary text-primary" : "bg-white border-border/60 text-muted-foreground hover:bg-muted/30"}`}>
+                <label className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-[12px] rounded-full border cursor-pointer transition-all btn-3d ${form.gender === "Laki-laki" ? "bg-primary/10 border-primary text-primary" : "bg-white border-border/60 text-muted-foreground hover:bg-muted/30"}`}>
                   <input
                     type="radio"
                     name="gender"
@@ -201,7 +201,7 @@ export default function StudentIdentityForm({ onDone }: Props) {
                   />
                   {isId ? "Laki-laki" : "Male"}
                 </label>
-                <label className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-[12px] rounded-lg border cursor-pointer transition-all ${form.gender === "Perempuan" ? "bg-primary/10 border-primary text-primary" : "bg-white border-border/60 text-muted-foreground hover:bg-muted/30"}`}>
+                <label className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-[12px] rounded-full border cursor-pointer transition-all btn-3d ${form.gender === "Perempuan" ? "bg-primary/10 border-primary text-primary" : "bg-white border-border/60 text-muted-foreground hover:bg-muted/30"}`}>
                   <input
                     type="radio"
                     name="gender"
@@ -215,7 +215,7 @@ export default function StudentIdentityForm({ onDone }: Props) {
               </div>
               {errors.gender && <p className="text-[10px] text-red-500 mt-0.5">{errors.gender}</p>}
             </div>
-            <button type="submit" className="w-full mt-2 py-2.5 bg-primary text-white font-medium rounded-lg hover:opacity-90 transition-all text-[13px]">
+            <button type="submit" className="w-full mt-2 py-2.5 bg-primary text-white font-medium rounded-full btn-3d transition-all text-[13px]">
               {isId ? "Daftar & Mulai" : "Register & Start"}
             </button>
           </form>

@@ -198,7 +198,7 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
                         : "Read the introduction carefully. Use the simulation on the right to help answer the questions. Click the button below or the arrows above to begin."}</p>
                       <button 
                         onClick={() => setCurrentStep(1)}
-                        className="w-full py-2.5 bg-primary text-white text-[11px] font-bold rounded-lg hover:bg-primary/90 transition-all shadow-sm flex items-center justify-center gap-2"
+                        className="w-full py-2.5 bg-primary text-white text-[11px] font-bold rounded-full hover:bg-primary/90 transition-all btn-3d flex items-center justify-center gap-2"
                       >
                         {isId ? "MULAI PENILAIAN" : "START ASSESSMENT"}
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
@@ -442,19 +442,19 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
           <div className="px-6 py-4 border-t-2 border-primary/20 bg-white shadow-[0_-2px_8px_rgba(0,0,0,0.06)] shrink-0">
             <div className="flex items-center gap-3">
               <button onClick={()=>setCurrentStep(p=>Math.max(0,p-1))} disabled={currentStep===0}
-                className="flex items-center gap-2 px-5 py-3 rounded-xl border-2 border-border font-bold text-[13px] text-foreground bg-white hover:bg-muted transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm">
+                className="flex items-center gap-2 px-5 py-3 rounded-full border-2 border-border font-bold text-[13px] text-foreground bg-white hover:bg-muted transition-all disabled:opacity-30 disabled:cursor-not-allowed btn-3d">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7"/></svg>
                 {isId?"Kembali":"Back"}
               </button>
               <div className="flex-1 text-center text-[11px] font-bold text-muted-foreground">{stepLabels[currentStep]} · {currentStep}/5</div>
               {currentStep < 5 ? (
                 <button onClick={()=>setCurrentStep(p=>Math.min(5,p+1))} disabled={!isStepValid()}
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-[13px] transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md">
+                  className="flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-[13px] transition-all disabled:opacity-40 disabled:cursor-not-allowed btn-3d">
                   {isId?"Soal Berikutnya":"Next Question"}
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7"/></svg>
                 </button>
               ) : (
-                <button onClick={handleExit} className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13px] transition-all shadow-md">
+                <button onClick={handleExit} className="flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13px] transition-all btn-3d">
                   {isId?"Kirim & Selesai":"Submit & Finish"}
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
                 </button>
@@ -647,8 +647,8 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
                 </div>
               ))}
               <div className="flex gap-3 pt-2">
-                <button onClick={runSimulation} className="flex-1 py-3.5 bg-foreground text-background text-[13px] font-black rounded-xl hover:opacity-90 transition-all shadow-md active:scale-[0.98] uppercase tracking-wider">{isId?"Jalankan Simulasi":"Run Simulation"}</button>
-                <button onClick={handleRecord} className="px-6 py-3.5 bg-white text-foreground text-[13px] font-bold rounded-xl border-2 border-border/60 hover:bg-muted transition-all active:scale-[0.98]">{isId?"Catat":"Record"}</button>
+                <button onClick={runSimulation} className="flex-1 py-3.5 bg-foreground text-background text-[13px] font-black rounded-full hover:opacity-90 transition-all btn-3d active:scale-[0.98] uppercase tracking-wider">{isId?"Jalankan Simulasi":"Run Simulation"}</button>
+                <button onClick={handleRecord} className="px-6 py-3.5 bg-white text-foreground text-[13px] font-bold rounded-full border-2 border-border/60 hover:bg-muted transition-all btn-3d active:scale-[0.98]">{isId?"Catat":"Record"}</button>
               </div>
             </div>
 

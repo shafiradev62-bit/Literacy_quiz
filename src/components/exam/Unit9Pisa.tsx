@@ -273,7 +273,7 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
                         : "Read the introduction carefully. Use the simulation on the right to help answer the questions. Click the button below or the arrows above to begin."}</p>
                       <button 
                         onClick={() => setCurrentStep(1)}
-                        className="w-full py-2.5 bg-primary text-white text-[11px] font-bold rounded-lg hover:bg-primary/90 transition-all shadow-sm flex items-center justify-center gap-2"
+                        className="w-full py-2.5 bg-primary text-white text-[11px] font-bold rounded-full hover:bg-primary/90 transition-all btn-3d flex items-center justify-center gap-2"
                       >
                         {isId ? "MULAI PENILAIAN" : "START ASSESSMENT"}
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
@@ -480,7 +480,7 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
                     onExit?.();
                   }}
                   disabled={!isStepValid()}
-                  className="w-full py-3 bg-emerald-600 text-white text-[12px] font-bold rounded-lg border border-emerald-700 hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                  className="w-full py-3 bg-emerald-600 text-white text-[12px] font-bold rounded-full border border-emerald-700 hover:bg-emerald-700 transition-colors disabled:opacity-50 btn-3d"
                 >
                   {isId ? "KIRIM JAWABAN UNIT 9" : "SUBMIT UNIT 9 ANSWERS"}
                 </button>
@@ -492,14 +492,14 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
           <div className="px-6 py-4 border-t-2 border-primary/20 bg-white shadow-[0_-2px_8px_rgba(0,0,0,0.06)] shrink-0">
             <div className="flex items-center gap-3">
               <button onClick={() => setCurrentStep(p => Math.max(0, p-1))} disabled={currentStep === 0}
-                className="flex items-center gap-2 px-5 py-3 rounded-xl border-2 border-border font-bold text-[13px] text-foreground bg-white hover:bg-muted transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm">
+                className="flex items-center gap-2 px-5 py-3 rounded-full border-2 border-border font-bold text-[13px] text-foreground bg-white hover:bg-muted transition-all disabled:opacity-30 disabled:cursor-not-allowed btn-3d">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7"/></svg>
                 {isId ? "Kembali" : "Back"}
               </button>
               <div className="flex-1 text-center text-[11px] font-bold text-muted-foreground">{stepLabels[currentStep]} · {currentStep}/5</div>
               {currentStep < 5 ? (
                 <button onClick={() => setCurrentStep(p => Math.min(5, p+1))} disabled={!isStepValid()}
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-[13px] transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md">
+                  className="flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-[13px] transition-all disabled:opacity-40 disabled:cursor-not-allowed btn-3d">
                   {isId ? "Soal Berikutnya" : "Next Question"}
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7"/></svg>
                 </button>
@@ -508,7 +508,7 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
                   const score = computeScore();
                   saveCompletedSession(9, { q1Answers, q2Answer, q3Choice, q4Answer, q5Answer, history }, score, 5);
                   onExit?.();
-                }} className="flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13px] transition-all shadow-md">
+                }} className="flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13px] transition-all btn-3d">
                   {isId ? "Kirim & Selesai" : "Submit & Finish"}
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
                 </button>
@@ -537,7 +537,7 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
                 <div className="flex gap-2">
                   {(["Synthetic","Natural"] as DyeType[]).map(v=>(
                     <button key={v} onClick={()=>{setDyeType(v);setSimRan(false);}}
-                      className={`flex-1 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${dyeType===v?"bg-primary text-white shadow-md scale-[1.02]":"bg-slate-100 text-slate-500 hover:bg-slate-200"}`}>
+                      className={`flex-1 py-2 text-[11px] font-bold rounded-full transition-all duration-200 btn-3d ${dyeType===v?"bg-primary text-white shadow-md scale-[1.02]":"bg-slate-100 text-slate-500 hover:bg-slate-200"}`}>
                       {v==="Synthetic"?(isId?"Sintetis":"Synthetic"):(isId?"Alami":"Natural")}
                     </button>
                   ))}
@@ -549,7 +549,7 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
                 <div className="flex gap-2">
                   {(["Low","Medium","High"] as WaterLevel[]).map(v=>(
                     <button key={v} onClick={()=>{setWaterUse(v);setSimRan(false);}}
-                      className={`flex-1 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${waterUse===v?"bg-primary text-white shadow-md scale-[1.02]":"bg-slate-100 text-slate-500 hover:bg-slate-200"}`}>
+                      className={`flex-1 py-2 text-[11px] font-bold rounded-full transition-all duration-200 btn-3d ${waterUse===v?"bg-primary text-white shadow-md scale-[1.02]":"bg-slate-100 text-slate-500 hover:bg-slate-200"}`}>
                       {v==="Low"?(isId?"Rendah":"Low"):v==="Medium"?(isId?"Sedang":"Medium"):(isId?"Tinggi":"High")}
                     </button>
                   ))}
@@ -561,7 +561,7 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
                 <div className="flex gap-2">
                   {(["None","Partial","Full"] as TreatmentLevel[]).map(v=>(
                     <button key={v} onClick={()=>{setTreatment(v);setSimRan(false);}}
-                      className={`flex-1 py-2 text-[11px] font-bold rounded-xl transition-all duration-200 ${treatment===v?"bg-primary text-white shadow-md scale-[1.02]":"bg-slate-100 text-slate-500 hover:bg-slate-200"}`}>
+                      className={`flex-1 py-2 text-[11px] font-bold rounded-full transition-all duration-200 btn-3d ${treatment===v?"bg-primary text-white shadow-md scale-[1.02]":"bg-slate-100 text-slate-500 hover:bg-slate-200"}`}>
                       {v==="None"?(isId?"Tidak Ada":"None"):v==="Partial"?(isId?"Sebagian":"Partial"):(isId?"Penuh":"Full")}
                     </button>
                   ))}
@@ -570,11 +570,11 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
               {/* Buttons */}
               <div className="flex gap-2 pt-1">
                 <button onClick={runSimulation}
-                  className="flex-1 py-2.5 bg-primary hover:bg-primary/90 text-white text-[12px] font-black rounded-xl transition-all shadow-md active:scale-95 tracking-wide">
+                  className="flex-1 py-2.5 bg-primary hover:bg-primary/90 text-white text-[12px] font-black rounded-full transition-all btn-3d active:scale-95 tracking-wide">
                   {isId?"JALANKAN SIMULASI":"RUN SIMULATION"}
                 </button>
                 <button onClick={handleRecord} disabled={!simRan}
-                  className="px-5 py-2.5 bg-white text-slate-600 text-[11px] font-bold rounded-xl border-2 border-slate-200 hover:bg-slate-50 transition-all disabled:opacity-30">
+                  className="px-5 py-2.5 bg-white text-slate-600 text-[11px] font-bold rounded-full border-2 border-slate-200 hover:bg-slate-50 transition-all btn-3d disabled:opacity-30">
                   {isId?"CATAT":"RECORD"}
                 </button>
               </div>

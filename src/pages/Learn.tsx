@@ -35,9 +35,9 @@ const Learn = () => {
             <button
               key={u}
               onClick={() => setSelectedUnit(u)}
-              className={`px-4 py-2 text-xs font-medium rounded-lg transition-all ${
+              className={`px-4 py-2 text-xs font-medium rounded-full transition-all ${
                 selectedUnit === u
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-primary text-primary-foreground btn-3d"
                   : "bg-white border border-border text-muted-foreground hover:bg-muted/50"
               }`}
             >
@@ -570,7 +570,7 @@ const Learn = () => {
           </div>
           <button
             onClick={() => navigate("/quiz")}
-            className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-150 hover:opacity-90 flex items-center gap-2"
+            className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-full btn-3d hover:opacity-90 flex items-center gap-2"
           >
             {isId ? "Mulai Quiz" : "Start Quiz"}
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

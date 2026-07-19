@@ -1,257 +1,424 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid slice">
-  <!-- Sky gradient -->
   <defs>
+    <!-- Sky gradient with depth -->
     <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#87CEEB"/>
-      <stop offset="100%" stop-color="#B0E2FF"/>
+      <stop offset="0%" stop-color="#4A90D9"/>
+      <stop offset="30%" stop-color="#6BA3E0"/>
+      <stop offset="60%" stop-color="#87CEEB"/>
+      <stop offset="100%" stop-color="#B8E4F9"/>
     </linearGradient>
+    <!-- Realistic grass -->
     <linearGradient id="grass" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#5CB85C"/>
+      <stop offset="0%" stop-color="#5DAE5D"/>
+      <stop offset="40%" stop-color="#4A9E4A"/>
       <stop offset="100%" stop-color="#3D8B3D"/>
     </linearGradient>
-    <linearGradient id="wall" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#F5DEB3"/>
-      <stop offset="100%" stop-color="#DEB887"/>
+    <!-- Wall texture -->
+    <linearGradient id="wallMain" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F5E6CC"/>
+      <stop offset="50%" stop-color="#EDD9B8"/>
+      <stop offset="100%" stop-color="#E0C99E"/>
     </linearGradient>
-    <linearGradient id="roof" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#CC3333"/>
-      <stop offset="100%" stop-color="#991111"/>
+    <!-- Side wall (shadow) -->
+    <linearGradient id="wallSide" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D4BC94"/>
+      <stop offset="100%" stop-color="#E0C99E"/>
     </linearGradient>
-    <radialGradient id="sun" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#FFEE44"/>
-      <stop offset="100%" stop-color="#FFB800"/>
+    <!-- Roof gradient -->
+    <linearGradient id="roofGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#C0392B"/>
+      <stop offset="100%" stop-color="#96281B"/>
+    </linearGradient>
+    <!-- Roof tile pattern -->
+    <pattern id="roofTiles" x="0" y="0" width="20" height="12" patternUnits="userSpaceOnUse">
+      <rect width="20" height="12" fill="none"/>
+      <path d="M0,6 Q10,0 20,6" fill="none" stroke="#A02010" stroke-width="0.5" opacity="0.3"/>
+    </pattern>
+    <!-- Window glass -->
+    <linearGradient id="glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A8D4F0"/>
+      <stop offset="50%" stop-color="#8EC8E8"/>
+      <stop offset="100%" stop-color="#70B8E0"/>
+    </linearGradient>
+    <!-- Sun glow -->
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFF4B8"/>
+      <stop offset="40%" stop-color="#FFE066"/>
+      <stop offset="100%" stop-color="#FFD700"/>
     </radialGradient>
+    <!-- Cloud soft gradient -->
+    <radialGradient id="cloudSoft" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="white"/>
+      <stop offset="100%" stop-color="#F0F4F8" stop-opacity="0.8"/>
+    </radialGradient>
+    <!-- Tree foliage -->
+    <radialGradient id="foliage1" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#5CB85C"/>
+      <stop offset="60%" stop-color="#3D9B3D"/>
+      <stop offset="100%" stop-color="#2D7A2D"/>
+    </radialGradient>
+    <radialGradient id="foliage2" cx="50%" cy="30%" r="55%">
+      <stop offset="0%" stop-color="#6BCB6B"/>
+      <stop offset="60%" stop-color="#4AAE4A"/>
+      <stop offset="100%" stop-color="#389038"/>
+    </radialGradient>
+    <!-- Path/walkway -->
+    <linearGradient id="walkway" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#D4C4A8"/>
+      <stop offset="100%" stop-color="#C0B090"/>
+    </linearGradient>
+    <!-- Door wood -->
+    <linearGradient id="doorWood" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B6914"/>
+      <stop offset="50%" stop-color="#6B4F0E"/>
+      <stop offset="100%" stop-color="#5A4008"/>
+    </linearGradient>
+    <!-- Flag -->
+    <linearGradient id="flag" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF0000"/>
+      <stop offset="50%" stop-color="#CC0000"/>
+      <stop offset="100%" stop-color="#FF0000"/>
+    </linearGradient>
+    <!-- Soft shadow filter -->
+    <filter id="softShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.15"/>
+    </filter>
+    <filter id="treeShadow" x="-20%" y="-10%" width="150%" height="130%">
+      <feDropShadow dx="2" dy="6" stdDeviation="8" flood-opacity="0.2"/>
+    </filter>
   </defs>
 
   <!-- Sky -->
   <rect width="1200" height="675" fill="url(#sky)"/>
 
-  <!-- Sun -->
-  <circle cx="1050" cy="90" r="55" fill="url(#sun)" opacity="0.95"/>
-  <!-- Sun rays -->
-  <g stroke="#FFD700" stroke-width="4" opacity="0.7">
-    <line x1="1050" y1="18" x2="1050" y2="2"/>
-    <line x1="1098" y1="42" x2="1110" y2="32"/>
-    <line x1="1122" y1="90" x2="1138" y2="90"/>
-    <line x1="1098" y1="138" x2="1110" y2="148"/>
-    <line x1="1050" y1="162" x2="1050" y2="178"/>
-    <line x1="1002" y1="138" x2="990" y2="148"/>
-    <line x1="978" y1="90" x2="962" y2="90"/>
-    <line x1="1002" y1="42" x2="990" y2="32"/>
-  </g>
-  <!-- Sun face -->
-  <circle cx="1035" cy="83" r="5" fill="#333" opacity="0.6"/>
-  <circle cx="1065" cy="83" r="5" fill="#333" opacity="0.6"/>
-  <path d="M1035 100 Q1050 113 1065 100" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <!-- Distant mountains/hills -->
+  <path d="M0,380 Q100,320 200,350 Q350,290 450,340 Q550,300 650,330 Q800,280 900,320 Q1000,290 1100,330 Q1150,310 1200,340 L1200,420 L0,420 Z" fill="#7CB9A0" opacity="0.3"/>
+  <path d="M0,400 Q150,360 300,380 Q450,350 600,370 Q750,340 900,365 Q1050,345 1200,370 L1200,440 L0,440 Z" fill="#6AAD8E" opacity="0.25"/>
 
-  <!-- Clouds -->
-  <g opacity="0.9">
-    <!-- Cloud 1 -->
-    <ellipse cx="180" cy="100" rx="80" ry="38" fill="white"/>
-    <ellipse cx="130" cy="110" rx="50" ry="30" fill="white"/>
-    <ellipse cx="230" cy="108" rx="55" ry="28" fill="white"/>
-    <ellipse cx="180" cy="125" rx="75" ry="25" fill="white"/>
-    <!-- Cloud 2 -->
-    <ellipse cx="500" cy="70" rx="65" ry="30" fill="white" opacity="0.8"/>
-    <ellipse cx="455" cy="80" rx="42" ry="24" fill="white" opacity="0.8"/>
-    <ellipse cx="545" cy="78" rx="45" ry="22" fill="white" opacity="0.8"/>
-    <!-- Cloud 3 -->
-    <ellipse cx="820" cy="55" rx="70" ry="32" fill="white" opacity="0.75"/>
-    <ellipse cx="775" cy="65" rx="45" ry="25" fill="white" opacity="0.75"/>
-    <ellipse cx="865" cy="63" rx="50" ry="23" fill="white" opacity="0.75"/>
+  <!-- Sun with realistic glow -->
+  <circle cx="1020" cy="100" r="80" fill="#FFF9E0" opacity="0.15"/>
+  <circle cx="1020" cy="100" r="50" fill="#FFF4CC" opacity="0.25"/>
+  <circle cx="1020" cy="100" r="35" fill="url(#sunGlow)" opacity="0.95"/>
+  <!-- Subtle sun rays -->
+  <g opacity="0.15">
+    <line x1="1020" y1="30" x2="1020" y2="5" stroke="#FFD700" stroke-width="3"/>
+    <line x1="1070" y1="50" x2="1090" y2="30" stroke="#FFD700" stroke-width="3"/>
+    <line x1="1090" y1="100" x2="1115" y2="100" stroke="#FFD700" stroke-width="3"/>
+    <line x1="1070" y1="150" x2="1090" y2="170" stroke="#FFD700" stroke-width="3"/>
+    <line x1="1020" y1="170" x2="1020" y2="195" stroke="#FFD700" stroke-width="3"/>
+    <line x1="970" y1="150" x2="950" y2="170" stroke="#FFD700" stroke-width="3"/>
+    <line x1="950" y1="100" x2="925" y2="100" stroke="#FFD700" stroke-width="3"/>
+    <line x1="970" y1="50" x2="950" y2="30" stroke="#FFD700" stroke-width="3"/>
   </g>
 
-  <!-- Ground -->
-  <rect x="0" y="490" width="1200" height="185" fill="url(#grass)"/>
-  <!-- Ground path/road -->
-  <rect x="480" y="490" width="240" height="185" fill="#C8A06E" opacity="0.5"/>
-  <!-- Path lines -->
-  <rect x="595" y="490" width="12" height="185" fill="#DEB887" opacity="0.6"/>
+  <!-- Clouds - realistic fluffy -->
+  <g opacity="0.92">
+    <ellipse cx="200" cy="90" rx="90" ry="40" fill="url(#cloudSoft)"/>
+    <ellipse cx="150" cy="100" rx="55" ry="32" fill="white" opacity="0.9"/>
+    <ellipse cx="260" cy="95" rx="60" ry="30" fill="white" opacity="0.85"/>
+    <ellipse cx="200" cy="110" rx="80" ry="28" fill="white" opacity="0.8"/>
 
-  <!-- ===== SCHOOL BUILDING ===== -->
-  <!-- Main building body -->
-  <rect x="280" y="220" width="640" height="270" fill="url(#wall)" rx="4"/>
-  <!-- Brick pattern (subtle) -->
-  <g opacity="0.12" stroke="#A0522D" stroke-width="1" fill="none">
-    <line x1="280" y1="250" x2="920" y2="250"/>
-    <line x1="280" y1="280" x2="920" y2="280"/>
-    <line x1="280" y1="310" x2="920" y2="310"/>
-    <line x1="280" y1="340" x2="920" y2="340"/>
-    <line x1="280" y1="370" x2="920" y2="370"/>
-    <line x1="280" y1="400" x2="920" y2="400"/>
-    <line x1="280" y1="430" x2="920" y2="430"/>
-    <line x1="280" y1="460" x2="920" y2="460"/>
-  </g>
-  <!-- Building outline -->
-  <rect x="280" y="220" width="640" height="270" fill="none" stroke="#8B6914" stroke-width="3" rx="4"/>
+    <ellipse cx="550" cy="60" rx="70" ry="32" fill="url(#cloudSoft)" opacity="0.85"/>
+    <ellipse cx="505" cy="70" rx="45" ry="25" fill="white" opacity="0.8"/>
+    <ellipse cx="595" cy="68" rx="48" ry="24" fill="white" opacity="0.75"/>
 
-  <!-- Main roof triangle -->
-  <polygon points="260,220 600,120 940,220" fill="url(#roof)"/>
-  <polygon points="260,220 600,120 940,220" fill="none" stroke="#7A1111" stroke-width="3"/>
-
-  <!-- Roof decorative strip -->
-  <rect x="260" y="218" width="680" height="12" fill="#AA2222" rx="2"/>
-
-  <!-- Clock tower / center feature -->
-  <rect x="545" y="130" width="110" height="95" fill="#DEB887" stroke="#8B6914" stroke-width="2" rx="2"/>
-  <rect x="545" y="118" width="110" height="16" fill="#AA2222" rx="2"/>
-  <!-- Clock face -->
-  <circle cx="600" cy="175" r="28" fill="white" stroke="#333" stroke-width="2.5"/>
-  <circle cx="600" cy="175" r="3" fill="#333"/>
-  <!-- Clock hands -->
-  <line x1="600" y1="175" x2="600" y2="156" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="600" y1="175" x2="614" y2="182" stroke="#333" stroke-width="2" stroke-linecap="round"/>
-  <!-- Clock numbers (simplified ticks) -->
-  <g stroke="#666" stroke-width="1.5">
-    <line x1="600" y1="151" x2="600" y2="147"/>
-    <line x1="614" y1="161" x2="617" y2="158"/>
-    <line x1="624" y1="175" x2="628" y2="175"/>
-    <line x1="614" y1="189" x2="617" y2="192"/>
-    <line x1="600" y1="199" x2="600" y2="203"/>
-    <line x1="586" y1="189" x2="583" y2="192"/>
-    <line x1="576" y1="175" x2="572" y2="175"/>
-    <line x1="586" y1="161" x2="583" y2="158"/>
+    <ellipse cx="850" cy="50" rx="75" ry="34" fill="url(#cloudSoft)" opacity="0.8"/>
+    <ellipse cx="800" cy="62" rx="48" ry="26" fill="white" opacity="0.75"/>
+    <ellipse cx="900" cy="58" rx="52" ry="25" fill="white" opacity="0.7"/>
   </g>
 
-  <!-- School flag -->
-  <line x1="600" y1="70" x2="600" y2="120" stroke="#555" stroke-width="3"/>
-  <polygon points="602,70 640,82 602,94" fill="#CC3333"/>
-  <rect x="602" y="70" width="2" height="24" fill="#AA2222"/>
-
-  <!-- WINDOWS LEFT WING -->
-  <!-- Row 1 - big windows -->
-  <rect x="305" y="255" width="70" height="60" rx="5" fill="#B0D4F1" stroke="#6699AA" stroke-width="2.5"/>
-  <line x1="340" y1="255" x2="340" y2="315" stroke="#6699AA" stroke-width="1.5"/>
-  <line x1="305" y1="285" x2="375" y2="285" stroke="#6699AA" stroke-width="1.5"/>
-  <!-- window reflection -->
-  <polygon points="308,258 328,258 308,275" fill="white" opacity="0.3"/>
-
-  <rect x="410" y="255" width="70" height="60" rx="5" fill="#B0D4F1" stroke="#6699AA" stroke-width="2.5"/>
-  <line x1="445" y1="255" x2="445" y2="315" stroke="#6699AA" stroke-width="1.5"/>
-  <line x1="410" y1="285" x2="480" y2="285" stroke="#6699AA" stroke-width="1.5"/>
-  <polygon points="413,258 433,258 413,275" fill="white" opacity="0.3"/>
-
-  <!-- Row 1 - RIGHT WING -->
-  <rect x="715" y="255" width="70" height="60" rx="5" fill="#B0D4F1" stroke="#6699AA" stroke-width="2.5"/>
-  <line x1="750" y1="255" x2="750" y2="315" stroke="#6699AA" stroke-width="1.5"/>
-  <line x1="715" y1="285" x2="785" y2="285" stroke="#6699AA" stroke-width="1.5"/>
-  <polygon points="718,258 738,258 718,275" fill="white" opacity="0.3"/>
-
-  <rect x="820" y="255" width="70" height="60" rx="5" fill="#B0D4F1" stroke="#6699AA" stroke-width="2.5"/>
-  <line x1="855" y1="255" x2="855" y2="315" stroke="#6699AA" stroke-width="1.5"/>
-  <line x1="820" y1="285" x2="890" y2="285" stroke="#6699AA" stroke-width="1.5"/>
-  <polygon points="823,258 843,258 823,275" fill="white" opacity="0.3"/>
-
-  <!-- Row 2 windows -->
-  <rect x="305" y="360" width="70" height="55" rx="5" fill="#B0D4F1" stroke="#6699AA" stroke-width="2.5"/>
-  <line x1="340" y1="360" x2="340" y2="415" stroke="#6699AA" stroke-width="1.5"/>
-  <line x1="305" y1="387" x2="375" y2="387" stroke="#6699AA" stroke-width="1.5"/>
-  <polygon points="308,363 328,363 308,378" fill="white" opacity="0.3"/>
-
-  <rect x="410" y="360" width="70" height="55" rx="5" fill="#B0D4F1" stroke="#6699AA" stroke-width="2.5"/>
-  <line x1="445" y1="360" x2="445" y2="415" stroke="#6699AA" stroke-width="1.5"/>
-  <line x1="410" y1="387" x2="480" y2="387" stroke="#6699AA" stroke-width="1.5"/>
-  <polygon points="413,363 433,363 413,378" fill="white" opacity="0.3"/>
-
-  <rect x="715" y="360" width="70" height="55" rx="5" fill="#B0D4F1" stroke="#6699AA" stroke-width="2.5"/>
-  <line x1="750" y1="360" x2="750" y2="415" stroke="#6699AA" stroke-width="1.5"/>
-  <line x1="715" y1="387" x2="785" y2="387" stroke="#6699AA" stroke-width="1.5"/>
-  <polygon points="718,363 738,363 718,378" fill="white" opacity="0.3"/>
-
-  <rect x="820" y="360" width="70" height="55" rx="5" fill="#B0D4F1" stroke="#6699AA" stroke-width="2.5"/>
-  <line x1="855" y1="360" x2="855" y2="415" stroke="#6699AA" stroke-width="1.5"/>
-  <line x1="820" y1="387" x2="890" y2="387" stroke="#6699AA" stroke-width="1.5"/>
-  <polygon points="823,363 843,363 823,378" fill="white" opacity="0.3"/>
-
-  <!-- MAIN DOOR (arched) -->
-  <path d="M550,490 L550,390 Q600,355 650,390 L650,490 Z" fill="#5C3D1E"/>
-  <path d="M556,490 L556,395 Q600,363 644,395 L644,490 Z" fill="#7B4F2A"/>
-  <!-- Door handle -->
-  <circle cx="620" cy="440" r="6" fill="#C8A000" stroke="#A07800" stroke-width="1.5"/>
-  <!-- Door arch trim -->
-  <path d="M550,390 Q600,353 650,390" fill="none" stroke="#8B6914" stroke-width="4"/>
-  <!-- Door frame -->
-  <rect x="547" y="388" width="106" height="102" fill="none" stroke="#8B6914" stroke-width="3" rx="2"/>
-  <!-- Door transom window -->
-  <path d="M556,393 Q600,365 644,393" fill="#B0D4F1" stroke="#6699AA" stroke-width="1.5"/>
-
-  <!-- SIGN: "SDN 1" or school name board -->
-  <rect x="490" y="440" width="220" height="35" rx="6" fill="#2255AA" stroke="#1133AA" stroke-width="2"/>
-  <text x="600" y="463" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white">SEKOLAH DASAR</text>
-
-  <!-- STEPS -->
-  <rect x="540" y="488" width="120" height="10" rx="2" fill="#C8A06E" stroke="#A08050" stroke-width="1.5"/>
-  <rect x="530" y="498" width="140" height="10" rx="2" fill="#DEB887" stroke="#A08050" stroke-width="1.5"/>
-
-  <!-- FLAGPOLE -->
-  <rect x="210" y="300" width="6" height="195" fill="#888" rx="3"/>
-  <polygon points="216,300 258,315 216,330" fill="#CC3333"/>
-  <!-- Flag stripe detail -->
-  <polygon points="216,315 258,315 216,330" fill="white"/>
-
-  <!-- TREES -->
-  <!-- Tree Left 1 -->
-  <rect x="120" y="400" width="20" height="90" rx="5" fill="#6B3F1E"/>
-  <ellipse cx="130" cy="390" rx="50" ry="55" fill="#2D8C2D"/>
-  <ellipse cx="110" cy="405" rx="35" ry="40" fill="#3AA33A"/>
-  <ellipse cx="150" cy="405" rx="35" ry="40" fill="#3AA33A"/>
-  <ellipse cx="130" cy="375" rx="40" ry="38" fill="#4DBF4D"/>
-
-  <!-- Tree Left 2 -->
-  <rect x="60" y="430" width="16" height="60" rx="4" fill="#6B3F1E"/>
-  <ellipse cx="68" cy="420" rx="38" ry="42" fill="#2D8C2D"/>
-  <ellipse cx="68" cy="408" rx="30" ry="32" fill="#4DBF4D"/>
-
-  <!-- Tree Right 1 -->
-  <rect x="1050" y="400" width="20" height="90" rx="5" fill="#6B3F1E"/>
-  <ellipse cx="1060" cy="390" rx="50" ry="55" fill="#2D8C2D"/>
-  <ellipse cx="1040" cy="405" rx="35" ry="40" fill="#3AA33A"/>
-  <ellipse cx="1080" cy="405" rx="35" ry="40" fill="#3AA33A"/>
-  <ellipse cx="1060" cy="375" rx="40" ry="38" fill="#4DBF4D"/>
-
-  <!-- Tree Right 2 -->
-  <rect x="1110" y="430" width="16" height="60" rx="4" fill="#6B3F1E"/>
-  <ellipse cx="1118" cy="420" rx="38" ry="42" fill="#2D8C2D"/>
-  <ellipse cx="1118" cy="408" rx="30" ry="32" fill="#4DBF4D"/>
-
-  <!-- Flowers on ground -->
-  <circle cx="200" cy="492" r="6" fill="#FF6B9D"/>
-  <circle cx="190" cy="488" r="5" fill="#FF9D4D"/>
-  <circle cx="215" cy="488" r="5" fill="#FFD700"/>
-  <circle cx="980" cy="492" r="6" fill="#FF6B9D"/>
-  <circle cx="990" cy="488" r="5" fill="#FF9D4D"/>
-  <circle cx="970" cy="488" r="5" fill="#FFD700"/>
-
-  <!-- Fence left side -->
-  <g stroke="#8B6914" stroke-width="2.5" fill="none">
-    <rect x="0" y="460" width="260" height="30" rx="2" fill="#DEB887" stroke="#8B6914"/>
-    <line x1="20" y1="460" x2="20" y2="490"/>
-    <line x1="50" y1="460" x2="50" y2="490"/>
-    <line x1="80" y1="460" x2="80" y2="490"/>
-    <line x1="110" y1="460" x2="110" y2="490"/>
-    <line x1="140" y1="460" x2="140" y2="490"/>
-    <line x1="170" y1="460" x2="170" y2="490"/>
-    <line x1="200" y1="460" x2="200" y2="490"/>
-    <line x1="230" y1="460" x2="230" y2="490"/>
+  <!-- Ground with grass texture -->
+  <rect x="0" y="430" width="1200" height="245" fill="url(#grass)"/>
+  <!-- Grass texture lines -->
+  <g opacity="0.08" stroke="#2D6B2D" stroke-width="1">
+    <line x1="0" y1="445" x2="1200" y2="445"/>
+    <line x1="0" y1="460" x2="1200" y2="460"/>
+    <line x1="0" y1="475" x2="1200" y2="475"/>
+    <line x1="0" y1="490" x2="1200" y2="490"/>
+    <line x1="0" y1="510" x2="1200" y2="510"/>
+    <line x1="0" y1="530" x2="1200" y2="530"/>
+    <line x1="0" y1="555" x2="1200" y2="555"/>
+    <line x1="0" y1="580" x2="1200" y2="580"/>
   </g>
 
-  <!-- Fence right side -->
-  <g stroke="#8B6914" stroke-width="2.5" fill="none">
-    <rect x="940" y="460" width="260" height="30" rx="2" fill="#DEB887" stroke="#8B6914"/>
-    <line x1="960" y1="460" x2="960" y2="490"/>
-    <line x1="990" y1="460" x2="990" y2="490"/>
-    <line x1="1020" y1="460" x2="1020" y2="490"/>
-    <line x1="1050" y1="460" x2="1050" y2="490"/>
-    <line x1="1080" y1="460" x2="1080" y2="490"/>
-    <line x1="1110" y1="460" x2="1110" y2="490"/>
-    <line x1="1140" y1="460" x2="1140" y2="490"/>
-    <line x1="1170" y1="460" x2="1170" y2="490"/>
+  <!-- Walkway to school -->
+  <path d="M520,675 L560,490 L640,490 L680,675 Z" fill="url(#walkway)" opacity="0.7"/>
+  <path d="M540,675 L570,490 L630,490 L660,675 Z" fill="#C8B898" opacity="0.4"/>
+  <!-- Walkway lines -->
+  <g stroke="#B8A888" stroke-width="1" opacity="0.3">
+    <line x1="550" y1="520" x2="650" y2="520"/>
+    <line x1="540" y1="560" x2="660" y2="560"/>
+    <line x1="530" y1="600" x2="670" y2="600"/>
+    <line x1="525" y1="640" x2="675" y2="640"/>
   </g>
 
-  <!-- Bottom gradient overlay for immersion -->
+  <!-- ===== SCHOOL BUILDING (Realistic) ===== -->
+  <g filter="url(#softShadow)">
+    <!-- Main building body -->
+    <rect x="300" y="230" width="600" height="260" fill="url(#wallMain)" rx="2"/>
+    <!-- Building side shadow -->
+    <rect x="300" y="230" width="15" height="260" fill="url(#wallSide)" opacity="0.5"/>
+    <rect x="885" y="230" width="15" height="260" fill="rgba(0,0,0,0.08)"/>
+    <!-- Building outline -->
+    <rect x="300" y="230" width="600" height="260" fill="none" stroke="#B8965A" stroke-width="2" rx="2"/>
+    <!-- Horizontal floor lines -->
+    <line x1="300" y1="360" x2="900" y2="360" stroke="#C8A878" stroke-width="1" opacity="0.4"/>
+    <!-- Base molding -->
+    <rect x="300" y="480" width="600" height="10" fill="#C8A878" rx="1"/>
+  </g>
+
+  <!-- Roof -->
+  <g>
+    <polygon points="280,230 600,130 920,230" fill="url(#roofGrad)"/>
+    <polygon points="280,230 600,130 920,230" fill="url(#roofTiles)"/>
+    <polygon points="280,230 600,130 920,230" fill="none" stroke="#7A1A10" stroke-width="2"/>
+    <!-- Roof ridge -->
+    <line x1="600" y1="130" x2="600" y2="130" stroke="#8B1A10" stroke-width="4" stroke-linecap="round"/>
+    <!-- Roof edge trim -->
+    <rect x="278" y="228" width="644" height="8" fill="#A52A1A" rx="1"/>
+    <!-- Roof eave shadow -->
+    <rect x="280" y="236" width="640" height="4" fill="rgba(0,0,0,0.1)" rx="1"/>
+  </g>
+
+  <!-- Clock tower (center) -->
+  <g>
+    <rect x="555" y="140" width="90" height="95" fill="url(#wallMain)" stroke="#B8965A" stroke-width="1.5"/>
+    <rect x="555" y="130" width="90" height="14" fill="#A52A1A" rx="1"/>
+    <!-- Tower top -->
+    <polygon points="550,130 600,100 650,130" fill="url(#roofGrad)" stroke="#7A1A10" stroke-width="1.5"/>
+    <!-- Clock face -->
+    <circle cx="600" cy="180" r="24" fill="#FEFEFE" stroke="#4A4A4A" stroke-width="2.5"/>
+    <circle cx="600" cy="180" r="21" fill="white" stroke="#DDD" stroke-width="0.5"/>
+    <!-- Clock hour markers -->
+    <g fill="none" stroke="#333" stroke-width="1.5" stroke-linecap="round">
+      <line x1="600" y1="162" x2="600" y2="166"/>
+      <line x1="618" y1="180" x2="614" y2="180"/>
+      <line x1="600" y1="198" x2="600" y2="194"/>
+      <line x1="582" y1="180" x2="586" y2="180"/>
+    </g>
+    <!-- Clock hands -->
+    <line x1="600" y1="180" x2="600" y2="165" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="600" y1="180" x2="613" y2="186" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="600" cy="180" r="3" fill="#333"/>
+  </g>
+
+  <!-- Flag -->
+  <line x1="600" y1="68" x2="600" y2="100" stroke="#666" stroke-width="3"/>
+  <polygon points="603,68 648,78 603,88" fill="url(#flag)"/>
+  <rect x="603" y="68" width="2" height="20" fill="#CC0000"/>
+  <!-- Flag shine -->
+  <polygon points="605,70 630,76 605,78" fill="white" opacity="0.15"/>
+
+  <!-- Windows - Left wing (Row 1) -->
+  <g>
+    <rect x="330" y="260" width="62" height="52" rx="3" fill="url(#glass)" stroke="#5A8A9A" stroke-width="2"/>
+    <line x1="361" y1="260" x2="361" y2="312" stroke="#5A8A9A" stroke-width="1.2"/>
+    <line x1="330" y1="286" x2="392" y2="286" stroke="#5A8A9A" stroke-width="1.2"/>
+    <!-- Window frame inner -->
+    <rect x="333" y="263" width="56" height="46" rx="2" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+    <!-- Glass reflection -->
+    <polygon points="335,265 355,265 335,280" fill="white" opacity="0.25"/>
+    <!-- Window sill -->
+    <rect x="326" y="312" width="70" height="5" rx="1" fill="#C8A878"/>
+  </g>
+  <g>
+    <rect x="420" y="260" width="62" height="52" rx="3" fill="url(#glass)" stroke="#5A8A9A" stroke-width="2"/>
+    <line x1="451" y1="260" x2="451" y2="312" stroke="#5A8A9A" stroke-width="1.2"/>
+    <line x1="420" y1="286" x2="482" y2="286" stroke="#5A8A9A" stroke-width="1.2"/>
+    <rect x="423" y="263" width="56" height="46" rx="2" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+    <polygon points="425,265 445,265 425,280" fill="white" opacity="0.25"/>
+    <rect x="416" y="312" width="70" height="5" rx="1" fill="#C8A878"/>
+  </g>
+
+  <!-- Windows - Right wing (Row 1) -->
+  <g>
+    <rect x="718" y="260" width="62" height="52" rx="3" fill="url(#glass)" stroke="#5A8A9A" stroke-width="2"/>
+    <line x1="749" y1="260" x2="749" y2="312" stroke="#5A8A9A" stroke-width="1.2"/>
+    <line x1="718" y1="286" x2="780" y2="286" stroke="#5A8A9A" stroke-width="1.2"/>
+    <rect x="721" y="263" width="56" height="46" rx="2" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+    <polygon points="723,265 743,265 723,280" fill="white" opacity="0.25"/>
+    <rect x="714" y="312" width="70" height="5" rx="1" fill="#C8A878"/>
+  </g>
+  <g>
+    <rect x="808" y="260" width="62" height="52" rx="3" fill="url(#glass)" stroke="#5A8A9A" stroke-width="2"/>
+    <line x1="839" y1="260" x2="839" y2="312" stroke="#5A8A9A" stroke-width="1.2"/>
+    <line x1="808" y1="286" x2="870" y2="286" stroke="#5A8A9A" stroke-width="1.2"/>
+    <rect x="811" y="263" width="56" height="46" rx="2" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+    <polygon points="813,265 833,265 813,280" fill="white" opacity="0.25"/>
+    <rect x="804" y="312" width="70" height="5" rx="1" fill="#C8A878"/>
+  </g>
+
+  <!-- Windows - Row 2 -->
+  <g>
+    <rect x="330" y="380" width="62" height="48" rx="3" fill="url(#glass)" stroke="#5A8A9A" stroke-width="2"/>
+    <line x1="361" y1="380" x2="361" y2="428" stroke="#5A8A9A" stroke-width="1.2"/>
+    <line x1="330" y1="404" x2="392" y2="404" stroke="#5A8A9A" stroke-width="1.2"/>
+    <polygon points="335,383 352,383 335,396" fill="white" opacity="0.2"/>
+    <rect x="326" y="428" width="70" height="4" rx="1" fill="#C8A878"/>
+  </g>
+  <g>
+    <rect x="420" y="380" width="62" height="48" rx="3" fill="url(#glass)" stroke="#5A8A9A" stroke-width="2"/>
+    <line x1="451" y1="380" x2="451" y2="428" stroke="#5A8A9A" stroke-width="1.2"/>
+    <line x1="420" y1="404" x2="482" y2="404" stroke="#5A8A9A" stroke-width="1.2"/>
+    <polygon points="425,383 442,383 425,396" fill="white" opacity="0.2"/>
+    <rect x="416" y="428" width="70" height="4" rx="1" fill="#C8A878"/>
+  </g>
+  <g>
+    <rect x="718" y="380" width="62" height="48" rx="3" fill="url(#glass)" stroke="#5A8A9A" stroke-width="2"/>
+    <line x1="749" y1="380" x2="749" y2="428" stroke="#5A8A9A" stroke-width="1.2"/>
+    <line x1="718" y1="404" x2="780" y2="404" stroke="#5A8A9A" stroke-width="1.2"/>
+    <polygon points="723,383 740,383 723,396" fill="white" opacity="0.2"/>
+    <rect x="714" y="428" width="70" height="4" rx="1" fill="#C8A878"/>
+  </g>
+  <g>
+    <rect x="808" y="380" width="62" height="48" rx="3" fill="url(#glass)" stroke="#5A8A9A" stroke-width="2"/>
+    <line x1="839" y1="380" x2="839" y2="428" stroke="#5A8A9A" stroke-width="1.2"/>
+    <line x1="808" y1="404" x2="870" y2="404" stroke="#5A8A9A" stroke-width="1.2"/>
+    <polygon points="813,383 830,383 813,396" fill="white" opacity="0.2"/>
+    <rect x="804" y="428" width="70" height="4" rx="1" fill="#C8A878"/>
+  </g>
+
+  <!-- Center large window (above door) -->
+  <g>
+    <rect x="555" y="270" width="90" height="60" rx="4" fill="url(#glass)" stroke="#5A8A9A" stroke-width="2"/>
+    <line x1="600" y1="270" x2="600" y2="330" stroke="#5A8A9A" stroke-width="1.5"/>
+    <line x1="555" y1="300" x2="645" y2="300" stroke="#5A8A9A" stroke-width="1.5"/>
+    <rect x="558" y="273" width="84" height="54" rx="3" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+    <polygon points="560,275 585,275 560,295" fill="white" opacity="0.2"/>
+    <rect x="551" y="330" width="98" height="5" rx="1" fill="#C8A878"/>
+  </g>
+
+  <!-- Main door (arched, realistic) -->
+  <g>
+    <!-- Door frame -->
+    <path d="M555,490 L555,385 Q600,345 645,385 L645,490 Z" fill="#4A3510"/>
+    <!-- Door panels -->
+    <path d="M560,490 L560,390 Q600,353 640,390 L640,490 Z" fill="url(#doorWood)"/>
+    <!-- Door arch highlight -->
+    <path d="M562,392 Q600,356 638,392" fill="none" stroke="#A07818" stroke-width="1.5"/>
+    <!-- Door panels split -->
+    <line x1="600" y1="370" x2="600" y2="490" stroke="#4A3510" stroke-width="2"/>
+    <!-- Door panels horizontal -->
+    <line x1="562" y1="420" x2="638" y2="420" stroke="#5A4510" stroke-width="1.5"/>
+    <line x1="562" y1="455" x2="638" y2="455" stroke="#5A4510" stroke-width="1.5"/>
+    <!-- Door handles -->
+    <circle cx="615" cy="440" r="5" fill="#D4A800" stroke="#A07800" stroke-width="1.5"/>
+    <circle cx="585" cy="440" r="5" fill="#D4A800" stroke="#A07800" stroke-width="1.5"/>
+    <!-- Door transom window -->
+    <path d="M562,388 Q600,358 638,388" fill="#A8D4F0" stroke="#5A8A9A" stroke-width="1.5"/>
+    <!-- Door frame outer -->
+    <path d="M552,492 L552,383 Q600,340 648,383 L648,492" fill="none" stroke="#8B6914" stroke-width="3"/>
+  </g>
+
+  <!-- School sign -->
+  <rect x="510" y="350" width="180" height="28" rx="4" fill="#1A4B8C" stroke="#0D3366" stroke-width="1.5"/>
+  <text x="600" y="369" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" letter-spacing="1">SEKOLAH DASAR</text>
+
+  <!-- Steps -->
+  <rect x="545" y="488" width="110" height="6" rx="1" fill="#C8A878" stroke="#A89060" stroke-width="0.5"/>
+  <rect x="535" y="494" width="130" height="6" rx="1" fill="#D4B890" stroke="#A89060" stroke-width="0.5"/>
+
+  <!-- ===== TREES (Realistic) ===== -->
+  <!-- Tree Left 1 - Large -->
+  <g filter="url(#treeShadow)">
+    <rect x="130" y="380" width="18" height="100" rx="4" fill="#5A3A14"/>
+    <rect x="132" y="380" width="4" height="100" rx="2" fill="#6B4A1E" opacity="0.5"/>
+    <ellipse cx="140" cy="365" rx="55" ry="60" fill="url(#foliage1)"/>
+    <ellipse cx="120" cy="380" rx="38" ry="42" fill="url(#foliage2)"/>
+    <ellipse cx="160" cy="380" rx="38" ry="42" fill="url(#foliage2)"/>
+    <ellipse cx="140" cy="345" rx="42" ry="40" fill="#5CB85C" opacity="0.8"/>
+    <!-- Leaf highlights -->
+    <ellipse cx="125" cy="350" rx="15" ry="12" fill="#6BCB6B" opacity="0.4"/>
+    <ellipse cx="155" cy="360" rx="12" ry="10" fill="#6BCB6B" opacity="0.3"/>
+  </g>
+
+  <!-- Tree Left 2 - Small -->
+  <g filter="url(#treeShadow)">
+    <rect x="55" y="420" width="14" height="70" rx="3" fill="#5A3A14"/>
+    <ellipse cx="62" cy="408" rx="40" ry="45" fill="url(#foliage1)"/>
+    <ellipse cx="62" cy="395" rx="32" ry="34" fill="#5CB85C" opacity="0.8"/>
+  </g>
+
+  <!-- Tree Right 1 - Large -->
+  <g filter="url(#treeShadow)">
+    <rect x="1040" y="380" width="18" height="100" rx="4" fill="#5A3A14"/>
+    <rect x="1042" y="380" width="4" height="100" rx="2" fill="#6B4A1E" opacity="0.5"/>
+    <ellipse cx="1050" cy="365" rx="55" ry="60" fill="url(#foliage1)"/>
+    <ellipse cx="1030" cy="380" rx="38" ry="42" fill="url(#foliage2)"/>
+    <ellipse cx="1070" cy="380" rx="38" ry="42" fill="url(#foliage2)"/>
+    <ellipse cx="1050" cy="345" rx="42" ry="40" fill="#5CB85C" opacity="0.8"/>
+    <ellipse cx="1035" cy="350" rx="15" ry="12" fill="#6BCB6B" opacity="0.4"/>
+    <ellipse cx="1065" cy="360" rx="12" ry="10" fill="#6BCB6B" opacity="0.3"/>
+  </g>
+
+  <!-- Tree Right 2 - Small -->
+  <g filter="url(#treeShadow)">
+    <rect x="1120" y="420" width="14" height="70" rx="3" fill="#5A3A14"/>
+    <ellipse cx="1127" cy="408" rx="40" ry="45" fill="url(#foliage1)"/>
+    <ellipse cx="1127" cy="395" rx="32" ry="34" fill="#5CB85C" opacity="0.8"/>
+  </g>
+
+  <!-- Flowers -->
+  <g>
+    <circle cx="210" cy="480" r="4" fill="#FF6B9D"/>
+    <circle cx="220" cy="475" r="3.5" fill="#FF9D4D"/>
+    <circle cx="200" cy="478" r="3" fill="#FFD700"/>
+    <circle cx="230" cy="480" r="3.5" fill="#FF6B9D"/>
+    <line x1="210" y1="484" x2="210" y2="492" stroke="#3D8B3D" stroke-width="1.5"/>
+    <line x1="220" y1="479" x2="220" y2="492" stroke="#3D8B3D" stroke-width="1.5"/>
+    <line x1="200" y1="481" x2="200" y2="492" stroke="#3D8B3D" stroke-width="1.5"/>
+  </g>
+  <g>
+    <circle cx="970" cy="480" r="4" fill="#FF6B9D"/>
+    <circle cx="980" cy="475" r="3.5" fill="#FF9D4D"/>
+    <circle cx="960" cy="478" r="3" fill="#FFD700"/>
+    <circle cx="990" cy="480" r="3.5" fill="#E06BFF"/>
+    <line x1="970" y1="484" x2="970" y2="492" stroke="#3D8B3D" stroke-width="1.5"/>
+    <line x1="980" y1="479" x2="980" y2="492" stroke="#3D8B3D" stroke-width="1.5"/>
+    <line x1="960" y1="481" x2="960" y2="492" stroke="#3D8B3D" stroke-width="1.5"/>
+  </g>
+
+  <!-- Fence -->
+  <g>
+    <!-- Left fence -->
+    <rect x="0" y="455" width="270" height="25" rx="2" fill="#D4B890" stroke="#A89060" stroke-width="1.5"/>
+    <g fill="#C8A878" stroke="#A89060" stroke-width="0.5">
+      <rect x="15" y="445" width="8" height="35" rx="2"/>
+      <rect x="45" y="445" width="8" height="35" rx="2"/>
+      <rect x="75" y="445" width="8" height="35" rx="2"/>
+      <rect x="105" y="445" width="8" height="35" rx="2"/>
+      <rect x="135" y="445" width="8" height="35" rx="2"/>
+      <rect x="165" y="445" width="8" height="35" rx="2"/>
+      <rect x="195" y="445" width="8" height="35" rx="2"/>
+      <rect x="225" y="445" width="8" height="35" rx="2"/>
+      <rect x="255" y="445" width="8" height="35" rx="2"/>
+    </g>
+    <!-- Right fence -->
+    <rect x="930" y="455" width="270" height="25" rx="2" fill="#D4B890" stroke="#A89060" stroke-width="1.5"/>
+    <g fill="#C8A878" stroke="#A89060" stroke-width="0.5">
+      <rect x="945" y="445" width="8" height="35" rx="2"/>
+      <rect x="975" y="445" width="8" height="35" rx="2"/>
+      <rect x="1005" y="445" width="8" height="35" rx="2"/>
+      <rect x="1035" y="445" width="8" height="35" rx="2"/>
+      <rect x="1065" y="445" width="8" height="35" rx="2"/>
+      <rect x="1095" y="445" width="8" height="35" rx="2"/>
+      <rect x="1125" y="445" width="8" height="35" rx="2"/>
+      <rect x="1155" y="445" width="8" height="35" rx="2"/>
+      <rect x="1185" y="445" width="8" height="35" rx="2"/>
+    </g>
+  </g>
+
+  <!-- Birds in sky -->
+  <g fill="none" stroke="#444" stroke-width="1.5" stroke-linecap="round" opacity="0.4">
+    <path d="M300,120 Q305,115 310,120 Q315,115 320,120"/>
+    <path d="M340,105 Q344,101 348,105 Q352,101 356,105"/>
+    <path d="M750,130 Q754,126 758,130 Q762,126 766,130"/>
+  </g>
+
+  <!-- Bottom gradient overlay for character immersion -->
   <linearGradient id="groundFade" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0%" stop-color="#3D6E2A" stop-opacity="0"/>
-    <stop offset="100%" stop-color="#1A3D10" stop-opacity="0.6"/>
+    <stop offset="100%" stop-color="#1A3D10" stop-opacity="0.65"/>
   </linearGradient>
   <rect x="0" y="490" width="1200" height="185" fill="url(#groundFade)"/>
 </svg>

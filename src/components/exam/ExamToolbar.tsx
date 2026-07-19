@@ -44,7 +44,7 @@ const ExamToolbar = ({ currentQuestion, totalQuestions }: ExamToolbarProps) => {
         <div className="flex items-center gap-3">
           <button
             onClick={toggle}
-            className="flex items-center gap-1 text-[11px] font-bold tracking-wider uppercase px-3 py-1.5 border border-white/30 rounded-lg transition-all duration-150 hover:bg-white/10 text-white"
+            className="flex items-center gap-1 text-[11px] font-bold tracking-wider uppercase px-3 py-1.5 border border-white/30 rounded-full transition-all duration-150 hover:bg-white/10 text-white btn-3d"
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
