@@ -265,9 +265,6 @@ const Unit9Pisa = ({ onExit, studentId }: Unit9PisaProps) => {
                   <p>{isId
                     ? "Jika limbah cair dibuang tanpa pengolahan yang tepat, dapat mengurangi kualitas air dan merusak ekosistem perairan. Dalam penyelidikan ini, siswa memeriksa tiga faktor penting: jenis pewarna, penggunaan air, dan pengolahan limbah."
                     : "If wastewater is released without proper treatment, it can reduce water quality and harm aquatic ecosystems. In this investigation, students examine three important factors: dye type, water use, and waste treatment."}</p>
-                  <div className="rounded-xl overflow-hidden border border-border/40 aspect-video bg-muted/20">
-                    <img src="/images/units/9/img1.jpg" alt="Batik Trusmi" className="w-full h-full object-cover" />
-                  </div>
                   <div className="rounded-xl overflow-hidden border border-border/40 bg-black/5">
                     <video
                       src="/videos/unit9-batik.mp4"

@@ -167,13 +167,6 @@ const Unit8Pisa = ({ onExit, studentId }: Unit8PisaProps) => {
                   <p>{isId?"Di Cirebon, rotan digunakan untuk membuat furnitur dan kerajinan tangan. Rotan merupakan hasil hutan bukan kayu, yang berarti diambil dari ekosistem hutan tanpa menebang pohon.":"In Cirebon, rattan is used to make furniture and handicrafts. Rattan is a non-timber forest product, which means it is taken from forest ecosystems without cutting down trees."}</p>
                   <p>{isId?"Para peneliti tertarik pada bagaimana rotan dapat dipanen dan digunakan secara berkelanjutan. Pemanenan rotan secara berkelanjutan dapat mendukung mata pencaharian lokal sekaligus membantu menjaga keanekaragaman hayati hutan dan keseimbangan ekologi.":"Researchers are interested in how rattan can be harvested and used in a sustainable way. Sustainable rattan harvesting can support local livelihoods while helping to maintain forest biodiversity and ecological balance."}</p>
                   <p>{isId?"Dalam penyelidikan ini, siswa memeriksa tiga faktor penting: tingkat panen, upaya penanaman kembali, dan pemanfaatan limbah.":"In this investigation, students examine three important factors: harvest rate, replanting effort, and waste utilization."}</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {["/images/units/8/img1.jpg","/images/units/8/img2.jpg"].map((src) => (
-                      <div key={src} className="rounded-xl overflow-hidden border border-border/40 aspect-[4/3] bg-muted/20">
-                        <img src={src} alt="Rattan craft" className="w-full h-full object-cover" />
-                      </div>
-                    ))}
-                  </div>
                   <div className="rounded-xl overflow-hidden border border-border/40 bg-black/5">
                     <video
                       src="/videos/unit8-rattan.mp4"

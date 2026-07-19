@@ -430,7 +430,6 @@ const Quiz = () => {
         <div className={`w-full md:w-1/2 border-t md:border-t-0 md:border-l ${colors.border} overflow-y-auto md:overflow-hidden ${colors.left} max-h-[40vh] md:max-h-none order-1 md:order-2`}>
           <StimulusPanel 
             unit={selectedUnit as 1 | 2 | 3 | 4 | 5 | 6 | 7} 
-            imageUrl={meta?.imageUrl}
             videoUrl={meta?.videoUrl}
             images={getUnitImages(selectedUnit)}
           />

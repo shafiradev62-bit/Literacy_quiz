@@ -113,21 +113,6 @@ const StimulusPanel = ({ unit = 2, imageUrl, videoUrl, images = [], videos = [] 
                 )}
               </div>
             ) : null}
-
-            {/* Media Thumbnails */}
-            {allImages.length > 1 && (
-              <div className="grid grid-cols-4 gap-2">
-                {allImages.map((img, idx) => (
-                  <button
-                    key={`img-${idx}`}
-                    onClick={() => { setSelectedMedia(img); setMediaType("image"); }}
-                    className="aspect-square rounded-lg overflow-hidden border-2 border-transparent hover:border-primary transition-all hover:scale-105"
-                  >
-                    <img src={img} alt={`Media ${idx + 1}`} className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
         )}
 

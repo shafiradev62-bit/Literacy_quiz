@@ -31,7 +31,7 @@ const BUBBLES_ID = [
 
 interface LoadingScreenProps {
   onDone: () => void;
-  duration?: number; // ms
+  duration?: number;
 }
 
 export default function LoadingScreen({ onDone, duration = 30000 }: LoadingScreenProps) {
@@ -44,75 +44,59 @@ export default function LoadingScreen({ onDone, duration = 30000 }: LoadingScree
   const onDoneRef = useRef(onDone);
   onDoneRef.current = onDone;
 
-  // Cycle sprites every 120ms
   useEffect(() => {
-    const t = setInterval(() => {
-      setSpriteIdx((i) => (i + 1) % SPRITES.length);
-    }, 120);
+    const t = setInterval(() => setSpriteIdx((i) => (i + 1) % SPRITES.length), 120);
     return () => clearInterval(t);
   }, []);
 
-  // Cycle bubble text every 700ms
   useEffect(() => {
-    const t = setInterval(() => {
-      setBubbleIdx((i) => (i + 1) % bubbles.length);
-    }, 700);
+    const t = setInterval(() => setBubbleIdx((i) => (i + 1) % bubbles.length), 700);
     return () => clearInterval(t);
   }, [bubbles.length]);
 
-  // Auto-dismiss after duration
   useEffect(() => {
-    const t = setTimeout(() => {
-      onDoneRef.current();
-    }, duration);
+    const t = setTimeout(() => onDoneRef.current(), duration);
     return () => clearTimeout(t);
   }, [duration]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
-      {/* Green accent top bar */}
-      <div className="absolute top-0 left-0 right-0 h-1.5 bg-primary" />
+    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center overflow-hidden">
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/bg/handcraft-workshop.jpg')" }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-stone-900/40 to-amber-900/20" />
+      <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-t from-[#3d2b1f] via-[#5c4033]/90 to-transparent pointer-events-none" />
 
-      <div className="flex flex-col items-center gap-6 select-none">
-        {/* Speech bubble */}
-        <div className="relative bg-white border border-border/60 rounded-2xl px-5 py-3 shadow-sm max-w-xs text-center">
-          <p className="text-[14px] text-foreground font-medium leading-snug">
-            {bubbles[bubbleIdx]}
-          </p>
-          {/* Bubble tail */}
-          <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-r border-b border-border/60 rotate-45" />
+      <div className="relative z-10 flex flex-col items-center gap-5 select-none pb-10 px-6">
+        <div className="relative bg-white/95 backdrop-blur-sm border border-white/50 rounded-2xl px-5 py-3 shadow-lg max-w-xs text-center">
+          <p className="text-[14px] text-foreground font-medium leading-snug">{bubbles[bubbleIdx]}</p>
+          <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-4 h-4 bg-white/95 border-r border-b border-white/50 rotate-45" />
         </div>
 
-        {/* Sprite */}
-        <img
-          src={SPRITES[spriteIdx]}
-          alt="character"
-          className="w-28 h-28 object-contain"
-          draggable={false}
-        />
+        <div className="relative flex flex-col items-center">
+          <img
+            src={SPRITES[spriteIdx]}
+            alt="character"
+            className="relative z-10 w-36 h-44 object-contain object-bottom drop-shadow-[0_12px_16px_rgba(0,0,0,0.4)]"
+            draggable={false}
+          />
+          <div className="absolute bottom-1 w-24 h-3.5 rounded-[100%] bg-black/40 blur-[5px] z-0" />
+        </div>
 
-        {/* Dots loader */}
         <div className="flex gap-1.5">
           {[0, 1, 2].map((i) => (
-            <div
-              key={i}
-              className="w-2 h-2 rounded-full bg-primary animate-bounce"
-              style={{ animationDelay: `${i * 0.15}s` }}
-            />
+            <div key={i} className="w-2 h-2 rounded-full bg-amber-200 animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
           ))}
         </div>
 
-        {/* Skip button */}
         <button
           onClick={onDone}
-          className="mt-2 text-[12px] text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+          className="mt-1 text-[12px] text-amber-50/80 hover:text-white transition-colors underline underline-offset-2"
         >
           {isId ? "Lewati" : "Skip"}
         </button>
       </div>
-
-      {/* Bottom green strip */}
-      <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-primary" />
     </div>
   );
 }
