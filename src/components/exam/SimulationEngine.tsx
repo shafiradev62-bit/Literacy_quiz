@@ -777,22 +777,49 @@ const EmpalGentongSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
                 }}
               />
               {/* Live fire under pot */}
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 w-40 h-24 flex items-end justify-center gap-0.5">
-                {[0,1,2,3,4,5,6].map((i) => (
-                  <div
-                    key={i}
-                    className="rounded-t-full origin-bottom"
-                    style={{
-                      width: `${8 + (i % 3) * 3}px`,
-                      height: `${Math.max(8, (heatInput / 100) * (28 + (i % 4) * 10))}px`,
-                      background: `linear-gradient(to top, #dc2626, #f97316, #fbbf24, #fef3c7)`,
-                      animation: heatInput > 5 ? `fire-flicker ${0.35 + (i % 3) * 0.12}s ease-in-out infinite alternate` : "none",
-                      animationDelay: `${i * 0.07}s`,
-                      opacity: heatInput > 5 ? 0.85 : 0.15,
-                      boxShadow: heatInput > 30 ? `0 0 ${6 + heatInput / 15}px #f97316` : "none",
-                    }}
-                  />
-                ))}
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 w-44 h-28">
+                <svg viewBox="0 0 200 112" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="egFlameR" x1="0" y1="1" x2="0" y2="0">
+                      <stop offset="0%" stopColor="#dc2626" />
+                      <stop offset="55%" stopColor="#f97316" />
+                      <stop offset="100%" stopColor="#fb923c" />
+                    </linearGradient>
+                    <linearGradient id="egFlameO" x1="0" y1="1" x2="0" y2="0">
+                      <stop offset="0%" stopColor="#f97316" />
+                      <stop offset="60%" stopColor="#fb923c" />
+                      <stop offset="100%" stopColor="#fde047" />
+                    </linearGradient>
+                    <linearGradient id="egFlameY" x1="0" y1="1" x2="0" y2="0">
+                      <stop offset="0%" stopColor="#fbbf24" />
+                      <stop offset="100%" stopColor="#fffbeb" />
+                    </linearGradient>
+                    <radialGradient id="egFlameGlow" cx="50%" cy="85%" r="60%">
+                      <stop offset="0%" stopColor="#fdba74" stopOpacity={heatInput > 5 ? 0.7 : 0.15} />
+                      <stop offset="100%" stopColor="#fdba74" stopOpacity="0" />
+                    </radialGradient>
+                  </defs>
+                  <ellipse cx="100" cy="100" rx="92" ry="34" fill="url(#egFlameGlow)" />
+                  {[
+                    { x: 40, h: 44 }, { x: 62, h: 64 }, { x: 84, h: 82 }, { x: 100, h: 92 },
+                    { x: 116, h: 80 }, { x: 138, h: 62 }, { x: 160, h: 44 }, { x: 72, h: 40 }, { x: 128, h: 42 },
+                  ].map((f, i) => {
+                    const ph = heatInput > 5 ? Math.max(10, (heatInput / 100) * f.h) : 6;
+                    return (
+                      <g key={i} transform={`translate(${f.x}, 104)`}>
+                        <path d={`M0,0 C-9,-6 -11,-18 -5,-${ph} C-3,-${ph + 5} 3,-${ph + 5} 5,-${ph} C11,-18 9,-6 0,0 Z`}
+                          fill="url(#egFlameR)" opacity={heatInput > 5 ? 0.95 : 0.3}
+                          style={{ animation: heatInput > 5 ? `fire-flicker ${0.35 + (i % 3) * 0.1}s ease-in-out infinite alternate` : "none", animationDelay: `${i * 0.06}s`, transformOrigin: "0px 0px" }} />
+                        <path d={`M0,0 C-5,-4 -6,-12 -3,-${ph * 0.7} C-1.5,-${ph * 0.7 + 3} 1.5,-${ph * 0.7 + 3} 3,-${ph * 0.7} C6,-12 5,-4 0,0 Z`}
+                          fill="url(#egFlameO)" opacity={heatInput > 5 ? 0.9 : 0.3}
+                          style={{ animation: heatInput > 5 ? `fire-flicker ${0.42 + (i % 3) * 0.1}s ease-in-out infinite alternate` : "none", animationDelay: `${i * 0.09}s`, transformOrigin: "0px 0px" }} />
+                        <path d={`M0,0 C-2.5,-3 -3,-7 -1.5,-${ph * 0.42} C-0.5,-${ph * 0.42 + 2} 0.5,-${ph * 0.42 + 2} 1.5,-${ph * 0.42} C3,-7 2.5,-3 0,0 Z`}
+                          fill="url(#egFlameY)" opacity={heatInput > 5 ? 0.95 : 0.3}
+                          style={{ animation: heatInput > 5 ? `fire-flicker ${0.5 + (i % 3) * 0.1}s ease-in-out infinite alternate` : "none", animationDelay: `${i * 0.11}s`, transformOrigin: "0px 0px" }} />
+                      </g>
+                    );
+                  })}
+                </svg>
               </div>
               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-28 h-3 bg-black/25 rounded-full blur-md" />
               {/* Ember sparks */}
@@ -926,16 +953,14 @@ const KerupukMelaratSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => v
           {/* Interactive wok / pan with fire */}
           <svg viewBox="0 0 320 200" className="absolute inset-0 w-full h-full">
             <defs>
-              <radialGradient id="wokFire" cx="50%" cy="80%" r="50%">
-                <stop offset="0%" stopColor="#fff7ed" />
-                <stop offset="35%" stopColor="#fbbf24" />
-                <stop offset="70%" stopColor="#f97316" />
-                <stop offset="100%" stopColor="#7f1d1d" stopOpacity="0" />
-              </radialGradient>
               <linearGradient id="wokMetal" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#94a3b8" />
-                <stop offset="40%" stopColor="#475569" />
+                <stop offset="0%" stopColor="#cbd5e1" />
+                <stop offset="35%" stopColor="#64748b" />
                 <stop offset="100%" stopColor="#1e293b" />
+              </linearGradient>
+              <linearGradient id="wokInside" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#475569" />
+                <stop offset="100%" stopColor="#0f172a" />
               </linearGradient>
               <linearGradient id="sandFill" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#fcd34d" />
@@ -945,55 +970,88 @@ const KerupukMelaratSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => v
                 <stop offset="0%" stopColor="#fde68a" />
                 <stop offset="100%" stopColor="#ca8a04" />
               </linearGradient>
+              <linearGradient id="flameR" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stopColor="#dc2626" />
+                <stop offset="55%" stopColor="#f97316" />
+                <stop offset="100%" stopColor="#fb923c" />
+              </linearGradient>
+              <linearGradient id="flameO" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stopColor="#f97316" />
+                <stop offset="60%" stopColor="#fb923c" />
+                <stop offset="100%" stopColor="#fde047" />
+              </linearGradient>
+              <linearGradient id="flameY" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stopColor="#fbbf24" />
+                <stop offset="100%" stopColor="#fffbeb" />
+              </linearGradient>
+              <radialGradient id="flameGlow" cx="50%" cy="85%" r="60%">
+                <stop offset="0%" stopColor="#fdba74" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#fdba74" stopOpacity="0" />
+              </radialGradient>
             </defs>
+
+            {/* Heat glow */}
+            <ellipse cx="160" cy="158" rx="80" ry="40" fill="url(#flameGlow)" opacity={0.4 + fryTemp / 400} />
+
+            {/* Flames (realistic tongues) — behind wok */}
+            <g>
+              {[
+                { x: 52, h: 34 }, { x: 74, h: 46 }, { x: 98, h: 30 },
+                { x: 160, h: 58 }, { x: 222, h: 30 }, { x: 246, h: 46 }, { x: 268, h: 34 },
+                { x: 120, h: 40 }, { x: 200, h: 40 },
+              ].map((f, i) => {
+                const ph = Math.max(12, (fryTemp / 220) * f.h * 1.3);
+                return (
+                  <g key={i} transform={`translate(${f.x}, 170)`}>
+                    <path d={`M0,0 C-9,-6 -11,-18 -5,-${ph} C-3,-${ph + 5} 3,-${ph + 5} 5,-${ph} C11,-18 9,-6 0,0 Z`}
+                      fill="url(#flameR)" opacity="0.95"
+                      style={{ animation: `fire-flicker ${0.35 + (i % 3) * 0.1}s ease-in-out infinite alternate`, animationDelay: `${i * 0.06}s`, transformOrigin: "0px 0px" }} />
+                    <path d={`M0,0 C-5,-4 -6,-12 -3,-${ph * 0.7} C-1.5,-${ph * 0.7 + 3} 1.5,-${ph * 0.7 + 3} 3,-${ph * 0.7} C6,-12 5,-4 0,0 Z`}
+                      fill="url(#flameO)" opacity="0.9"
+                      style={{ animation: `fire-flicker ${0.42 + (i % 3) * 0.1}s ease-in-out infinite alternate`, animationDelay: `${i * 0.09}s`, transformOrigin: "0px 0px" }} />
+                    <path d={`M0,0 C-2.5,-3 -3,-7 -1.5,-${ph * 0.42} C-0.5,-${ph * 0.42 + 2} 0.5,-${ph * 0.42 + 2} 1.5,-${ph * 0.42} C3,-7 2.5,-3 0,0 Z`}
+                      fill="url(#flameY)" opacity="0.95"
+                      style={{ animation: `fire-flicker ${0.5 + (i % 3) * 0.1}s ease-in-out infinite alternate`, animationDelay: `${i * 0.11}s`, transformOrigin: "0px 0px" }} />
+                  </g>
+                );
+              })}
+            </g>
+
             {/* Stove base */}
-            <ellipse cx="160" cy="178" rx="90" ry="10" fill="#0f172a" opacity="0.7" />
-            <rect x="70" y="155" width="180" height="22" rx="4" fill="#334155" />
-            {/* Fire under wok */}
-            {[0,1,2,3,4,5].map((i) => (
-              <ellipse
-                key={i}
-                cx={120 + i * 16}
-                cy={148}
-                rx={6 + (i % 2) * 2}
-                ry={10 + (fryTemp / 200) * (14 + (i % 3) * 4)}
-                fill="url(#wokFire)"
-                style={{
-                  animation: `fire-flicker ${0.3 + (i % 3) * 0.1}s ease-in-out infinite alternate`,
-                  animationDelay: `${i * 0.08}s`,
-                  transformOrigin: `${120 + i * 16}px 155px`,
-                }}
-              />
-            ))}
-            {/* Wok body */}
-            <path d="M40 95 Q50 145 160 155 Q270 145 280 95 Q270 110 160 118 Q50 110 40 95Z" fill="url(#wokMetal)" stroke="#0f172a" strokeWidth="2" />
-            <ellipse cx="160" cy="95" rx="120" ry="28" fill="url(#wokMetal)" stroke="#64748b" strokeWidth="1.5" />
-            {/* Medium inside wok */}
-            <ellipse cx="160" cy="98" rx="100" ry="18" fill={fryMedium === "sand" ? "url(#sandFill)" : "url(#oilFill)"} opacity="0.95" />
-            {/* Sand grains or oil bubbles */}
+            <ellipse cx="160" cy="184" rx="94" ry="9" fill="#0b1220" />
+            <rect x="66" y="160" width="188" height="24" rx="5" fill="#334155" />
+            <rect x="76" y="162" width="168" height="6" rx="3" fill="#475569" />
+            <ellipse cx="160" cy="160" rx="48" ry="9" fill="#111827" stroke="#0f172a" strokeWidth="1" />
+
+            {/* Wok (rounded bowl with rim + handle) */}
+            <path d="M46,90 C52,124 100,150 160,150 C220,150 268,124 274,90 C260,102 200,110 160,110 C120,110 62,102 46,90 Z" fill="url(#wokMetal)" stroke="#0f172a" strokeWidth="2" />
+            <ellipse cx="160" cy="90" rx="114" ry="23" fill="url(#wokInside)" stroke="#64748b" strokeWidth="2" />
+            <ellipse cx="160" cy="90" rx="114" ry="23" fill="none" stroke="#cbd5e1" strokeWidth="1" opacity="0.5" />
+            {/* Cooking medium */}
+            <ellipse cx="160" cy="90" rx="103" ry="17" fill={fryMedium === "sand" ? "url(#sandFill)" : "url(#oilFill)"} opacity="0.96" />
             {fryMedium === "sand"
-              ? [...Array(18)].map((_, i) => (
-                  <circle key={i} className="particle" cx={90 + (i * 11) % 140} cy={92 + (i % 4) * 4} r={1.2 + (i % 3) * 0.4} fill="#92400e"
+              ? [...Array(20)].map((_, i) => (
+                  <circle key={i} className="particle" cx={66 + (i * 12) % 188} cy={86 + ((i * 7) % 3) * 4} r={1.1 + (i % 3) * 0.4} fill="#92400e"
                     style={{ animation: `float-sand ${1.2 + (i % 4) * 0.25}s ease-in-out infinite alternate`, animationDelay: `${(i % 5) * 0.15}s` }} />
                 ))
-              : [...Array(8)].map((_, i) => (
-                  <circle key={i} cx={100 + i * 16} cy={90 + (i % 3) * 5} r={2 + (i % 2)} fill="#fef3c7" opacity="0.55"
+              : [...Array(9)].map((_, i) => (
+                  <circle key={i} cx={78 + i * 18} cy={86 + ((i * 5) % 3) * 4} r={2 + (i % 2)} fill="#fef3c7" opacity="0.5"
                     style={{ animation: `fry-shake ${0.4 + (i % 3) * 0.1}s infinite`, animationDelay: `${i * 0.1}s` }} />
                 ))}
             {/* Kerupuk pieces shaking */}
-            <g className="food-item" style={{ transformOrigin: "160px 95px" }}>
-              <ellipse cx="135" cy="88" rx="16" ry="7" fill="#f5f5f4" stroke="#a8a29e" strokeWidth="1" />
-              <ellipse cx="175" cy="92" rx="14" ry="6" fill="#e7e5e4" stroke="#a8a29e" strokeWidth="1" />
-              <ellipse cx="155" cy="100" rx="12" ry="5" fill="#fafaf9" stroke="#d6d3d1" strokeWidth="1" />
+            <g className="food-item" style={{ transformOrigin: "160px 90px" }}>
+              <ellipse cx="135" cy="84" rx="16" ry="7" fill="#f5f5f4" stroke="#a8a29e" strokeWidth="1" />
+              <ellipse cx="175" cy="88" rx="14" ry="6" fill="#e7e5e4" stroke="#a8a29e" strokeWidth="1" />
+              <ellipse cx="155" cy="94" rx="12" ry="5" fill="#fafaf9" stroke="#d6d3d1" strokeWidth="1" />
             </g>
             {/* Heat shimmer lines */}
-            {[0,1,2].map((i) => (
-              <path key={`shim-${i}`} d={`M${130 + i * 25} 70 Q${135 + i * 25} 55 ${140 + i * 25} 40`} fill="none" stroke="#fdba74" strokeWidth="1.5" opacity={0.25 + fryTemp / 500}
+            {[0, 1, 2].map((i) => (
+              <path key={`shim-${i}`} d={`M${130 + i * 25} 64 Q${135 + i * 25} 50 ${140 + i * 25} 36`} fill="none" stroke="#fdba74" strokeWidth="1.5" opacity={0.2 + fryTemp / 500}
                 style={{ animation: `steam-rise ${1.5 + i * 0.4}s linear infinite`, animationDelay: `${i * 0.3}s` }} />
             ))}
             {/* Handle */}
-            <path d="M280 95 L310 88" stroke="#94a3b8" strokeWidth="6" strokeLinecap="round" />
-            <circle cx="312" cy="87" r="5" fill="#64748b" />
+            <path d="M274 88 L312 78" stroke="#1e293b" strokeWidth="7" strokeLinecap="round" />
+            <circle cx="313" cy="77" r="5" fill="#334155" stroke="#0f172a" strokeWidth="1" />
           </svg>
           <div className="absolute top-2 left-3 px-2 py-0.5 rounded-full bg-black/50 text-white text-[9px] font-bold tracking-widest uppercase">
             {fryTemp}°C · {fryTime}{isId ? " mnt" : " min"} · {fryMedium === "sand" ? (isId ? "Pasir Panas" : "Hot Sand") : (isId ? "Minyak" : "Oil")}
