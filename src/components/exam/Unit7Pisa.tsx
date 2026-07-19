@@ -11,11 +11,37 @@ const STEP_LABELS_EN = ["Overview", "Assignment 1", "Analysis 2", "Exploration 3
 const STEP_LABELS_ID = ["Gambaran", "Tugas 1", "Analisis 2", "Eksplorasi 3", "Sintesis 4", "Evaluasi 5"];
 
 const MATCH_DRAGGABLES = [
-  { id: "effect_fish", en: "Reduces fish population", idText: "Mengurangi populasi ikan", icon: "🐟" },
-  { id: "effect_overfish", en: "Reduces overfishing behavior", idText: "Mengurangi pemancingan berlebih", icon: "🎣" },
-  { id: "effect_water", en: "Improves water quality", idText: "Meningkatkan kualitas air", icon: "💧" },
-  { id: "effect_biodiv", en: "Increases marine biodiversity", idText: "Meningkatkan biodiversitas laut", icon: "🐚" },
+  { id: "effect_fish", en: "Reduces fish population", idText: "Mengurangi populasi ikan", icon: "fish" },
+  { id: "effect_overfish", en: "Reduces overfishing behavior", idText: "Mengurangi pemancingan berlebih", icon: "hook" },
+  { id: "effect_water", en: "Improves water quality", idText: "Meningkatkan kualitas air", icon: "water" },
+  { id: "effect_biodiv", en: "Increases marine biodiversity", idText: "Meningkatkan biodiversitas laut", icon: "shell" },
 ];
+
+const EffectIcon = ({ name, className = "" }: { name: string; className?: string }) => {
+  const props = {
+    className,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.8,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+  switch (name) {
+    case "fish":
+      return (<svg {...props}><path d="M3 12c3.5-4.5 10-4.5 15 0-5 4.5-11.5 4.5-15 0Z" /><path d="M18 12l3-2.5v5L18 12Z" /><circle cx="8" cy="11" r="0.7" fill="currentColor" stroke="none" /></svg>);
+    case "hook":
+      return (<svg {...props}><path d="M12 3v6" /><path d="M12 9a3 3 0 0 0 3 3v2a3 3 0 0 1-3 3 3 3 0 0 1-3-3" /></svg>);
+    case "water":
+      return (<svg {...props}><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z" /></svg>);
+    case "shell":
+      return (<svg {...props}><path d="M12 4c4.5 0 8 3.6 8 8 0 4.5-3.5 8-8 8s-8-3.5-8-8c0-4.4 3.5-8 8-8Z" /><path d="M12 4v16M5 11h14M7.5 16 16.5 8M16.5 16 7.5 8" /></svg>);
+    case "recycle":
+      return (<svg {...props}><path d="M4 12a8 8 0 0 1 13.7-5.6L20 9" /><path d="M20 4v5h-5" /><path d="M20 12a8 8 0 0 1-13.7 5.6L4 15" /><path d="M4 20v-5h5" /></svg>);
+    default:
+      return null;
+  }
+};
 
 const FACTORS = [
   { id: "factor_fish", en: "High fishing intensity", idText: "Intensitas pancing tinggi", color: "from-rose-500 to-red-600" },
@@ -244,7 +270,7 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                         }}
                         className={`p-4 rounded-2xl border-2 flex items-center gap-3 transition-all duration-300 cursor-grab active:cursor-grabbing hover:scale-105 ${isUsed ? "opacity-10 cursor-not-allowed bg-slate-100 border-slate-200" : "bg-white border-white shadow-xl hover:border-indigo-400 group"}`}
                       >
-                        <span className="text-lg">{item.icon}</span>
+                        <span className="text-lg"><EffectIcon name={item.icon} className="w-5 h-5" /></span>
                         <span className="text-[11px] font-bold text-slate-700 leading-tight">{text}</span>
                       </div>
                     );
@@ -371,16 +397,16 @@ const Unit7Pisa = ({ onExit }: Unit7PisaProps) => {
                   {/* Stat Bento Grid */}
                   <div className="col-span-3 grid grid-cols-2 gap-4">
                      {[
-                        { l: isId ? "Populasi Ikan" : "Fish Pop.", v: outputs.fish, c: "cyan", i: "🐟" },
-                        { l: isId ? "Keanekaragaman" : "Biodiversity", v: outputs.biodiversity, c: "fuchsia", i: "🐚" },
-                        { l: isId ? "Kualitas Air" : "Water Quality", v: outputs.water, c: "blue", i: "💧" },
-                        { l: isId ? "Keberlanjutan" : "Sustainability", v: outputs.sustainability, c: "emerald", i: "♻️" },
+                         { l: isId ? "Populasi Ikan" : "Fish Pop.", v: outputs.fish, c: "cyan", i: "fish" },
+                         { l: isId ? "Keanekaragaman" : "Biodiversity", v: outputs.biodiversity, c: "fuchsia", i: "shell" },
+                         { l: isId ? "Kualitas Air" : "Water Quality", v: outputs.water, c: "blue", i: "water" },
+                         { l: isId ? "Keberlanjutan" : "Sustainability", v: outputs.sustainability, c: "emerald", i: "recycle" },
                      ].map(out => (
                         <div key={out.l} className="group relative p-8 bg-white/5 backdrop-blur-3xl rounded-[40px] border border-white/5 shadow-2xl flex flex-col justify-between hover:bg-white/10 transition-all overflow-hidden">
                            <div className={`absolute -top-10 -right-10 w-32 h-32 bg-${out.c}-500 opacity-5 blur-3xl group-hover:opacity-10 transition-opacity`} />
                            <div className="flex justify-between items-start">
                               <span className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em]">{out.l}</span>
-                              <span className="text-2xl">{out.i}</span>
+                               <span className="text-2xl"><EffectIcon name={out.i} className="w-7 h-7 text-white/70" /></span>
                            </div>
                            <div className="mt-4">
                               <span className={`text-2xl font-bold ${out.v === 'Low' || out.v === 'Poor' ? 'text-rose-400' : 'text-cyan-400'}`}>{out.v}</span>

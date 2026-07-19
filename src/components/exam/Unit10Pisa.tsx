@@ -144,11 +144,12 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
   const getItemInZone = (zoneId: string) =>
     Object.entries(q1Answers).find(([, zone]) => zone === zoneId)?.[0] ?? null;
 
-  // Drag handlers — use dataTransfer for reliable cross-browser drop
-  const handleDrop = (target: string, e?: React.DragEvent) => {
+  // Drag handlers — use dataTransfer for reliable cross-browser drop,
+  // and support click-to-place (forcedKey) so it works on touch devices too.
+  const handleDrop = (target: string, e?: React.DragEvent, forcedKey?: string | null) => {
     e?.preventDefault();
     e?.stopPropagation();
-    const itemKey = e?.dataTransfer?.getData("text/plain") || draggedItem;
+    const itemKey = forcedKey || e?.dataTransfer?.getData("text/plain") || draggedItem;
     if (!itemKey) return;
     setQ1Answers(prev => {
       const next = { ...prev };
@@ -639,54 +640,48 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
                   <p>{isId
                     ? "Diagram menunjukkan sistem pangan lokal sederhana untuk penyajian tahu gejrot. Bahan masuk ke dalam sistem pangan, makanan diproses, dan limbah cair keluar dari sistem."
                     : "The diagram shows a simplified local food system for serving tahu gejrot. Ingredients enter the food system, the dish is prepared, and wastewater leaves the system."}</p>
-                  <div className="flex items-center justify-center gap-2 mt-3 py-3 bg-white rounded-lg border border-border/40">
-                    {[
-                      {label: isId?"Tangki Input":"Input Tank", sub: isId?"Bahan masuk":"Ingredients enter", id:"input"},
-                      {label:"→", sub:"", id:"arrow1"},
-                      {label: isId?"Tangki Persiapan":"Preparation Tank", sub: isId?"Makanan diproses":"Food prepared", id:"prep"},
-                      {label:"→", sub:"", id:"arrow2"},
-                      {label: isId?"Tangki Pengolahan":"Treatment Tank", sub: isId?"Air diolah":"Water treated", id:"treat"},
-                    ].map((item, i) => item.label === "→"
-                      ? <span key={i} className="text-muted-foreground font-bold text-lg">→</span>
-                      : (() => {
-                          const placedKey = getItemInZone(item.id);
-                          return (
-                        <div key={i}
-                             className={`relative px-3 py-2 rounded-lg border text-center min-w-[120px] transition-all duration-200 ${
-                               dragOverZone === item.id
-                                 ? "border-primary border-2 bg-primary/10 shadow-md scale-105"
-                                 : placedKey
-                                 ? "border-2 border-emerald-500 bg-emerald-50 ring-2 ring-emerald-200 shadow-sm"
-                                 : draggedItem
-                                 ? "border-dashed border-2 border-primary/40 bg-primary/5"
-                                 : "border-border/40 bg-white"
-                             }`}
-                             onDragOver={(e) => { e.preventDefault(); setDragOverZone(item.id); }}
-                             onDragLeave={() => setDragOverZone(null)}
-                             onDrop={(e) => handleDrop(item.id, e)}>
-                          {dragOverZone === item.id && !placedKey && (
-                            <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full animate-in fade-in zoom-in duration-200">{isId ? "Lepaskan di sini!" : "Drop here!"}</span>
-                          )}
-                          {placedKey && (
-                            <div className="absolute -top-2 -right-2 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center shadow-md animate-in fade-in zoom-in duration-200">
-                              <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg>
-                            </div>
-                          )}
-                          <p className={`text-[11px] font-bold ${placedKey ? "text-emerald-700" : "text-foreground"}`}>{item.label}</p>
-                          <p className="text-[10px] text-muted-foreground">{item.sub}</p>
-                          {placedKey && (
-                            <p className="text-[9px] text-emerald-700 mt-1 font-semibold flex items-center justify-center gap-1">
-                              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
-                              {getDroppedItemName(placedKey)}
-                            </p>
-                          )}
-                          {!placedKey && draggedItem && (
-                            <p className="text-[9px] text-primary/60 mt-1">{isId ? "Seret ke sini" : "Drag here"}</p>
-                          )}
-                        </div>
-                          );
-                        })()
-                    )}
+                  <div className="mt-3 rounded-xl border-2 border-dashed border-border/50 bg-white p-3">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2 text-center">{isId ? "Area Drag & Drop" : "Drag & Drop Area"}</p>
+                    <div className="flex items-stretch justify-center gap-2">
+                      {[
+                        { id:"input", label: isId?"Tangki Input":"Input Tank", sub: isId?"Bahan masuk":"Ingredients enter", arrow:true },
+                        { id:"prep", label: isId?"Tangki Persiapan":"Prep Tank", sub: isId?"Makanan diproses":"Food prepared", arrow:true },
+                        { id:"treat", label: isId?"Tangki Pengolahan":"Treatment Tank", sub: isId?"Air diolah":"Water treated", arrow:false },
+                      ].map((z) => {
+                        const placedKey = getItemInZone(z.id);
+                        const isOver = dragOverZone === z.id;
+                        return (
+                          <div key={z.id} className="contents">
+                            <button type="button"
+                              onClick={() => draggedItem && handleDrop(z.id, undefined, draggedItem)}
+                              onDragOver={(e) => { e.preventDefault(); setDragOverZone(z.id); }}
+                              onDragLeave={() => setDragOverZone(null)}
+                              onDrop={(e) => handleDrop(z.id, e)}
+                              className={`relative flex-1 min-w-0 px-2 py-3 rounded-lg border text-center transition-all duration-200 ${isOver ? "border-primary border-2 bg-primary/10 scale-105" : placedKey ? "border-2 border-emerald-500 bg-emerald-50" : draggedItem ? "border-dashed border-2 border-primary/40 bg-primary/5" : "border-border/40 bg-white"}`}>
+                              {isOver && !placedKey && (
+                                <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">{isId ? "Lepaskan di sini!" : "Drop here!"}</span>
+                              )}
+                              {placedKey && (
+                                <span className="absolute -top-2 -right-2 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center shadow-md">
+                                  <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg>
+                                </span>
+                              )}
+                              <p className={`text-[11px] font-bold ${placedKey ? "text-emerald-700" : "text-foreground"}`}>{z.label}</p>
+                              <p className="text-[10px] text-muted-foreground">{z.sub}</p>
+                              {placedKey ? (
+                                <p className="text-[9px] text-emerald-700 mt-1 font-semibold flex items-center justify-center gap-1">
+                                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/></svg>
+                                  {getDroppedItemName(placedKey)}
+                                </p>
+                              ) : draggedItem ? (
+                                <p className="text-[9px] text-primary/60 mt-1">{isId ? "Klik / lepas di sini" : "Click / drop here"}</p>
+                              ) : null}
+                            </button>
+                            {z.arrow && <span className="self-center text-muted-foreground font-bold text-lg shrink-0">→</span>}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
                 <p className="text-[13px] font-medium text-foreground/90 leading-relaxed">{isId
@@ -697,7 +692,7 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
                   <div className="flex items-center gap-2 px-4 py-2.5 bg-primary/10 border-2 border-primary rounded-xl animate-pulse">
                     <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
                     <span className="text-[12px] font-bold text-primary">
-                      {isId ? `Sedang diseret: ${draggedItem === "tofu" ? "Tahu" : draggedItem === "sauce" ? "Kuah" : "Pengolahan"} — Lepaskan ke kotak yang sesuai!` : `Dragging: ${draggedItem === "tofu" ? "Tofu" : draggedItem === "sauce" ? "Sauce" : "Treatment"} — Drop it on the correct box!`}
+                      {isId ? `Sedang memilih: ${getDroppedItemName(draggedItem)} — seret atau klik kotak tujuan!` : `Selected: ${getDroppedItemName(draggedItem)} — drag or click the target box!`}
                     </span>
                   </div>
                 )}
@@ -721,6 +716,7 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
                       {key:"waste",   en:"Wastewater treatment",           id:"Pengolahan limbah",              color:"bg-blue-100 border-blue-400 text-blue-800"},
                     ].map(item => {
                       const isPlaced = item.key in q1Answers;
+                      const isSel = draggedItem === item.key;
                       return (
                         <div key={item.key}
                              draggable={!isPlaced}
@@ -731,8 +727,14 @@ const Unit10Pisa = ({ onExit, studentId }: Unit10PisaProps) => {
                                setDraggedItem(item.key);
                              }}
                              onDragEnd={() => setTimeout(() => setDraggedItem(null), 100)}
-                             className={`px-4 py-2.5 rounded-lg border-2 font-semibold text-[12px] transition-all select-none ${isPlaced ? "opacity-30 cursor-not-allowed line-through" : `${item.color} cursor-grab active:cursor-grabbing hover:scale-105 shadow-sm`} ${draggedItem === item.key ? "opacity-50 scale-95" : ""}`}>
-                          {isId ? item.id : item.en}
+                             onClick={() => { if (isPlaced) return; setDraggedItem(isSel ? null : item.key); }}
+                             role="button" tabIndex={isPlaced ? -1 : 0}
+                             onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && !isPlaced) { e.preventDefault(); setDraggedItem(isSel ? null : item.key); } }}
+                             className={`px-4 py-2.5 rounded-lg border-2 font-semibold text-[12px] transition-all select-none ${isPlaced ? "opacity-30 cursor-not-allowed line-through" : isSel ? `ring-2 ring-primary ring-offset-1 ${item.color} cursor-grab scale-105` : `${item.color} cursor-grab active:cursor-grabbing hover:scale-105 shadow-sm`}`}>
+                          <span className="flex items-center gap-1.5">
+                            {isPlaced && <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg>}
+                            {isId ? item.id : item.en}
+                          </span>
                         </div>
                       );
                     })}

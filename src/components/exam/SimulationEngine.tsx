@@ -635,8 +635,8 @@ const TerasiSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
 
         {/* Legend */}
         <div className="flex items-center gap-4 mt-2 text-[9px] text-muted-foreground">
-          <span>🦠 = Bakteri berbahaya tinggi</span>
-          <span>🥇 = Fermentasi baik</span>
+          <span><span className="inline-block w-2.5 h-2.5 rounded-full bg-red-500 mr-1 align-middle"></span>Bakteri berbahaya tinggi</span>
+          <span><span className="inline-block w-2.5 h-2.5 rounded-full bg-amber-500 mr-1 align-middle"></span>Fermentasi baik</span>
           <span>· = Kristal garam</span>
         </div>
       </SimCard>
@@ -1502,7 +1502,7 @@ const TapeKetanSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }
                 fill={fermTemp > 35 ? "#dc2626" : fermTemp > 25 ? "#ea580c" : "#2563eb"}
                 fontFamily="sans-serif">{fermTemp}°C</text>
               <text x="6" y="110" textAnchor="middle" fontSize="6" fill="#64748b" fontFamily="sans-serif">
-                {calc.tempOptimal ? "✓ OK" : "⚠"}
+                {calc.tempOptimal ? "OK" : "!"}
               </text>
             </g>
 

@@ -4,19 +4,19 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const SPRITES = Array.from({ length: 12 }, (_, i) => `/karakter/sprite_${i + 1}.png`);
 
 const DIALOGUE_EN = [
-  "Woohoo! You made it to the end! 🎉",
+  "Woohoo! You made it to the end! ",
   "You've explored 10 amazing topics from Cirebon!",
   "From nasi jamblang to tahu gejrot... science is everywhere!",
-  "You're now a Cirebon Ethnoscience Explorer! 🏆",
-  "Keep curious, keep learning. See you next time! 👋",
+  "You're now a Cirebon Ethnoscience Explorer! ",
+  "Keep curious, keep learning. See you next time! ",
 ];
 
 const DIALOGUE_ID = [
-  "Hore! Kamu berhasil sampai akhir! 🎉",
+  "Hore! Kamu berhasil sampai akhir! ",
   "Kamu sudah menjelajahi 10 topik keren dari Cirebon!",
   "Dari nasi jamblang sampai tahu gejrot... sains ada di mana-mana!",
-  "Kamu sekarang adalah Penjelajah Etnosains Cirebon! 🏆",
-  "Tetap penasaran, terus belajar. Sampai jumpa! 👋",
+  "Kamu sekarang adalah Penjelajah Etnosains Cirebon! ",
+  "Tetap penasaran, terus belajar. Sampai jumpa! ",
 ];
 
 const CONFETTI_COLORS = ["#4ade80", "#60a5fa", "#f59e0b", "#f472b6", "#a78bfa", "#34d399"];
@@ -120,7 +120,16 @@ export default function QuizOutroSlide({ onFinish }: Props) {
       <div className="relative z-10 flex flex-col items-center justify-between h-full px-6 pt-8 pb-4">
         {/* Trophy + badge */}
         <div className="flex flex-col items-center gap-2">
-          <div className="text-5xl animate-bounce" style={{ animationDuration: "1.5s" }}>🏆</div>
+          <div className="text-primary animate-bounce" style={{ animationDuration: "1.5s" }}>
+            <svg className="w-12 h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M7 4h10v4a5 5 0 0 1-10 0V4Z" />
+              <path d="M7 6H4v2a3 3 0 0 0 3 3" />
+              <path d="M17 6h3v2a3 3 0 0 1-3 3" />
+              <path d="M12 13v4" />
+              <path d="M8 21h8" />
+              <path d="M9 17h6" />
+            </svg>
+          </div>
           <div className="bg-primary text-primary-foreground text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md">
             {isId ? "Kuis Selesai!" : "Quiz Complete!"}
           </div>

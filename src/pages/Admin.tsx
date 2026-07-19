@@ -440,7 +440,7 @@ const AdminPortal = () => {
                           )}
                           {q.explanation && (
                             <p className="text-[10px] text-primary/70 italic line-clamp-1">
-                              💬 {q.explanation}
+                              {q.explanation}
                             </p>
                           )}
                         </div>
