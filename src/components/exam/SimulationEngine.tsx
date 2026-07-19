@@ -482,6 +482,11 @@ const TerasiSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
                 <stop offset="0%" stopColor="#9E9E9E"/>
                 <stop offset="100%" stopColor="#757575"/>
               </linearGradient>
+              <radialGradient id="tr-cake" cx="42%" cy="35%" r="75%">
+                <stop offset="0%" stopColor="#A04A28"/>
+                <stop offset="60%" stopColor="#7A2E1A"/>
+                <stop offset="100%" stopColor="#5E1E0E"/>
+              </radialGradient>
               <filter id="tr-shadow">
                 <feDropShadow dx="2" dy="3" stdDeviation="3" floodOpacity="0.2"/>
               </filter>
@@ -535,6 +540,28 @@ const TerasiSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void }) =
                 rx="38" ry="5"
                 fill={hygieneVal>60?"#D4891A":"#8B1A1A"} opacity="0.5"
                 clipPath="url(#tr-jar-clip)"/>
+
+              {/* Real terasi cakes (buletan terasi) stacked inside the jar */}
+              <g clipPath="url(#tr-jar-clip)">
+                {[
+                  { x:34, y:112, rx:15, ry:6.5 },
+                  { x:54, y:114, rx:16, ry:7 },
+                  { x:73, y:111, rx:14, ry:6 },
+                  { x:44, y:101, rx:14, ry:6 },
+                  { x:63, y:102, rx:15, ry:6.5 },
+                  { x:53, y:91, rx:13, ry:5.5 },
+                ].map((c, i) => (
+                  <g key={i}>
+                    <ellipse cx={c.x} cy={c.y + 2.5} rx={c.rx} ry={c.ry} fill="#4a160a" />
+                    <ellipse cx={c.x} cy={c.y} rx={c.rx} ry={c.ry} fill="url(#tr-cake)" stroke="#3a1207" strokeWidth="0.5" />
+                    <ellipse cx={c.x} cy={c.y} rx={c.rx * 0.22} ry={c.ry * 0.22} fill="#5e1e0e" />
+                    {[[-0.4, -0.1], [0.3, 0.1], [-0.1, 0.4], [0.45, -0.3], [0, -0.5], [0.15, 0.45]].map(([dx, dy], k) => (
+                      <circle key={k} cx={c.x + dx * c.rx} cy={c.y + dy * c.ry} r={0.9} fill="#3a1207" opacity={0.6} />
+                    ))}
+                    <ellipse cx={c.x - c.rx * 0.35} cy={c.y - c.ry * 0.4} rx={c.rx * 0.3} ry={c.ry * 0.3} fill="#C8703E" opacity={0.4} />
+                  </g>
+                ))}
+              </g>
 
               {/* Bubbles when fermenting */}
               {calc.fermentation > 20 && [20,35,50,65,78].map((bx,i) => (
@@ -992,6 +1019,11 @@ const KerupukMelaratSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => v
                 <stop offset="0%" stopColor="#fdba74" stopOpacity="0.85" />
                 <stop offset="100%" stopColor="#fdba74" stopOpacity="0" />
               </radialGradient>
+              <radialGradient id="krFill" cx="40%" cy="32%" r="75%">
+                <stop offset="0%" stopColor="#FBF6E9" />
+                <stop offset="65%" stopColor="#F0E6CE" />
+                <stop offset="100%" stopColor="#DFCEA6" />
+              </radialGradient>
             </defs>
 
             {/* Heat glow */}
@@ -1018,11 +1050,35 @@ const KerupukMelaratSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => v
                   <circle key={i} cx={78 + i * 18} cy={86 + ((i * 5) % 3) * 4} r={2 + (i % 2)} fill="#fef3c7" opacity="0.5"
                     style={{ animation: `fry-shake ${0.4 + (i % 3) * 0.1}s infinite`, animationDelay: `${i * 0.1}s` }} />
                 ))}
-            {/* Kerupuk pieces shaking */}
+            {/* Kerupuk pieces shaking — real textured crackers */}
             <g className="food-item" style={{ transformOrigin: "160px 90px" }}>
-              <ellipse cx="135" cy="84" rx="16" ry="7" fill="#f5f5f4" stroke="#a8a29e" strokeWidth="1" />
-              <ellipse cx="175" cy="88" rx="14" ry="6" fill="#e7e5e4" stroke="#a8a29e" strokeWidth="1" />
-              <ellipse cx="155" cy="94" rx="12" ry="5" fill="#fafaf9" stroke="#d6d3d1" strokeWidth="1" />
+              {/* Kerupuk 1 (round, irregular edge) */}
+              <g>
+                <path d="M135,67 C145,66 152,72 152,83 C152,94 145,101 135,101 C125,101 119,94 119,83 C119,72 126,68 135,67 Z" fill="url(#krFill)" stroke="#C9B58C" strokeWidth="1" />
+                <path d="M135,67 C145,66 152,72 152,83 C152,94 145,101 135,101 C125,101 119,94 119,83 C119,72 126,68 135,67 Z" fill="none" stroke="#D9A441" strokeWidth="1.6" opacity="0.45" />
+                {[[128,79],[139,75],[132,90],[143,88],[125,88],[140,95],[133,83]].map(([x,y],i) => (
+                  <circle key={i} cx={x} cy={y} r={1} fill="#8B5A2B" opacity={0.65} />
+                ))}
+                <ellipse cx="129" cy="77" rx="6" ry="3" fill="#FFFFFF" opacity="0.35" />
+              </g>
+              {/* Kerupuk 2 (oval, slightly tilted) */}
+              <g transform="rotate(-12 175 88)">
+                <path d="M175,80 C184,79 190,83 190,88 C190,94 184,98 175,98 C166,98 160,94 160,88 C160,83 166,81 175,80 Z" fill="url(#krFill)" stroke="#C9B58C" strokeWidth="1" />
+                <path d="M175,80 C184,79 190,83 190,88 C190,94 184,98 175,98 C166,98 160,94 160,88 C160,83 166,81 175,80 Z" fill="none" stroke="#D9A441" strokeWidth="1.6" opacity="0.45" />
+                {[[169,86],[180,83],[172,92],[182,90],[167,90],[177,95]].map(([x,y],i) => (
+                  <circle key={i} cx={x} cy={y} r={0.9} fill="#8B5A2B" opacity={0.6} />
+                ))}
+                <ellipse cx="170" cy="84" rx="5" ry="2.5" fill="#FFFFFF" opacity="0.35" />
+              </g>
+              {/* Kerupuk 3 (small round) */}
+              <g>
+                <path d="M155,89 C162,88 167,92 167,97 C167,102 162,106 155,106 C148,106 144,102 144,97 C144,92 149,90 155,89 Z" fill="url(#krFill)" stroke="#C9B58C" strokeWidth="1" />
+                <path d="M155,89 C162,88 167,92 167,97 C167,102 162,106 155,106 C148,106 144,102 144,97 C144,92 149,90 155,89 Z" fill="none" stroke="#D9A441" strokeWidth="1.4" opacity="0.45" />
+                {[[150,95],[159,93],[153,101],[160,99],[148,99]].map(([x,y],i) => (
+                  <circle key={i} cx={x} cy={y} r={0.8} fill="#8B5A2B" opacity={0.6} />
+                ))}
+                <ellipse cx="151" cy="93" rx="4" ry="2" fill="#FFFFFF" opacity={0.35} />
+              </g>
             </g>
             {/* Flames (realistic tongues) — IN FRONT of the wok, wrapping its lower body */}
             <g>

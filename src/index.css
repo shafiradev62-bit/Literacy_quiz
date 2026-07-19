@@ -9,7 +9,7 @@
   html,
   body,
   #root {
-    cursor: url("/cursors/pencil.svg") 2 2, url("/cursors/pencil.png") 2 2, auto;
+    cursor: url("/cursors/pencil.svg") 7 7, url("/cursors/pencil.png") 7 7, auto;
   }
 
   a,
@@ -23,7 +23,7 @@
   input[type="radio"],
   input[type="checkbox"],
   select {
-    cursor: url("/cursors/pencil.svg") 2 2, url("/cursors/pencil.png") 2 2, pointer;
+    cursor: url("/cursors/pencil.svg") 7 7, url("/cursors/pencil.png") 7 7, pointer;
   }
 
   input[type="text"],
@@ -33,7 +33,7 @@
   input[type="search"],
   textarea,
   [contenteditable="true"] {
-    cursor: url("/cursors/pencil.svg") 2 2, text;
+    cursor: url("/cursors/pencil.svg") 7 7, text;
   }
 
   :root {
