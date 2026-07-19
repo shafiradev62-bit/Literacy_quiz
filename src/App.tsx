@@ -10,6 +10,7 @@ import Quiz from "./pages/Quiz";
 import Results from "./pages/Results";
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
+import ResultStudents from "./pages/ResultStudents";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const AppLayout = () => {
         <Route path="/results" element={<Results />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/resultstudents" element={<ResultStudents />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
