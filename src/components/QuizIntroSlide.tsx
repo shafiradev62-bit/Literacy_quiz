@@ -82,7 +82,7 @@ export default function QuizIntroSlide({ onStart }: Props) {
       {/* Cartoon school background */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/bg/school-cartoon.svg')" }}
+        style={{ backgroundImage: "url('/images/bg/school-cartoon-bg2.png')" }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-sky-900/70 via-sky-900/20 to-transparent" />
 

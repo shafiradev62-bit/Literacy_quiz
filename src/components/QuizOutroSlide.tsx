@@ -95,8 +95,13 @@ export default function QuizOutroSlide({ onFinish }: Props) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden"
-      style={{ background: "linear-gradient(135deg, #f0fdf4 0%, #eff6ff 50%, #fdf4ff 100%)" }}
     >
+      {/* Cartoon background */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/bg/school-cartoon-bg.png')" }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/40 to-white/70" />
       {/* Confetti */}
       {confetti.map((c) => (
         <div

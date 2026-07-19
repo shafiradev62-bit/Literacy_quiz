@@ -63,7 +63,7 @@ export default function LoadingScreen({ onDone, duration = 30000 }: LoadingScree
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center overflow-hidden">
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/bg/handcraft-workshop.jpg')" }}
+        style={{ backgroundImage: "url('/images/bg/workshop-cartoon-bg.png')" }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-stone-900/40 to-amber-900/20" />
       <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-gradient-to-t from-[#3d2b1f] via-[#5c4033]/90 to-transparent pointer-events-none" />
