@@ -280,16 +280,20 @@ const NasiJamblangSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => voi
             {/* Teak leaf wrapping (main feature) */}
             {packType === "teak" && (
               <g>
-                {/* Large teak leaf over food */}
-                <path d="M90,108 Q160,75 230,108 Q200,140 160,145 Q120,140 90,108 Z"
-                  fill="#388E3C" stroke="#1B5E20" strokeWidth="1.5" opacity="0.88" filter="url(#nj-shadow)"/>
-                <path d="M90,108 Q160,75 230,108 Q200,140 160,145 Q120,140 90,108 Z"
+                {/* Teak leaf wrap with tip + curved veins */}
+                <path d="M84,108 Q96,72 160,64 Q224,72 236,108 Q212,142 160,147 Q108,142 84,108 Z"
+                  fill="#388E3C" stroke="#1B5E20" strokeWidth="1.5" opacity="0.9" filter="url(#nj-shadow)"/>
+                <path d="M84,108 Q96,72 160,64 Q224,72 236,108 Q212,142 160,147 Q108,142 84,108 Z"
                   fill="url(#nj-leafshine)" opacity="0.3"/>
-                {/* Leaf veins */}
-                <line x1="160" y1="80" x2="160" y2="144" stroke="#1B5E20" strokeWidth="1.2" opacity="0.4"/>
-                {[-40,-25,-10,5,20,35].map((a,i) => {
+                {/* Leaf tip (petiole) */}
+                <path d="M160,64 Q156,50 160,44 Q164,50 160,64 Z" fill="#2E7D32"/>
+                {/* Midrib */}
+                <path d="M160,48 Q158,100 160,144" stroke="#1B5E20" strokeWidth="1.6" fill="none" opacity="0.5"/>
+                {/* Curved side veins */}
+                {[-46,-30,-14,4,20,36,52].map((a,i) => {
                   const rad = a * Math.PI / 180;
-                  return <line key={i} x1="160" y1="112" x2={160+Math.cos(rad)*55} y2={112+Math.sin(rad)*30} stroke="#1B5E20" strokeWidth="0.7" opacity="0.3"/>;
+                  const y0 = 70 + i * 9;
+                  return <path key={i} d={`M160,${y0} Q${160+Math.cos(rad)*30},${y0+6} ${160+Math.cos(rad)*58},${y0+Math.sin(rad)*30+10}`} stroke="#1B5E20" strokeWidth="0.7" fill="none" opacity="0.32"/>;
                 })}
                 <text x="160" y="168" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#2E7D32" fontFamily="sans-serif">
                   {isId ? "Dibungkus Daun Jati" : "Teak Leaf Wrap"}
@@ -1634,17 +1638,27 @@ const MangroveSim = ({ onRun }: { onRun: (d: Record<string, unknown>) => void })
 
           {/* Mangrove forest */}
           <div className="absolute top-14 left-0 right-0 h-24 bg-gradient-to-t from-emerald-800 via-emerald-700 to-emerald-600 overflow-hidden"
-            style={{ height: `${mangroveCover * 0.24}px`, transition: "height 0.8s ease" }}>
+            style={{ height: `${mangroveCover * 0.34}px`, transition: "height 0.8s ease" }}>
             {/* Tree canopies */}
-            {mangroveCover > 20 && [...Array(Math.ceil(mangroveCover / 15))].map((_, i) => (
-              <div key={i} className="mangrove-tree absolute" style={{ bottom: 0, left: `${5 + i * 8}%` }}>
-                <svg width={14 + mangroveCover / 10} height={14 + mangroveCover / 10} viewBox="0 0 24 24" fill="none">
-                  <rect x="11" y="16" width="2" height="8" fill="#4E342E"/>
-                  <polygon points="12,2 2,16 22,16" fill="#16a34a"/>
-                  <polygon points="12,6 4,16 20,16" fill="#22c55e"/>
-                </svg>
-              </div>
-            ))}
+            {mangroveCover > 12 && [...Array(Math.ceil(mangroveCover / 14))].map((_, i) => {
+              const treeSize = 18 + mangroveCover / 9;
+              return (
+                <div key={i} className="mangrove-tree absolute" style={{ bottom: 0, left: `${3 + i * 8}%` }}>
+                  <svg width={treeSize} height={treeSize} viewBox="0 0 48 48" fill="none">
+                    {/* canopy */}
+                    <ellipse cx="24" cy="15" rx="17" ry="13" fill="#15803d"/>
+                    <ellipse cx="17" cy="12" rx="10" ry="9" fill="#22c55e"/>
+                    <ellipse cx="31" cy="14" rx="9" ry="8" fill="#16a34a"/>
+                    <ellipse cx="24" cy="8" rx="8" ry="7" fill="#4ade80" opacity="0.7"/>
+                    {/* trunk */}
+                    <path d="M22,26 Q21,34 23,42 L25,42 Q27,34 26,26 Z" fill="#5b3a1b"/>
+                    {/* prop / stilt roots */}
+                    <path d="M23,38 L13,46 M24,39 L24,47 M25,38 L35,46 M21,35 L16,44 M27,35 L32,44"
+                      stroke="#6b4423" strokeWidth="1.6" strokeLinecap="round" fill="none"/>
+                  </svg>
+                </div>
+              );
+            })}
             {/* Pneumatophores (mangrove roots) */}
             {mangroveCover > 40 && (
               <div className="absolute bottom-0 left-0 right-0 flex justify-around">
